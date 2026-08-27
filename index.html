@@ -57,9 +57,9 @@
           </div>
           <!-- Controles Técnico -->
           <div id="technicianNavControls" class="hidden flex items-center space-x-1.5 sm:space-x-2">
-            <button onclick="window.app.navigate('dashboard_tecnico')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white border border-amber-400/40 transition flex items-center space-x-1.5 shadow-md"><span>📋 Mis OTs</span></button>
+            <button onclick="window.app.navigate('dashboard_tecnico')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white border border-amber-400/40 transition flex items-center space-x-1.5 shadow-md"><span>📋 Mis Tareas</span></button>
           </div>
-          <button onclick="window.app.promptLoginModal()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800/90 hover:bg-slate-700 text-sky-200 hover:text-white border border-sky-500/30 transition flex items-center space-x-1 shadow-sm"><span id="userRoleBtnLabel">🔐 Ingresar</span></button>
+          <button onclick="window.app.promptLoginModal()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800/90 hover:bg-slate-700 text-sky-200 hover:text-white border border-sky-500/30 transition flex items-center space-x-1 shadow-sm"><span id="userRoleBtnLabel">🔐 Cambiar Perfil</span></button>
         </div>
       </div>
     </div>
@@ -118,30 +118,30 @@
       <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl border-2 border-dashed border-slate-300"><span class="text-4xl block mb-2">🔍</span><p class="text-sm font-bold text-slate-600">No se encontraron Órdenes con los filtros aplicados.</p></div>
     </section>
 
-    <!-- VISTA 2: DASHBOARD TÉCNICO -->
-    <section id="viewDashboardTecnico" class="hidden space-y-6">
+    <!-- VISTA 2: DASHBOARD TÉCNICO (OPTIMIZADO PARA TERRENO) -->
+    <section id="viewDashboardTecnico" class="hidden space-y-5">
       <div class="bg-gradient-to-r from-amber-600 via-amber-700 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div class="flex items-center space-x-2"><span class="text-3xl">👷</span><h2 class="text-xl sm:text-2xl font-black tracking-tight">Panel de Cuadrilla: Mis OTs Asignadas</h2></div>
-          <p class="text-xs text-amber-100 mt-1">Gestione sus tareas asignadas, tiempos de ejecución y solicitudes a supervisión.</p>
+          <div class="flex items-center space-x-2"><span class="text-3xl">👷</span><h2 class="text-xl sm:text-2xl font-black tracking-tight">Panel de Terreno: Mis Trabajos Asignados</h2></div>
+          <p class="text-xs text-amber-100 mt-1">Selecciona una orden de trabajo para iniciar faena, registrar avances o solicitar materiales.</p>
         </div>
         <div class="flex items-center space-x-2 bg-white/10 p-2 rounded-2xl border border-white/20">
-          <input type="text" id="techQuickFolioInput" placeholder="Folio (ej: OT-INFRA-001-2026)" class="px-3 py-2 bg-white text-slate-800 rounded-xl text-xs font-mono font-black uppercase focus:outline-none w-48 sm:w-56" />
-          <button onclick="window.app.jumpToTechFolio()" class="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-black transition shadow">Abrir OT</button>
+          <input type="text" id="techQuickFolioInput" placeholder="OT-INFRA-001-2026" class="px-3 py-2 bg-white text-slate-800 rounded-xl text-xs font-mono font-black uppercase focus:outline-none w-44 sm:w-52" />
+          <button onclick="window.app.jumpToTechFolio()" class="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-black transition shadow">Abrir</button>
         </div>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="techKpiStatsContainer"></div>
       <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200 space-y-3">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <input type="text" id="techSearchInput" oninput="window.app.renderDashboardTecnico()" placeholder="🔍 Buscar en mis órdenes asignadas..." class="w-full sm:w-80 pl-4 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs sm:text-sm focus:ring-2 focus:ring-amber-500 focus:bg-white transition" />
+          <input type="text" id="techSearchInput" oninput="window.app.renderDashboardTecnico()" placeholder="🔍 Buscar por recinto o falla..." class="w-full sm:w-80 pl-4 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs sm:text-sm focus:ring-2 focus:ring-amber-500 focus:bg-white transition" />
           <div class="flex items-center gap-1.5 overflow-x-auto text-xs scrollbar-thin" id="techStatusFilterPills"></div>
         </div>
       </div>
       <div id="techOtCardsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
-      <div id="techEmptyState" class="hidden text-center py-16 bg-white rounded-3xl border-2 border-dashed border-slate-300"><span class="text-4xl block mb-2">📋</span><p class="text-sm font-bold text-slate-600">No tiene órdenes en esta sección.</p></div>
+      <div id="techEmptyState" class="hidden text-center py-16 bg-white rounded-3xl border-2 border-dashed border-slate-300"><span class="text-4xl block mb-2">📋</span><p class="text-sm font-bold text-slate-600">No tiene órdenes asignadas en esta sección.</p></div>
     </section>
 
-    <!-- VISTA 3: NUEVA OT -->
+    <!-- VISTA 3: NUEVA OT (SUPERVISOR) -->
     <section id="viewNewOT" class="hidden max-w-4xl mx-auto space-y-6">
       <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
         <div class="border-b border-slate-100 pb-4 mb-6 flex justify-between items-center">
@@ -200,21 +200,43 @@
       </div>
     </section>
 
-    <!-- VISTA 4: FICHA OPERATIVA -->
+    <!-- VISTA 4: FICHA OPERATIVA (REESTRUCTURADA) -->
     <section id="viewOperativeOT" class="hidden max-w-5xl mx-auto space-y-6">
-      <div class="bg-gradient-to-r from-slate-950 via-sky-950 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-xl border border-sky-700/40">
+      
+      <!-- CABECERA RESUMEN INTEGRADA (Título, Estado, Especialidad, SLA y Cuadrilla) -->
+      <div class="bg-gradient-to-r from-slate-950 via-sky-950 to-slate-900 rounded-3xl p-5 sm:p-7 text-white shadow-xl border border-sky-700/40 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div class="flex items-center space-x-2">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
               <span id="opOtNumber" class="text-2xl sm:text-4xl font-black font-mono text-sky-400">OT-INFRA-001-2026</span>
+              <span id="opStatusHeaderBadge" class="px-3.5 py-1 rounded-full text-xs font-black bg-sky-600 text-white shadow">En Ejecución</span>
               <span id="opPriorityBadge" class="px-3 py-1 rounded-full text-xs font-black shadow">Prioridad</span>
-              <span id="opSpecialtyBadge" class="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-800 text-sky-200">Especialidad</span>
             </div>
-            <p class="text-xs text-sky-200 mt-1">Subdirección de Operaciones e Infraestructura</p>
+            <div class="flex flex-wrap items-center gap-2 text-xs text-sky-200">
+              <span id="opSpecialtyHeader" class="font-bold text-teal-300">Infraestructura y Obras Civiles</span>
+              <span>•</span>
+              <span id="opSlaHeader">SLA: 24 Horas</span>
+            </div>
           </div>
           <div class="flex items-center space-x-2">
-            <button onclick="window.app.shareCurrentViaWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-2xl text-xs font-black transition shadow">💬 WhatsApp</button>
-            <button onclick="window.app.generatePDFFromCurrent()" class="bg-rose-700 hover:bg-rose-600 text-white px-3.5 py-2 rounded-2xl text-xs font-black transition shadow">📄 Ficha PDF</button>
+            <button onclick="window.app.shareCurrentViaWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2.5 rounded-2xl text-xs font-black transition shadow flex items-center space-x-1"><span>💬</span><span>WhatsApp</span></button>
+            <button onclick="window.app.generatePDFFromCurrent()" class="bg-rose-700 hover:bg-rose-600 text-white px-3.5 py-2.5 rounded-2xl text-xs font-black transition shadow flex items-center space-x-1"><span>📄</span><span>PDF</span></button>
+          </div>
+        </div>
+
+        <!-- Barra Resumen de Cuadrilla y Tiempos de Faena -->
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 border border-white/15 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div>
+            <span class="text-sky-300 font-bold uppercase text-[10px] block">👷 Encargado Asignado:</span>
+            <span id="opHeaderEncargado" class="font-bold text-white text-sm">Por definir en terreno</span>
+          </div>
+          <div>
+            <span class="text-sky-300 font-bold uppercase text-[10px] block">⏱️ Inicio Faena:</span>
+            <span id="opHeaderInicio" class="font-medium text-sky-100">No iniciado</span>
+          </div>
+          <div>
+            <span class="text-sky-300 font-bold uppercase text-[10px] block">🏁 Término Faena:</span>
+            <span id="opHeaderTermino" class="font-medium text-sky-100">Pendiente</span>
           </div>
         </div>
       </div>
@@ -229,36 +251,56 @@
         <div><h4 id="opLockTitle" class="font-black text-sm uppercase">Orden Bloqueada</h4><p id="opLockMsg" class="text-xs font-medium"></p></div>
       </div>
 
-      <!-- 1. Antecedentes Clínicos -->
+      <!-- 1. Antecedentes Clínicos del Requerimiento -->
       <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200 space-y-4">
-        <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase tracking-wide">1. Antecedentes Clínicos</h3>
+        <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase tracking-wide">1. Antecedentes del Recinto Clínico</h3>
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
-          <div class="bg-slate-50 p-3 rounded-2xl"><span class="text-slate-400 block uppercase font-bold text-[10px]">Recinto:</span><span id="opRecinto" class="font-black text-slate-800 text-sm"></span></div>
-          <div class="bg-slate-50 p-3 rounded-2xl"><span class="text-slate-400 block uppercase font-bold text-[10px]">Solicitante:</span><span id="opSolicitante" class="font-bold text-slate-800"></span></div>
-          <div class="bg-slate-50 p-3 rounded-2xl"><span class="text-slate-400 block uppercase font-bold text-[10px]">Ticket Ref:</span><span id="opTicket" class="font-bold text-slate-800 font-mono"></span></div>
-          <div class="bg-slate-50 p-3 rounded-2xl"><span class="text-slate-400 block uppercase font-bold text-[10px]">Activo:</span><span id="opActivo" class="font-bold text-slate-800"></span></div>
+          <div class="bg-slate-50 p-3.5 rounded-2xl"><span class="text-slate-400 block uppercase font-bold text-[10px]">Recinto / PMA:</span><span id="opRecinto" class="font-black text-slate-800 text-sm"></span></div>
+          <div class="bg-slate-50 p-3.5 rounded-2xl"><span class="text-slate-400 block uppercase font-bold text-[10px]">Solicitante:</span><span id="opSolicitante" class="font-bold text-slate-800"></span></div>
+          <div class="bg-slate-50 p-3.5 rounded-2xl"><span class="text-slate-400 block uppercase font-bold text-[10px]">Ticket Ref:</span><span id="opTicket" class="font-bold text-slate-800 font-mono"></span></div>
+          <div class="bg-slate-50 p-3.5 rounded-2xl"><span class="text-slate-400 block uppercase font-bold text-[10px]">Activo / Equipo:</span><span id="opActivo" class="font-bold text-slate-800"></span></div>
         </div>
         <div class="bg-sky-50/70 border border-sky-200 p-3.5 rounded-2xl text-xs text-slate-800">
-          <span class="text-[10px] font-bold text-sky-800 uppercase block mb-1">Descripción de la Falla:</span>
+          <span class="text-[10px] font-bold text-sky-800 uppercase block mb-1">Descripción de la Falla Reportada:</span>
           <p id="opDescripcion" class="leading-relaxed font-medium"></p>
         </div>
       </div>
 
-      <!-- 2. Control de Estados y Cuadrilla -->
+      <!-- 2. Registro de Tiempos y Cuadrilla de Terreno (Simplificado con 1 Toque) -->
       <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200 space-y-4">
-        <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase tracking-wide">2. Control de Estados y Cuadrilla</h3>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2" id="stageButtonGrid"></div>
-        <div class="text-xs">
-          <label class="block font-bold text-slate-700 uppercase mb-1">Encargado de Cuadrilla</label>
-          <input type="text" id="opEncargado" placeholder="Nombre del técnico responsable..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl disabled:bg-slate-100 font-medium" />
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase tracking-wide">2. Ejecución y Registro de Faena</h3>
+          <span class="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full font-bold">⚡ Acciones de 1 Toque</span>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-          <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-1.5"><span class="font-bold text-slate-700 uppercase">Hora Inicio:</span><input type="datetime-local" id="opFechaInicio" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs disabled:bg-slate-100" /></div>
-          <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-1.5"><span class="font-bold text-slate-700 uppercase">Hora Término:</span><input type="datetime-local" id="opFechaTermino" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs disabled:bg-slate-100" /></div>
-        </div>
+
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Observaciones / Contratiempos en Terreno:</label>
-          <textarea id="opContratiempos" rows="2" placeholder="Demoras, contingencias o detalles de la intervención..." class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-xs disabled:bg-slate-100"></textarea>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Encargado de Cuadrilla en Terreno *</label>
+          <input type="text" id="opEncargado" oninput="window.app.syncHeaderTeam()" placeholder="Nombre del técnico responsable de la intervención..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl disabled:bg-slate-100 font-medium text-xs sm:text-sm" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <!-- Control Inicio -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-700 uppercase text-[11px]">Inicio de Faena</span>
+              <button type="button" id="btnQuickStart" onclick="window.app.markCurrentTime('start')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[11px] font-black shadow transition">▶ Iniciar Ahora</button>
+            </div>
+            <input type="datetime-local" id="opFechaInicio" onchange="window.app.syncHeaderTeam()" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs disabled:bg-slate-100 font-semibold" />
+          </div>
+
+          <!-- Control Término -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-700 uppercase text-[11px]">Término de Faena</span>
+              <button type="button" id="btnQuickEnd" onclick="window.app.markCurrentTime('end')" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-[11px] font-black shadow transition">⏹ Marcar Término</button>
+            </div>
+            <input type="datetime-local" id="opFechaTermino" onchange="window.app.syncHeaderTeam()" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs disabled:bg-slate-100 font-semibold" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Observaciones / Detalles de la Intervención:</label>
+          <textarea id="opContratiempos" rows="2" placeholder="Describa el trabajo realizado o contratiempos surgidos..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs disabled:bg-slate-100 font-medium"></textarea>
         </div>
       </div>
 
@@ -337,26 +379,41 @@
     </div>
   </div>
 
-  <!-- MODAL LOGIN -->
+  <!-- MODAL LOGIN CON TECLADO NUMÉRICO TÁCTIL (KEYPAD) -->
   <div id="loginModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 space-y-6">
-      <div class="text-center space-y-2">
-        <div class="w-16 h-16 bg-gradient-to-tr from-sky-600 to-teal-500 text-white rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg">☁️</div>
-        <h3 class="text-2xl font-black text-slate-800">SGM-Hospital Cloud</h3>
-        <p class="text-xs text-slate-500">Seleccione su perfil de acceso</p>
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-slate-100 space-y-5">
+      <div class="text-center space-y-1.5">
+        <div class="w-14 h-14 bg-gradient-to-tr from-sky-600 to-teal-500 text-white rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg">☁️</div>
+        <h3 class="text-xl font-black text-slate-800">SGM-Hospital Cloud</h3>
+        <p class="text-xs text-slate-500">Seleccione su rol e ingrese su PIN</p>
       </div>
-      <div class="grid grid-cols-2 gap-3">
-        <button type="button" id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="p-3.5 rounded-2xl border-2 border-sky-600 bg-sky-50 text-sky-800 font-bold text-xs flex flex-col items-center space-y-1 shadow-sm"><span class="text-2xl">👨‍💼</span><span>Supervisor</span></button>
-        <button type="button" id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="p-3.5 rounded-2xl border-2 border-slate-200 bg-slate-50 text-slate-600 font-bold text-xs flex flex-col items-center space-y-1"><span class="text-2xl">👷</span><span>Técnico / Cuadrilla</span></button>
+      
+      <div class="grid grid-cols-2 gap-2.5">
+        <button type="button" id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="p-3 rounded-2xl border-2 border-sky-600 bg-sky-50 text-sky-800 font-bold text-xs flex flex-col items-center space-y-1 shadow-sm"><span class="text-xl">👨‍💼</span><span>Supervisor</span></button>
+        <button type="button" id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="p-3 rounded-2xl border-2 border-slate-200 bg-slate-50 text-slate-600 font-bold text-xs flex flex-col items-center space-y-1"><span class="text-xl">👷</span><span>Técnico / Cuadrilla</span></button>
       </div>
-      <div class="space-y-2">
-        <label id="pinInputLabel" class="block text-xs font-bold text-slate-700 uppercase tracking-wider text-center">Ingrese PIN de Supervisor (4 dígitos)</label>
-        <input type="password" id="pinInput" maxlength="4" placeholder="••••" class="w-full text-center tracking-[1em] text-2xl font-black py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:ring-2 focus:ring-sky-500 font-mono" />
+
+      <div class="space-y-1.5">
+        <label id="pinInputLabel" class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider text-center">PIN de Supervisor (4 dígitos)</label>
+        <input type="password" id="pinInput" readonly maxlength="4" placeholder="••••" class="w-full text-center tracking-[0.8em] text-2xl font-black py-2.5 bg-slate-100 border-2 border-slate-200 rounded-2xl text-slate-800 font-mono shadow-inner select-none" />
       </div>
-      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-[11px] text-slate-500 text-center space-y-1">
-        <div>🔑 <strong>Supervisor PIN:</strong> <code class="font-mono text-sky-700 font-bold">1234</code></div>
-        <div>🔑 <strong>Técnico PIN:</strong> <code class="font-mono text-amber-700 font-bold">5678</code></div>
+
+      <!-- TECLADO NUMÉRICO TÁCTIL EN PANTALLA -->
+      <div class="grid grid-cols-3 gap-2 pt-1">
+        <button type="button" onclick="window.app.keypadPress('1')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">1</button>
+        <button type="button" onclick="window.app.keypadPress('2')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">2</button>
+        <button type="button" onclick="window.app.keypadPress('3')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">3</button>
+        <button type="button" onclick="window.app.keypadPress('4')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">4</button>
+        <button type="button" onclick="window.app.keypadPress('5')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">5</button>
+        <button type="button" onclick="window.app.keypadPress('6')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">6</button>
+        <button type="button" onclick="window.app.keypadPress('7')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">7</button>
+        <button type="button" onclick="window.app.keypadPress('8')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">8</button>
+        <button type="button" onclick="window.app.keypadPress('9')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">9</button>
+        <button type="button" onclick="window.app.keypadClear()" class="py-3 bg-rose-50 hover:bg-rose-100 active:bg-rose-200 border border-rose-200 rounded-2xl text-xs font-black text-rose-700 shadow-sm transition">C</button>
+        <button type="button" onclick="window.app.keypadPress('0')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-2xl text-lg font-black text-slate-800 shadow-sm transition">0</button>
+        <button type="button" onclick="window.app.keypadDelete()" class="py-3 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 border border-slate-200 rounded-2xl text-sm font-black text-slate-700 shadow-sm transition">⌫</button>
       </div>
+
       <button type="button" onclick="window.app.verifyAndLogin()" class="w-full py-3.5 bg-gradient-to-r from-sky-700 to-teal-700 hover:from-sky-600 hover:to-teal-600 text-white font-black text-sm rounded-2xl shadow-xl transition active:scale-95">Ingresar al Sistema</button>
     </div>
   </div>
@@ -432,14 +489,22 @@
       });
     };
 
-    const SUPERVISOR_PIN = '1234';
-    const TECNICO_PIN = '5678';
+    const DEFAULT_SUPERVISOR_PIN = '1234';
+    const DEFAULT_TECNICO_PIN = '5678';
+    const PINS_CONFIG_ID = 'system-pins-config';
     
     // Generador de folio único configurable: OT-INFRA-NUMERO-AÑO
     const generateOtFolio = (count) => {
       const year = new Date().getFullYear();
       const numStr = String(count + 1).padStart(3, '0');
       return `OT-INFRA-${numStr}-${year}`;
+    };
+
+    const getSlaHours = (prio) => {
+      if (prio === 'Urgente') return 'SLA: 2 Horas (Crítico)';
+      if (prio === 'Alta') return 'SLA: 6 Horas';
+      if (prio === 'Media') return 'SLA: 24 Horas';
+      return 'SLA: 72 Horas';
     };
 
     // CREDENCIALES CONFIGURADAS DE SUPABASE
@@ -458,10 +523,33 @@
         this.hasSigTech = false;
         this.hasSigReceiver = false;
         this.managingOrderId = null;
+        this.supervisorPin = DEFAULT_SUPERVISOR_PIN;
+        this.tecnicoPin = DEFAULT_TECNICO_PIN;
         
         this.initCanvas();
         this.listenToOrders();
+        this.loadSystemPins();
         this.checkAuthAndRoute();
+      }
+
+      // Keypad del Login
+      keypadPress(num) {
+        const input = document.getElementById('pinInput');
+        if (input.value.length < 4) {
+          input.value += num;
+          if (input.value.length === 4) {
+            setTimeout(() => this.verifyAndLogin(), 150);
+          }
+        }
+      }
+
+      keypadDelete() {
+        const input = document.getElementById('pinInput');
+        input.value = input.value.slice(0, -1);
+      }
+
+      keypadClear() {
+        document.getElementById('pinInput').value = '';
       }
 
       async listenToOrders() {
@@ -482,10 +570,17 @@
 
       async fetchOrdersFromSupabase() {
         try {
-          const { data, error } = await supabase.from('orders').select('data');
+          const { data, error } = await supabase.from('orders').select('id, data');
           if (error) throw error;
           if (data) {
-            this.orders = data.map(r => r.data);
+            // Filtrar y separar la configuración de PINs de las órdenes de trabajo
+            const pinDoc = data.find(r => r.id === PINS_CONFIG_ID);
+            if (pinDoc && pinDoc.data) {
+              this.supervisorPin = pinDoc.data.supervisorPin || DEFAULT_SUPERVISOR_PIN;
+              this.tecnicoPin = pinDoc.data.tecnicoPin || DEFAULT_TECNICO_PIN;
+            }
+
+            this.orders = data.filter(r => r.id !== PINS_CONFIG_ID).map(r => r.data);
             this.orders.sort((a,b) => new Date(b.fecha_solicitud) - new Date(a.fecha_solicitud));
             
             if(this.currentRole === 'supervisor' && !document.getElementById('viewDashboardSupervisor').classList.contains('hidden')) {
@@ -507,6 +602,77 @@
         }
       }
 
+      async loadSystemPins() {
+        try {
+          const { data } = await supabase.from('orders').select('data').eq('id', PINS_CONFIG_ID).single();
+          if (data && data.data) {
+            this.supervisorPin = data.data.supervisorPin || DEFAULT_SUPERVISOR_PIN;
+            this.tecnicoPin = data.data.tecnicoPin || DEFAULT_TECNICO_PIN;
+          }
+        } catch (e) {
+          // Utiliza valores por defecto si aún no se han configurado
+        }
+      }
+
+      openChangePinModal() {
+        document.getElementById('changePinCurrentSupervisor').value = '';
+        document.getElementById('changePinNew').value = '';
+        document.getElementById('changePinConfirm').value = '';
+        document.getElementById('changePinModal').classList.remove('hidden');
+      }
+
+      closeChangePinModal() {
+        document.getElementById('changePinModal').classList.add('hidden');
+      }
+
+      async saveNewPins() {
+        const targetRole = document.getElementById('changePinTargetRole').value;
+        const currentSupPin = document.getElementById('changePinCurrentSupervisor').value.trim();
+        const newPin = document.getElementById('changePinNew').value.trim();
+        const confirmPin = document.getElementById('changePinConfirm').value.trim();
+
+        if (currentSupPin !== this.supervisorPin) {
+          return showModal({ title: 'Autorización Denegada', message: 'El PIN actual de Supervisor es incorrecto.', type: 'error', icon: '❌' });
+        }
+
+        if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
+          return showModal({ title: 'Formato Inválido', message: 'El nuevo PIN debe contener exactamente 4 dígitos numéricos.', type: 'error', icon: '⚠️' });
+        }
+
+        if (newPin !== confirmPin) {
+          return showModal({ title: 'PIN no coincide', message: 'La confirmación del nuevo PIN no coincide.', type: 'error', icon: '⚠️' });
+        }
+
+        if (targetRole === 'supervisor') {
+          this.supervisorPin = newPin;
+        } else {
+          this.tecnicoPin = newPin;
+        }
+
+        try {
+          const { error } = await supabase.from('orders').upsert({
+            id: PINS_CONFIG_ID,
+            data: {
+              supervisorPin: this.supervisorPin,
+              tecnicoPin: this.tecnicoPin,
+              updatedAt: new Date().toISOString()
+            }
+          });
+          if (error) throw error;
+
+          this.closeChangePinModal();
+          showModal({
+            title: 'Clave Actualizada',
+            message: `El PIN para ${targetRole === 'supervisor' ? 'Supervisor' : 'Técnico / Cuadrilla'} ha sido actualizado y sincronizado en la nube.`,
+            type: 'success',
+            icon: '✅'
+          });
+        } catch (e) {
+          console.error("Error al guardar PIN:", e);
+          showModal({ title: 'Error', message: 'No se pudo sincronizar la nueva clave en la nube.', type: 'error', icon: '❌' });
+        }
+      }
+
       async saveOrderToCloud(otData) {
         try {
           const { error } = await supabase
@@ -521,24 +687,25 @@
 
       promptLoginModal(forcedRole = null) {
         if (forcedRole) this.selectAuthRole(forcedRole);
-        document.getElementById('pinInput').value = '';
+        this.keypadClear();
         document.getElementById('loginModal').classList.remove('hidden');
       }
 
       selectAuthRole(role) {
         this.selectedAuthRole = role;
+        this.keypadClear();
         const btnSup = document.getElementById('roleBtnSupervisor');
         const btnTec = document.getElementById('roleBtnTecnico');
         const label = document.getElementById('pinInputLabel');
 
         if (role === 'supervisor') {
-          btnSup.className = 'p-3.5 rounded-2xl border-2 border-sky-600 bg-sky-50 text-sky-800 font-bold text-xs flex flex-col items-center space-y-1 shadow-sm';
-          btnTec.className = 'p-3.5 rounded-2xl border-2 border-slate-200 bg-slate-50 text-slate-600 font-bold text-xs flex flex-col items-center space-y-1';
-          label.innerText = 'Ingrese PIN de Supervisor (4 dígitos)';
+          btnSup.className = 'p-3 rounded-2xl border-2 border-sky-600 bg-sky-50 text-sky-800 font-bold text-xs flex flex-col items-center space-y-1 shadow-sm';
+          btnTec.className = 'p-3 rounded-2xl border-2 border-slate-200 bg-slate-50 text-slate-600 font-bold text-xs flex flex-col items-center space-y-1';
+          label.innerText = 'PIN de Supervisor (4 dígitos)';
         } else {
-          btnTec.className = 'p-3.5 rounded-2xl border-2 border-amber-600 bg-amber-50 text-amber-800 font-bold text-xs flex flex-col items-center space-y-1 shadow-sm';
-          btnSup.className = 'p-3.5 rounded-2xl border-2 border-slate-200 bg-slate-50 text-slate-600 font-bold text-xs flex flex-col items-center space-y-1';
-          label.innerText = 'Ingrese PIN de Técnico / Cuadrilla (4 dígitos)';
+          btnTec.className = 'p-3 rounded-2xl border-2 border-amber-600 bg-amber-50 text-amber-800 font-bold text-xs flex flex-col items-center space-y-1 shadow-sm';
+          btnSup.className = 'p-3 rounded-2xl border-2 border-slate-200 bg-slate-50 text-slate-600 font-bold text-xs flex flex-col items-center space-y-1';
+          label.innerText = 'PIN de Técnico / Cuadrilla (4 dígitos)';
         }
       }
 
@@ -546,7 +713,7 @@
         const pin = document.getElementById('pinInput').value.trim();
 
         if (this.selectedAuthRole === 'supervisor') {
-          if (pin === SUPERVISOR_PIN) {
+          if (pin === this.supervisorPin) {
             this.currentRole = 'supervisor';
             sessionStorage.setItem('sgm_role', 'supervisor');
             document.getElementById('loginModal').classList.add('hidden');
@@ -554,9 +721,10 @@
             this.navigate('dashboard_supervisor');
           } else {
             showModal({title: 'Acceso Denegado', message: 'PIN de Supervisor incorrecto.', type: 'error', icon: '❌'});
+            this.keypadClear();
           }
         } else if (this.selectedAuthRole === 'tecnico') {
-          if (pin === TECNICO_PIN) {
+          if (pin === this.tecnicoPin) {
             this.currentRole = 'tecnico';
             sessionStorage.setItem('sgm_role', 'tecnico');
             document.getElementById('loginModal').classList.add('hidden');
@@ -564,6 +732,7 @@
             this.navigate('dashboard_tecnico');
           } else {
             showModal({title: 'Acceso Denegado', message: 'PIN de Técnico incorrecto.', type: 'error', icon: '❌'});
+            this.keypadClear();
           }
         }
       }
@@ -593,13 +762,13 @@
         if (isSup) {
           badge.innerText = '👨‍💼 Supervisor';
           badge.className = 'text-xs font-bold px-2.5 py-0.5 bg-sky-700 rounded-full text-white uppercase tracking-wider shadow-sm border border-sky-400/40';
-          btnLabel.innerText = '👨‍💼 Cambiar a Técnico';
+          btnLabel.innerText = '👨‍💼 Supervisor';
           supNav.classList.remove('hidden');
           tecNav.classList.add('hidden');
         } else if (this.currentRole === 'tecnico') {
           badge.innerText = '👷 Cuadrilla / Técnico';
           badge.className = 'text-xs font-bold px-2.5 py-0.5 bg-amber-600 rounded-full text-white uppercase tracking-wider shadow-sm border border-amber-300/40';
-          btnLabel.innerText = '👷 Cambiar a Supervisor';
+          btnLabel.innerText = '👷 Técnico';
           supNav.classList.add('hidden');
           tecNav.classList.remove('hidden');
         }
@@ -668,7 +837,7 @@
             <div class="bg-white p-3.5 rounded-2xl border border-slate-200 cursor-pointer hover:border-amber-500 shadow-sm" onclick="window.app.filterBy('Espera de Materiales')"><span class="text-[10px] text-amber-700 block font-bold uppercase tracking-wider">📦 ESP. MATERIAL</span><span class="text-2xl font-black text-amber-600">${espera}</span></div>
             <div class="bg-white p-3.5 rounded-2xl border border-slate-200 cursor-pointer hover:border-teal-500 shadow-sm" onclick="window.app.filterBy('Solicitud de Cierre')"><span class="text-[10px] text-teal-700 block font-bold uppercase tracking-wider">⚡ SOLIC. CIERRE</span><span class="text-2xl font-black text-teal-700">${solCierre}</span></div>
             <div class="bg-white p-3.5 rounded-2xl border border-slate-200 cursor-pointer hover:border-emerald-500 shadow-sm" onclick="window.app.filterBy('Terminada')"><span class="text-[10px] text-emerald-700 block font-bold uppercase tracking-wider">✓ TERMINADAS</span><span class="text-2xl font-black text-emerald-600">${term}</span></div>
-            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 cursor-pointer hover:border-slate-400 shadow-sm" onclick="window.app.filterBy('ALL')"><span class="text-[10px] text-slate-500 block font-bold uppercase tracking-wider">📁 TOTAL HISTÓRICO</span><span class="text-2xl font-black text-slate-800">${total}</span></div>
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 cursor-pointer hover:border-slate-400 shadow-sm" onclick="window.app.filterBy('ALL')"><span class="text-[10px] text-slate-500 block font-bold uppercase tracking-wider">📁 TOTAL</span><span class="text-2xl font-black text-slate-800">${total}</span></div>
           `;
         }
 
@@ -946,7 +1115,7 @@
 
           kpi.innerHTML = `
             <div class="bg-white p-3.5 rounded-2xl border-2 ${this.techStatusFilter==='ALL_ACTIVE'?'border-amber-500 bg-amber-50/20':'border-slate-200'} cursor-pointer shadow-sm" onclick="window.app.setTechStatusFilter('ALL_ACTIVE')"><span class="text-[10px] text-amber-700 font-bold uppercase block tracking-wider">🛠️ Activas</span><span class="text-2xl font-black text-slate-800">${actives}</span></div>
-            <div class="bg-white p-3.5 rounded-2xl border-2 ${this.techStatusFilter==='PENDING_APPROVAL'?'border-teal-500 bg-teal-50/20':'border-slate-200'} cursor-pointer shadow-sm" onclick="window.app.setTechStatusFilter('PENDING_APPROVAL')"><span class="text-[10px] text-teal-700 font-bold uppercase block tracking-wider">⏳ En Espera</span><span class="text-2xl font-black text-slate-800">${pendingApproval}</span></div>
+            <div class="bg-white p-3.5 rounded-2xl border-2 ${this.techStatusFilter==='PENDING_APPROVAL'?'border-teal-500 bg-teal-50/20':'border-slate-200'} cursor-pointer shadow-sm" onclick="window.app.setTechStatusFilter('PENDING_APPROVAL')"><span class="text-[10px] text-teal-700 font-bold uppercase block tracking-wider">⏳ En Cierre</span><span class="text-2xl font-black text-slate-800">${pendingApproval}</span></div>
             <div class="bg-white p-3.5 rounded-2xl border-2 ${this.techStatusFilter==='TERMINATED'?'border-emerald-500 bg-emerald-50/20':'border-slate-200'} cursor-pointer shadow-sm" onclick="window.app.setTechStatusFilter('TERMINATED')"><span class="text-[10px] text-emerald-700 font-bold uppercase block tracking-wider">📜 Terminadas</span><span class="text-2xl font-black text-slate-800">${history}</span></div>
             <div class="bg-white p-3.5 rounded-2xl border-2 ${this.techStatusFilter==='ALL'?'border-sky-500 bg-sky-50/20':'border-slate-200'} cursor-pointer shadow-sm" onclick="window.app.setTechStatusFilter('ALL')"><span class="text-[10px] text-slate-500 font-bold uppercase block tracking-wider">📁 Total</span><span class="text-2xl font-black text-slate-800">${all}</span></div>
           `;
@@ -980,22 +1149,29 @@
         listContainer.innerHTML = filtered.map(ot => {
           const isLocked = ot.estado === 'Solicitud de Cierre' || ot.estado === 'Terminada';
           const hasSupervisorNotes = ot.notas_supervisor && ot.notas_supervisor.trim().length > 0;
+          const slaText = getSlaHours(ot.prioridad);
 
           return `
-            <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 hover:shadow-md transition space-y-3 flex flex-col justify-between">
-              <div class="space-y-2">
+            <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 hover:shadow-md transition space-y-3.5 flex flex-col justify-between">
+              <div class="space-y-2.5">
                 <div class="flex justify-between items-center">
                   <span class="font-mono font-black text-slate-900 text-lg">${esc(ot.numero_ot)}</span>
                   <span class="text-xs px-3 py-1 rounded-full font-bold ${ot.estado === 'Terminada' ? 'bg-emerald-100 text-emerald-800' : ot.estado === 'Solicitud de Cierre' ? 'bg-teal-100 text-teal-800 border border-teal-300' : ot.estado === 'En Ejecución' ? 'bg-sky-100 text-sky-800' : 'bg-slate-100 text-slate-700'}">${esc(ot.estado)}</span>
                 </div>
-                <div><span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">${esc(ot.especialidad) || 'Mantenimiento'}</span><h4 class="font-black text-slate-800 text-base">📍 ${esc(ot.recinto_pma)}</h4></div>
-                <div class="text-xs text-slate-500">Prioridad: <strong class="${ot.prioridad==='Urgente'?'text-rose-600 font-black':'text-slate-700'}">${esc(ot.prioridad)}</strong> • Ref: ${esc(ot.ticket_referencia)}</div>
-                <p class="text-xs text-slate-600 line-clamp-2 bg-slate-50 p-2.5 rounded-xl font-medium">${esc(ot.descripcion_problema)}</p>
+                <div>
+                  <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">${esc(ot.especialidad) || 'Mantenimiento'}</span>
+                  <h4 class="font-black text-slate-800 text-base">📍 ${esc(ot.recinto_pma)}</h4>
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-500 bg-slate-50 p-2.5 rounded-xl">
+                  <div>Prioridad: <strong class="${ot.prioridad==='Urgente'?'text-rose-600 font-black':'text-slate-700'}">${esc(ot.prioridad)}</strong></div>
+                  <div class="font-bold text-sky-800">${slaText}</div>
+                </div>
+                <p class="text-xs text-slate-600 line-clamp-2 bg-slate-50/70 p-2 rounded-xl font-medium">${esc(ot.descripcion_problema)}</p>
                 ${hasSupervisorNotes ? `<div class="bg-sky-50 border border-sky-200 p-2.5 rounded-xl text-[11px] text-sky-950 font-medium"><strong>👨‍💼 Instrucción:</strong> ${esc(ot.notas_supervisor)}</div>` : ''}
               </div>
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                 <button onclick="window.app.downloadPDF('${ot.id}')" class="px-3.5 py-2.5 bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 rounded-2xl text-xs font-bold">📄 PDF</button>
-                <button onclick="window.app.openOrderById('${ot.id}')" class="flex-1 py-2.5 px-4 ${isLocked ? 'bg-slate-800 text-white' : 'bg-amber-600 hover:bg-amber-500 text-white'} rounded-2xl text-xs font-black shadow transition text-center">${isLocked ? '👁️ Ver Ficha' : '🛠️ Trabajar en esta OT'}</button>
+                <button onclick="window.app.openOrderById('${ot.id}')" class="flex-1 py-2.5 px-4 ${isLocked ? 'bg-slate-800 text-white' : 'bg-amber-600 hover:bg-amber-500 text-white'} rounded-2xl text-xs font-black shadow transition text-center">${isLocked ? '👁️ Ver Ficha' : '🛠️ Abrir Intervención'}</button>
               </div>
             </div>
           `;
@@ -1007,6 +1183,38 @@
         this.renderDashboardTecnico();
       }
 
+      syncHeaderTeam() {
+        const enc = document.getElementById('opEncargado')?.value.trim();
+        const ini = document.getElementById('opFechaInicio')?.value;
+        const ter = document.getElementById('opFechaTermino')?.value;
+
+        document.getElementById('opHeaderEncargado').innerText = enc || 'Por definir en terreno';
+        document.getElementById('opHeaderInicio').innerText = ini ? ini.replace('T', ' ') : 'No iniciado';
+        document.getElementById('opHeaderTermino').innerText = ter ? ter.replace('T', ' ') : 'Pendiente';
+      }
+
+      markCurrentTime(type) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const formatted = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+        if (type === 'start') {
+          document.getElementById('opFechaInicio').value = formatted;
+          if (this.currentOrder && this.currentOrder.estado === 'Pendiente') {
+            this.currentOrder.estado = 'En Ejecución';
+            document.getElementById('opStatusHeaderBadge').innerText = 'En Ejecución';
+          }
+        } else if (type === 'end') {
+          document.getElementById('opFechaTermino').value = formatted;
+        }
+
+        this.syncHeaderTeam();
+      }
+
       populateOperativeView(ot) {
         document.getElementById('opOtNumber').innerText = ot.numero_ot;
         document.getElementById('opRecinto').innerText = ot.recinto_pma;
@@ -1014,12 +1222,25 @@
         document.getElementById('opTicket').innerText = ot.ticket_referencia;
         document.getElementById('opActivo').innerText = ot.activo_fijo || 'N/A';
         document.getElementById('opDescripcion').innerText = ot.descripcion_problema;
-        document.getElementById('opSpecialtyBadge').innerText = ot.especialidad || 'Infraestructura';
+        
+        document.getElementById('opSpecialtyHeader').innerText = ot.especialidad || 'Infraestructura y Mantenimiento';
+        document.getElementById('opSlaHeader').innerText = getSlaHours(ot.prioridad);
+
+        const statusBadge = document.getElementById('opStatusHeaderBadge');
+        statusBadge.innerText = ot.estado;
+        statusBadge.className = 'px-3.5 py-1 rounded-full text-xs font-black shadow ' + (
+          ot.estado === 'Terminada' ? 'bg-emerald-600 text-white' :
+          ot.estado === 'Solicitud de Cierre' ? 'bg-teal-600 text-white' :
+          ot.estado === 'Espera de Materiales' ? 'bg-amber-600 text-white' : 'bg-sky-600 text-white'
+        );
+
         document.getElementById('opEncargado').value = ot.encargado_cuadrilla || '';
         document.getElementById('opFechaInicio').value = ot.fecha_inicio || '';
         document.getElementById('opFechaTermino').value = ot.fecha_termino || '';
         document.getElementById('opContratiempos').value = ot.contratiempos || '';
         document.getElementById('opReceiverName').value = ot.nombre_recepcion || '';
+
+        this.syncHeaderTeam();
 
         const pb = document.getElementById('opPriorityBadge');
         pb.innerText = ot.prioridad;
@@ -1053,17 +1274,17 @@
             lockBanner.className = 'rounded-3xl p-4 sm:p-5 border-2 bg-amber-50 border-amber-300 text-amber-950 flex items-center space-x-3.5 shadow-sm';
             lockIcon.innerText = '⏳';
             lockTitle.innerText = 'ORDEN BLOQUEADA: Cierre Solicitado en Revisión';
-            lockMsg.innerText = 'Se han registrado firmas y solicitado el cierre formal.';
+            lockMsg.innerText = 'Se han registrado firmas y solicitado el cierre formal a la jefatura.';
           } else if (estado === 'Terminada') {
             lockBanner.className = 'rounded-3xl p-4 sm:p-5 border-2 bg-emerald-50 border-emerald-300 text-emerald-950 flex items-center space-x-3.5 shadow-sm';
             lockIcon.innerText = '🔒';
             lockTitle.innerText = 'ORDEN TERMINADA Y ARCHIVADA';
-            lockMsg.innerText = 'Esta Orden de Trabajo ha sido cerrada formalmente.';
+            lockMsg.innerText = 'Esta Orden de Trabajo ha sido aprobada y cerrada formalmente.';
           } else if (this.currentRole === 'supervisor') {
             lockBanner.className = 'rounded-3xl p-4 sm:p-5 border-2 bg-sky-50 border-sky-300 text-sky-950 flex items-center space-x-3.5 shadow-sm';
             lockIcon.innerText = '👨‍💼';
             lockTitle.innerText = 'MODO SUPERVISOR: Visualización de Orden';
-            lockMsg.innerText = 'Utilice "Gestionar Solicitudes" para despachos o instrucciones.';
+            lockMsg.innerText = 'Utilice el botón de despacho en el panel para modificar estados o emitir notas.';
           }
         } else {
           lockBanner.classList.add('hidden');
@@ -1076,35 +1297,13 @@
         });
 
         const hideOperativeButtons = isLocked || this.currentRole === 'supervisor';
+        document.getElementById('btnQuickStart')?.classList.toggle('hidden', hideOperativeButtons);
+        document.getElementById('btnQuickEnd')?.classList.toggle('hidden', hideOperativeButtons);
         document.getElementById('technicianToSupervisorPanel')?.classList.toggle('hidden', hideOperativeButtons);
         document.getElementById('btnClearSigTech')?.classList.toggle('hidden', hideOperativeButtons);
         document.getElementById('btnClearSigReceiver')?.classList.toggle('hidden', hideOperativeButtons);
         document.getElementById('btnSaveProgress')?.classList.toggle('hidden', hideOperativeButtons);
         document.getElementById('btnRequestClosure')?.classList.toggle('hidden', hideOperativeButtons);
-
-        this.renderStageButtons(estado, isLocked);
-      }
-
-      renderStageButtons(current, isLocked = false) {
-        const stages = ['Inspección', 'Espera de Materiales', 'En Ejecución', 'Con Problemas', 'Solicitud de Cierre', 'Terminada'];
-        const grid = document.getElementById('stageButtonGrid');
-        
-        grid.innerHTML = stages.map(st => {
-          const isSelected = st === current;
-          return `
-            <button type="button" ${isLocked ? 'disabled' : `onclick="window.app.setOrderStage('${st}')"`} class="p-2.5 rounded-2xl text-xs font-bold transition ${isSelected ? 'bg-sky-700 text-white shadow-md' : isLocked ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">${st}</button>
-          `;
-        }).join('');
-      }
-
-      async setOrderStage(st) {
-        if (!this.currentOrder) return;
-        if (this.currentRole !== 'tecnico') return showModal({title: 'Restringido', message:'Solo el Técnico cambia etapas.', type: 'error'});
-        if (this.currentOrder.estado === 'Solicitud de Cierre' || this.currentOrder.estado === 'Terminada') return;
-
-        this.currentOrder.estado = st;
-        await this.saveOperativeProgress(true);
-        this.renderStageButtons(st, false);
       }
 
       async sendRequestToSupervisor() {
@@ -1132,16 +1331,6 @@
         document.getElementById('techReqMsg').value = '';
         showModal({title: 'Enviado', message: 'Requerimiento enviado a Supervisión.', type: 'success', icon: '📨'});
         this.populateOperativeView(this.currentOrder);
-      }
-
-      setNowToInput(id) {
-        const d = new Date();
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        const hours = String(d.getHours()).padStart(2, '0');
-        const minutes = String(d.getMinutes()).padStart(2, '0');
-        document.getElementById(id).value = `${year}-${month}-${day}T${hours}:${minutes}`;
       }
 
       async handleCreateOT(e) {
@@ -1300,6 +1489,7 @@
           this.currentOrder.firma_digital_recepcion = document.getElementById('sigCanvasReceiver').toDataURL('image/jpeg', 0.5);
         }
 
+        this.syncHeaderTeam();
         await this.saveOrderToCloud(this.currentOrder);
         if (!silent) showModal({title: 'Guardado', message: 'Avance sincronizado con la nube exitosamente.', type: 'success', icon: '💾'});
       }
@@ -1315,7 +1505,7 @@
         const confirmClosure = await showModal({title: 'Solicitar Cierre', message: '¿Desea enviar la SOLICITUD DE CIERRE FORMAL? La orden se bloqueará para revisión.', type: 'confirm', icon: '🔒'});
         if (!confirmClosure) return;
 
-        if (!document.getElementById('opFechaTermino').value) this.setNowToInput('opFechaTermino');
+        if (!document.getElementById('opFechaTermino').value) this.markCurrentTime('end');
         
         this.currentOrder.estado = "Solicitud de Cierre";
         await this.saveOperativeProgress(true);
