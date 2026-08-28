@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SGM-Hospital Cloud | Gestión de OTs</title>
+  <title>SGM-Hospital Cloud | Sistema de Gestión de OTs</title>
   <meta name="theme-color" content="#0284c7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,14 +22,9 @@
           },
           colors: {
             hospital: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              800: '#075985',
-              900: '#0c4a6e',
-              950: '#082f49'
+              50: '#f0f9ff', 100: '#e0f2fe', 500: '#0ea5e9',
+              600: '#0284c7', 700: '#0369a1', 800: '#075985',
+              900: '#0c4a6e', 950: '#082f49'
             }
           }
         }
@@ -39,18 +34,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * { -webkit-tap-highlight-color: transparent; }
-    .touch-none { touch-action: none; }
     .scrollbar-none::-webkit-scrollbar { display: none; }
     .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     .canvas-sig { cursor: crosshair; touch-action: none; }
-    
-    .safe-top { padding-top: env(safe-area-inset-top, 0px); }
     .safe-bottom { padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px)); }
   </style>
 </head>
 <body class="h-full flex flex-col font-sans text-slate-800 bg-slate-100 antialiased safe-bottom select-none sm:select-auto">
 
-  <!-- HEADER MODERNO Y LIMPIO (TODO AGRUPADO EN UN SOLO MENÚ DESPLEGABLE) -->
+  <!-- HEADER UNIFICADO CON MENÚ DESPLEGABLE -->
   <header class="sticky top-0 z-40 bg-slate-900 text-white border-b border-slate-800 shadow-md">
     <div class="max-w-7xl mx-auto px-3 sm:px-6">
       <div class="flex items-center justify-between h-14 sm:h-16 relative">
@@ -69,7 +61,7 @@
           </div>
         </div>
 
-        <!-- UN SOLO BOTÓN DE ACCIÓN / MENÚ DESPLEGABLE -->
+        <!-- BOTÓN DE MENÚ UNIFICADO -->
         <div class="relative">
           <button id="mainMenuBtn" onclick="window.app.toggleMainMenu()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-extrabold text-xs sm:text-sm border border-slate-700 active:scale-95 transition flex items-center space-x-1.5 shadow">
             <span class="text-base">☰</span>
@@ -77,10 +69,8 @@
             <span id="headerAlertBadge" class="hidden w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
           </button>
 
-          <!-- DROPDOWN FLOTANTE COMPACTO Y COMPLETO -->
+          <!-- DROPDOWN DE ACCIONES Y AJUSTES -->
           <div id="mainDropdownMenu" class="hidden absolute right-0 mt-2 w-56 sm:w-64 bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl py-1.5 z-50 backdrop-blur-xl divide-y divide-slate-800 text-xs">
-            
-            <!-- Acciones Supervisor -->
             <div id="dropdownSupervisorSection" class="py-1">
               <button onclick="window.app.navigate('dashboard_supervisor'); window.app.closeMainMenu();" class="w-full px-3.5 py-2 text-left text-slate-200 hover:bg-slate-800 hover:text-white flex items-center space-x-2.5 font-bold transition">
                 <span class="text-base">📊</span>
@@ -99,7 +89,6 @@
               </button>
             </div>
 
-            <!-- Acciones Técnico -->
             <div id="dropdownTechnicianSection" class="py-1 hidden">
               <button onclick="window.app.navigate('dashboard_tecnico'); window.app.closeMainMenu();" class="w-full px-3.5 py-2 text-left text-amber-400 hover:bg-slate-800 hover:text-amber-300 flex items-center space-x-2.5 font-black transition">
                 <span class="text-base">👷</span>
@@ -107,7 +96,6 @@
               </button>
             </div>
 
-            <!-- Ajustes y Cambio de Rol -->
             <div class="py-1">
               <button onclick="window.app.openSettingsModal(); window.app.closeMainMenu();" class="w-full px-3.5 py-2 text-left text-slate-300 hover:bg-slate-800 hover:text-white flex items-center space-x-2.5 font-bold transition">
                 <span class="text-base">⚙️</span>
@@ -118,7 +106,6 @@
                 <span id="menuChangeRoleLabel">Cambiar Rol / PIN</span>
               </button>
             </div>
-
           </div>
         </div>
 
@@ -129,15 +116,11 @@
   <!-- CONTENIDO PRINCIPAL -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 space-y-4" onclick="window.app && window.app.closeMainMenu()">
     
-    <!-- ========================================================================= -->
-    <!-- VISTA 1: DASHBOARD SUPERVISOR                                            -->
-    <!-- ========================================================================= -->
+    <!-- VISTA 1: DASHBOARD SUPERVISOR -->
     <section id="viewDashboardSupervisor" class="space-y-3.5 sm:space-y-5">
       
-      <!-- KPIs CARRUSEL (SIN ESPERA DE MATERIALES) -->
-      <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-3 overflow-x-auto pb-1 scrollbar-none" id="kpiStatsContainer">
-        <!-- Renderizado dinámico -->
-      </div>
+      <!-- KPIs CARRUSEL -->
+      <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-3 overflow-x-auto pb-1 scrollbar-none" id="kpiStatsContainer"></div>
       
       <!-- BANDEJA DE TERRENO (ALERTAS & SOLICITUDES) -->
       <div id="supervisorAlertsInbox" class="bg-amber-50 border-2 border-amber-300 rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm space-y-2">
@@ -154,38 +137,11 @@
         <div id="pendingRequestsListContainer" class="space-y-1.5"></div>
       </div>
 
-      <!-- FILTROS Y BÚSQUEDA INTUITIVA -->
+      <!-- FILTROS Y BÚSQUEDA SIMPLIFICADOS -->
       <div class="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-slate-200 space-y-2.5">
         <div class="relative">
           <input type="text" id="searchInput" oninput="window.app.renderDashboardSupervisor()" placeholder="🔍 Buscar por Folio, Recinto o Solicitante..." class="w-full pl-3.5 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-sky-500 focus:bg-white transition" />
         </div>
-        
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          <select id="specialtyFilter" onchange="window.app.renderDashboardSupervisor()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-700">
-            <option value="ALL">🛠️ Especialidad (Todas)</option>
-            <option value="Infraestructura y Obras Civiles">Infraestructura</option>
-            <option value="Gasfitería y Redes Sanitarias">Gasfitería</option>
-            <option value="Electricidad y Climatización">Electricidad</option>
-            <option value="Cerrajería y Puertas Clínicas">Cerrajería</option>
-            <option value="Gases Clínicos y Equipamiento">Gases Clínicos</option>
-          </select>
-
-          <select id="priorityFilter" onchange="window.app.renderDashboardSupervisor()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-700">
-            <option value="ALL">Prioridad (Todas)</option>
-            <option value="Urgente">🚨 Urgente</option>
-            <option value="Alta">🟠 Alta</option>
-            <option value="Media">🟡 Media</option>
-            <option value="Baja">🟢 Baja</option>
-          </select>
-
-          <select id="scopeFilter" onchange="window.app.renderDashboardSupervisor()" class="col-span-2 sm:col-span-1 w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-black text-sky-900">
-            <option value="ACTIVE" selected>⏳ En Curso (Activas)</option>
-            <option value="ALL">📁 Todas las OTs</option>
-            <option value="TERMINATED">✓ Terminadas</option>
-          </select>
-        </div>
-
-        <!-- Píldoras de Estado (Sin Espera de Materiales) -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-xs scrollbar-none" id="statusFilterPills"></div>
       </div>
 
@@ -198,11 +154,8 @@
       </div>
     </section>
 
-    <!-- ========================================================================= -->
-    <!-- VISTA 2: DASHBOARD TÉCNICO (MODO TERRENO SIMPLE)                        -->
-    <!-- ========================================================================= -->
+    <!-- VISTA 2: DASHBOARD TÉCNICO -->
     <section id="viewDashboardTecnico" class="hidden space-y-3.5 sm:space-y-5">
-      <!-- Banner Técnico con Buscador de Folio Rápido -->
       <div class="bg-gradient-to-r from-amber-600 via-amber-700 to-slate-900 rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div class="flex items-center space-x-2">
@@ -217,16 +170,13 @@
         </div>
       </div>
 
-      <!-- KPIs Técnico -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" id="techKpiStatsContainer"></div>
 
-      <!-- Buscador y Filtros Técnico -->
       <div class="bg-white rounded-2xl sm:rounded-3xl p-3 shadow-sm border border-slate-200 space-y-2">
         <input type="text" id="techSearchInput" oninput="window.app.renderDashboardTecnico()" placeholder="🔍 Buscar por recinto o falla..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-amber-500 focus:bg-white transition" />
         <div class="flex items-center gap-1.5 overflow-x-auto text-xs scrollbar-none" id="techStatusFilterPills"></div>
       </div>
 
-      <!-- Tarjetas de Órdenes Técnico -->
       <div id="techOtCardsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"></div>
       
       <div id="techEmptyState" class="hidden text-center py-12 bg-white rounded-2xl border-2 border-dashed border-slate-300">
@@ -235,9 +185,7 @@
       </div>
     </section>
 
-    <!-- ========================================================================= -->
-    <!-- VISTA 3: NUEVA OT (DESPACHO DE SUPERVISOR)                                -->
-    <!-- ========================================================================= -->
+    <!-- VISTA 3: NUEVA OT -->
     <section id="viewNewOT" class="hidden max-w-3xl mx-auto space-y-4">
       <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-sm border border-slate-200">
         <div class="border-b border-slate-100 pb-3 mb-4 flex justify-between items-center">
@@ -276,7 +224,7 @@
             <input type="text" id="newRecinto" required placeholder="Ej: Pabellón Central Quirófano Nº 3, Box 12 Urgencias..." class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-800" />
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
               <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Ticket / Ref *</label>
               <input type="text" id="newTicket" required placeholder="TIC-8492" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold" />
@@ -285,13 +233,8 @@
               <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Solicitante *</label>
               <input type="text" id="newSolicitante" required placeholder="Dra. Lagos" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
             </div>
-            <div>
-              <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Activo Fijo</label>
-              <input type="text" id="newActivo" placeholder="Lavamanos Quirúrgico" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
-            </div>
           </div>
 
-          <!-- Selector Táctil de Prioridad -->
           <div>
             <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Nivel de Prioridad & SLA *</label>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold">
@@ -327,9 +270,7 @@
       </div>
     </section>
 
-    <!-- ========================================================================= -->
-    <!-- VISTA 4: FICHA OPERATIVA DE TERRENO                                      -->
-    <!-- ========================================================================= -->
+    <!-- VISTA 4: FICHA OPERATIVA DE TERRENO -->
     <section id="viewOperativeOT" class="hidden max-w-4xl mx-auto space-y-3.5 sm:space-y-5">
       
       <!-- CABECERA RESUMEN DE LA ORDEN -->
@@ -375,7 +316,6 @@
         </div>
       </div>
 
-      <!-- Banner de Instrucciones de Supervisión -->
       <div id="opSupervisorNotesBanner" class="hidden rounded-2xl p-3 bg-sky-50 border-2 border-sky-300 text-sky-950 shadow-sm space-y-1">
         <h4 class="font-black text-xs uppercase text-sky-900 flex items-center space-x-1">
           <span>👨‍💼</span><span>Instrucciones de Jefatura:</span>
@@ -383,7 +323,6 @@
         <p id="opSupervisorNotesText" class="text-xs text-slate-800 font-semibold pl-5 whitespace-pre-wrap"></p>
       </div>
 
-      <!-- Banner de Bloqueo de Orden -->
       <div id="opLockBanner" class="hidden rounded-2xl p-3 border-2 flex items-center space-x-3 shadow-sm">
         <div id="opLockIcon" class="text-2xl">🔒</div>
         <div>
@@ -395,11 +334,10 @@
       <!-- 1. Antecedentes del Recinto -->
       <div class="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-sm border border-slate-200 space-y-2.5">
         <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase">1. Antecedentes del Recinto Clínico</h3>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
           <div class="bg-slate-50 p-2.5 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px]">Recinto / PMA:</span><span id="opRecinto" class="font-extrabold text-slate-800 text-xs truncate block"></span></div>
           <div class="bg-slate-50 p-2.5 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px]">Solicitante:</span><span id="opSolicitante" class="font-bold text-slate-800 text-xs truncate block"></span></div>
           <div class="bg-slate-50 p-2.5 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px]">Ticket Ref:</span><span id="opTicket" class="font-mono font-bold text-slate-800 text-xs"></span></div>
-          <div class="bg-slate-50 p-2.5 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px]">Activo:</span><span id="opActivo" class="font-bold text-slate-800 text-xs truncate block"></span></div>
         </div>
         <div class="bg-sky-50/70 border border-sky-200 p-2.5 rounded-xl text-xs text-slate-800">
           <span class="text-[10px] font-black text-sky-800 uppercase block mb-0.5">Descripción de la Falla:</span>
@@ -419,9 +357,7 @@
           <input type="text" id="opEncargado" oninput="window.app.syncHeaderTeam()" placeholder="Nombre del técnico a cargo..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold disabled:bg-slate-100" />
         </div>
 
-        <!-- Botonera Táctil Rápida de Inicio / Término -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-          <!-- Inicio -->
           <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
             <div class="flex items-center justify-between">
               <span class="font-black text-slate-700 uppercase text-[10px]">Inicio de Faena</span>
@@ -430,7 +366,6 @@
             <input type="datetime-local" id="opFechaInicio" onchange="window.app.syncHeaderTeam()" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold disabled:bg-slate-100" />
           </div>
 
-          <!-- Término -->
           <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
             <div class="flex items-center justify-between">
               <span class="font-black text-slate-700 uppercase text-[10px]">Término de Faena</span>
@@ -597,7 +532,6 @@
             <label class="block font-bold text-slate-700 mb-0.5">Actualizar Etapa:</label>
             <select id="mgmtStageSelect" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-bold">
               <option value="Pendiente">Pendiente</option>
-              <option value="Inspección">Inspección</option>
               <option value="En Ejecución">En Ejecución</option>
               <option value="Con Problemas">Con Problemas</option>
             </select>
@@ -618,7 +552,6 @@
   <div id="loginModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3">
     <div class="bg-white rounded-3xl max-w-xs w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-3.5 text-center">
       
-      <!-- Icono y Título -->
       <div class="space-y-1">
         <div class="w-11 h-11 bg-gradient-to-tr from-sky-600 to-teal-500 text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">
           🏥
@@ -627,13 +560,11 @@
         <p class="text-[11px] text-slate-500">Seleccione su rol e ingrese su PIN</p>
       </div>
       
-      <!-- Selector de Rol Segmentado -->
       <div class="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-2xl">
         <button type="button" id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="py-2 rounded-xl text-xs font-extrabold transition shadow-sm bg-sky-700 text-white">👨‍💼 Supervisor</button>
         <button type="button" id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="py-2 rounded-xl text-xs font-bold transition text-slate-600">👷 Técnico</button>
       </div>
 
-      <!-- Indicador Visual de PIN (Puntos) -->
       <div class="space-y-1.5 py-1">
         <input type="password" id="pinInput" readonly maxlength="4" class="hidden" />
         <div class="flex items-center justify-center space-x-3" id="pinDotsContainer">
@@ -644,7 +575,6 @@
         </div>
       </div>
 
-      <!-- TECLADO NUMÉRICO TÁCTIL (KEYPAD) -->
       <div class="grid grid-cols-3 gap-1.5 pt-0.5">
         <button type="button" onclick="window.app.keypadPress('1')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">1</button>
         <button type="button" onclick="window.app.keypadPress('2')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">2</button>
@@ -680,14 +610,31 @@
     </div>
   </div>
 
-  <!-- LÓGICA DE CONTROLADORES & SUPABASE -->
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-    // Función de escape para prevenir XSS
+    const SUPABASE_URL = "https://xtrzyioxbanyjvjeqedw.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable__rmY-7gpN8Ijh7Bn5e9HtA_Bu6Z4Yqy";
+    const DEFAULT_SUPERVISOR_PIN = "1234";
+    const DEFAULT_TECNICO_PIN = "5678";
+    const SYSTEM_CONFIG_DOC_ID = "system_settings_config";
+    const DEFAULT_FOLIO_PREFIX = "OT-INFRA";
+    const DEFAULT_HOSPITAL_NAME = "Hospital Público / Infraestructura";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Sanitización contra inyección XSS
     const esc = (s) => (s || '').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m]));
 
-    // Diálogos modales interactivos
+    // Cálculo visual de SLA
+    const getSlaHours = (prio) => {
+      if (prio === 'Urgente') return 'SLA: 2h (Crítico)';
+      if (prio === 'Alta') return 'SLA: 6h';
+      if (prio === 'Media') return 'SLA: 24h';
+      return 'SLA: 72h';
+    };
+
+    // Diálogos modales personalizados
     const showModal = ({title, message, type = 'alert', inputPlaceholder = '', icon = '💬'}) => {
       return new Promise(resolve => {
         const modal = document.getElementById('customDialog');
@@ -724,28 +671,19 @@
           btnCancel.onclick = null;
         };
 
-        btnConfirm.onclick = () => { cleanup(); resolve(type === 'prompt' ? input.value : true); };
-        btnCancel.onclick = () => { cleanup(); resolve(type === 'prompt' ? null : false); };
+        btnConfirm.onclick = () => {
+          cleanup();
+          resolve(type === 'prompt' ? input.value : true);
+        };
+        btnCancel.onclick = () => {
+          cleanup();
+          resolve(type === 'prompt' ? null : false);
+        };
       });
     };
 
-    const DEFAULT_SUPERVISOR_PIN = '1234';
-    const DEFAULT_TECNICO_PIN = '5678';
-    const SYSTEM_CONFIG_DOC_ID = 'system_settings_config';
-
-    const getSlaHours = (prio) => {
-      if (prio === 'Urgente') return 'SLA: 2h (Crítico)';
-      if (prio === 'Alta') return 'SLA: 6h';
-      if (prio === 'Media') return 'SLA: 24h';
-      return 'SLA: 72h';
-    };
-
-    // CREDENCIALES SUPABASE
-    const SUPABASE_URL = "https://xtrzyioxbanyjvjeqedw.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable__rmY-7gpN8Ijh7Bn5e9HtA_Bu6Z4Yqy";
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    class HospitalOTAppCloud {
+    // Clase principal de gestión
+    class HospitalApp {
       constructor() {
         this.orders = [];
         this.currentOrder = null;
@@ -757,12 +695,11 @@
         this.hasSigReceiver = false;
         this.managingOrderId = null;
         this.menuOpen = false;
-        
-        // Configuraciones de Sistema
+
         this.supervisorPin = DEFAULT_SUPERVISOR_PIN;
         this.tecnicoPin = DEFAULT_TECNICO_PIN;
-        this.folioPrefix = 'OT-INFRA';
-        this.hospitalName = 'Hospital Público / Infraestructura';
+        this.folioPrefix = DEFAULT_FOLIO_PREFIX;
+        this.hospitalName = DEFAULT_HOSPITAL_NAME;
 
         this.initCanvas();
         this.listenToOrders();
@@ -823,13 +760,9 @@
 
         supabase
           .channel('schema-db-changes')
-          .on(
-            'postgres_changes',
-            { event: '*', schema: 'public', table: 'orders' },
-            async () => {
-              await this.fetchOrdersFromSupabase();
-            }
-          )
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, async () => {
+            await this.fetchOrdersFromSupabase();
+          })
           .subscribe();
       }
 
@@ -842,8 +775,8 @@
             if (configDoc && configDoc.data) {
               this.supervisorPin = configDoc.data.supervisorPin || DEFAULT_SUPERVISOR_PIN;
               this.tecnicoPin = configDoc.data.tecnicoPin || DEFAULT_TECNICO_PIN;
-              this.folioPrefix = configDoc.data.folioPrefix || 'OT-INFRA';
-              this.hospitalName = configDoc.data.hospitalName || 'Hospital Público / Infraestructura';
+              this.folioPrefix = configDoc.data.folioPrefix || DEFAULT_FOLIO_PREFIX;
+              this.hospitalName = configDoc.data.hospitalName || DEFAULT_HOSPITAL_NAME;
               
               const sub = document.getElementById('headerHospitalSubtitle');
               if (sub) sub.innerText = this.hospitalName;
@@ -867,7 +800,7 @@
             }
           }
         } catch (e) {
-          console.error("Error al cargar órdenes de Supabase:", e);
+          console.error("Error al sincronizar desde Supabase:", e);
         }
       }
 
@@ -880,7 +813,7 @@
         document.getElementById('cfgConfirmPin').value = '';
         
         document.getElementById('cfgFolioPrefix').oninput = (e) => {
-          const v = (e.target.value || 'OT-INFRA').toUpperCase();
+          const v = (e.target.value || DEFAULT_FOLIO_PREFIX).toUpperCase();
           document.getElementById('cfgFolioSample').innerText = `${v}-001-${new Date().getFullYear()}`;
         };
 
@@ -892,8 +825,8 @@
       }
 
       async saveSystemSettings() {
-        const hospitalName = document.getElementById('cfgHospitalName').value.trim() || 'Hospital Público / Infraestructura';
-        const folioPrefix = document.getElementById('cfgFolioPrefix').value.trim().toUpperCase() || 'OT-INFRA';
+        const hospitalName = document.getElementById('cfgHospitalName').value.trim() || DEFAULT_HOSPITAL_NAME;
+        const folioPrefix = document.getElementById('cfgFolioPrefix').value.trim().toUpperCase() || DEFAULT_FOLIO_PREFIX;
         
         const targetRole = document.getElementById('cfgPinRoleSelect').value;
         const currentSupPin = document.getElementById('cfgCurrentSupervisorPin').value.trim();
@@ -935,14 +868,9 @@
           if (sub) sub.innerText = this.hospitalName;
 
           this.closeSettingsModal();
-          showModal({
-            title: 'Configuración Guardada',
-            message: 'Los parámetros y claves han sido actualizados.',
-            type: 'success',
-            icon: '✅'
-          });
+          showModal({ title: 'Configuración Guardada', message: 'Los parámetros han sido actualizados en la nube.', type: 'success', icon: '✅' });
         } catch (e) {
-          console.error("Error al guardar configuración:", e);
+          console.error("Error guardando configuración:", e);
           showModal({ title: 'Error', message: 'No se pudo sincronizar la configuración.', type: 'error', icon: '❌' });
         }
       }
@@ -954,7 +882,7 @@
             .upsert({ id: otData.id, data: otData });
           if (error) throw error;
         } catch(e) {
-          console.error("Error guardando documento en Supabase", e);
+          console.error("Error guardando en Supabase", e);
           showModal({title: 'Error', message: 'Error al sincronizar con la nube.', type: 'error', icon: '❌'});
         }
       }
@@ -1107,7 +1035,7 @@
           const term = this.orders.filter(o => o.estado === 'Terminada').length;
 
           kpi.innerHTML = `
-            <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.setScopeFilter('ACTIVE')">
+            <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('ACTIVE')">
               <span class="text-[9px] text-amber-700 block font-black uppercase tracking-tight truncate">⏳ En Curso</span>
               <span class="text-xl sm:text-2xl font-black text-amber-700">${active}</span>
             </div>
@@ -1120,7 +1048,7 @@
               <span class="text-xl sm:text-2xl font-black text-teal-700">${solCierre}</span>
             </div>
             <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('Terminada')">
-              <span class="text-[9px] text-emerald-700 block font-black uppercase tracking-tight truncate">✓ Hechas</span>
+              <span class="text-[9px] text-emerald-700 block font-black uppercase tracking-tight truncate">✓ Terminadas</span>
               <span class="text-xl sm:text-2xl font-black text-emerald-600">${term}</span>
             </div>
             <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('ALL')">
@@ -1134,31 +1062,32 @@
 
         const pills = document.getElementById('statusFilterPills');
         if (pills) {
-          const list = ['ALL', 'Pendiente', 'Inspección', 'En Ejecución', 'Solicitud de Cierre', 'Terminada', 'Con Problemas'];
+          const list = [
+            { id: 'ALL', label: 'Todos' },
+            { id: 'ACTIVE', label: '⏳ En Curso' },
+            { id: 'Pendiente', label: 'Pendiente' },
+            { id: 'En Ejecución', label: 'En Ejecución' },
+            { id: 'Solicitud de Cierre', label: 'Solicitud Cierre' },
+            { id: 'Terminada', label: '✓ Terminadas' },
+            { id: 'Con Problemas', label: 'Con Problemas' }
+          ];
           pills.innerHTML = list.map(st => `
-            <button onclick="window.app.filterBy('${st}')" class="px-3 py-1 rounded-xl whitespace-nowrap text-[11px] font-extrabold transition active:scale-95 ${this.statusFilter === st ? 'bg-sky-700 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
-              ${st === 'ALL' ? 'Todos' : st}
+            <button onclick="window.app.filterBy('${st.id}')" class="px-3 py-1 rounded-xl whitespace-nowrap text-[11px] font-extrabold transition active:scale-95 ${this.statusFilter === st.id ? 'bg-sky-700 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
+              ${st.label}
             </button>
           `).join('');
         }
 
         const search = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
-        const prio = document.getElementById('priorityFilter')?.value || 'ALL';
-        const scope = document.getElementById('scopeFilter')?.value || 'ACTIVE';
-        const specialty = document.getElementById('specialtyFilter')?.value || 'ALL';
 
         const filtered = this.orders.filter(ot => {
-          if (scope === 'ACTIVE' && ot.estado === 'Terminada') return false;
-          if (scope === 'TERMINATED' && ot.estado !== 'Terminada') return false;
-          if (this.statusFilter !== 'ALL' && ot.estado !== this.statusFilter) return false;
-          if (prio !== 'ALL' && ot.prioridad !== prio) return false;
-          if (specialty !== 'ALL' && ot.especialidad !== specialty) return false;
+          if (this.statusFilter === 'ACTIVE' && ot.estado === 'Terminada') return false;
+          if (this.statusFilter !== 'ALL' && this.statusFilter !== 'ACTIVE' && ot.estado !== this.statusFilter) return false;
           if (search) {
             const m = ot.numero_ot.toLowerCase().includes(search) ||
                       ot.recinto_pma.toLowerCase().includes(search) ||
                       ot.solicitante_nombre.toLowerCase().includes(search) ||
                       ot.descripcion_problema.toLowerCase().includes(search) ||
-                      (ot.activo_fijo && ot.activo_fijo.toLowerCase().includes(search)) ||
                       (ot.encargado_cuadrilla && ot.encargado_cuadrilla.toLowerCase().includes(search));
             if (!m) return false;
           }
@@ -1233,6 +1162,7 @@
                   <button onclick="window.app.shareOTWhatsApp('${ot.id}')" class="text-emerald-600 hover:text-emerald-700 active:scale-95">💬 WhatsApp</button>
                   <button onclick="window.app.downloadPDF('${ot.id}')" class="text-rose-600 hover:text-rose-700 active:scale-95">📄 PDF</button>
                   <button onclick="window.app.openOrderById('${ot.id}')" class="text-sky-800 hover:underline font-black active:scale-95">Ver Ficha</button>
+                  <button onclick="window.app.deleteOrder('${ot.id}')" class="text-rose-600 hover:text-rose-800 hover:bg-rose-50 px-2 py-1 rounded-lg text-xs font-black active:scale-95 transition" title="Eliminar OT">🗑️ Eliminar</button>
                 </div>
               </div>
             </div>
@@ -1388,6 +1318,61 @@
         }
       }
 
+      async deleteOrder(id) {
+        if (this.currentRole !== 'supervisor') {
+          return showModal({
+            title: 'Restringido', 
+            message: 'Solo el Supervisor con clave autorizada puede eliminar órdenes.', 
+            type: 'error', 
+            icon: '⛔'
+          });
+        }
+
+        const ot = this.orders.find(o => o.id === id);
+        if (!ot) return;
+
+        const confirmed = await showModal({
+          title: 'Eliminar Orden de Trabajo',
+          message: `¿Está seguro de eliminar permanentemente la orden ${ot.numero_ot} de ${ot.recinto_pma}? Esta acción no se puede deshacer.`,
+          type: 'confirm',
+          icon: '🗑️'
+        });
+
+        if (!confirmed) return;
+
+        try {
+          const { error } = await supabase
+            .from('orders')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+
+          this.orders = this.orders.filter(o => o.id !== id);
+          if (this.currentOrder && this.currentOrder.id === id) {
+            this.currentOrder = null;
+            this.navigate('dashboard_supervisor');
+          } else {
+            this.renderDashboardSupervisor();
+          }
+
+          showModal({
+            title: 'OT Eliminada', 
+            message: `La orden ${ot.numero_ot} ha sido eliminada de la base de datos.`, 
+            type: 'success', 
+            icon: '✅'
+          });
+        } catch (err) {
+          console.error("Error al eliminar OT en Supabase:", err);
+          showModal({
+            title: 'Error', 
+            message: 'No se pudo eliminar la orden de la base de datos.', 
+            type: 'error', 
+            icon: '❌'
+          });
+        }
+      }
+
       async reopenOrder(id) {
         if (this.currentRole !== 'supervisor') return showModal({title: 'Denegado', message:'Solo el Supervisor reabre órdenes.', type: 'error'});
         const ot = this.orders.find(o => o.id === id);
@@ -1422,7 +1407,7 @@
               <span class="text-xl font-black text-slate-800">${pendingApproval}</span>
             </div>
             <div class="bg-white p-2.5 rounded-xl border-2 ${this.techStatusFilter==='TERMINATED'?'border-emerald-500 bg-emerald-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('TERMINATED')">
-              <span class="text-[9px] text-emerald-700 font-black uppercase block tracking-tight">📜 Hechas</span>
+              <span class="text-[9px] text-emerald-700 font-black uppercase block tracking-tight">📜 Terminadas</span>
               <span class="text-xl font-black text-slate-800">${history}</span>
             </div>
             <div class="bg-white p-2.5 rounded-xl border-2 ${this.techStatusFilter==='ALL'?'border-sky-500 bg-sky-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('ALL')">
@@ -1531,7 +1516,6 @@
         document.getElementById('opRecinto').innerText = ot.recinto_pma;
         document.getElementById('opSolicitante').innerText = ot.solicitante_nombre;
         document.getElementById('opTicket').innerText = ot.ticket_referencia;
-        document.getElementById('opActivo').innerText = ot.activo_fijo || 'N/A';
         document.getElementById('opDescripcion').innerText = ot.descripcion_problema;
         
         document.getElementById('opSpecialtyHeader').innerText = ot.especialidad || 'Infraestructura';
@@ -1656,7 +1640,6 @@
           ticket_referencia: document.getElementById('newTicket').value.trim(),
           recinto_pma: document.getElementById('newRecinto').value.trim(),
           solicitante_nombre: document.getElementById('newSolicitante').value.trim(),
-          activo_fijo: document.getElementById('newActivo').value.trim() || 'N/A',
           prioridad: document.querySelector('input[name="newPriority"]:checked').value,
           fecha_solicitud: new Date().toISOString().slice(0, 16),
           descripcion_problema: document.getElementById('newDescripcion').value.trim(),
@@ -1775,7 +1758,7 @@
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           if (isTech) this.hasSigTech = true;
           else this.hasSigReceiver = true;
-          statusLabel.innerText = '✓ Firma Registrada';
+          statusLabel.innerText = '✓ Firma registrada';
         };
         img.src = dataUrl;
       }
@@ -1816,7 +1799,6 @@
 
         if (!document.getElementById('opFechaTermino').value) this.markCurrentTime('end');
         
-        // Actualizar estado formalmente
         this.currentOrder.estado = "Solicitud de Cierre";
         await this.saveOperativeProgress(true, true);
 
@@ -1854,7 +1836,7 @@
         doc.text(`Recinto / Servicio Clínico: ${ot.recinto_pma}`, 14, 40);
         doc.text(`Especialidad: ${ot.especialidad || 'General'} | Tipo: ${ot.tipo_mantenimiento || 'Correctivo'}`, 14, 46);
         doc.text(`Solicitante: ${ot.solicitante_nombre} | Ticket Ref: ${ot.ticket_referencia}`, 14, 52);
-        doc.text(`Prioridad: ${ot.prioridad} | Estado: ${ot.estado} | Activo: ${ot.activo_fijo || 'N/A'}`, 14, 58);
+        doc.text(`Prioridad: ${ot.prioridad} | Estado: ${ot.estado}`, 14, 58);
         doc.text(`Fecha Solicitud: ${ot.fecha_solicitud || 'N/A'} | Cierre Certificado: ${ot.fecha_cierre || 'Pendiente'}`, 14, 64);
 
         doc.setFillColor(241, 245, 249);
@@ -1900,7 +1882,8 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => { window.app = new HospitalOTAppCloud(); });
+    // Inicialización global al cargar DOM
+    document.addEventListener('DOMContentLoaded', () => { window.app = new HospitalApp(); });
   </script>
 </body>
 </html>
