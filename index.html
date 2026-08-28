@@ -1081,28 +1081,66 @@
 
       renderAlerts() {
         const container = document.getElementById('alertsContainer');
-        if (this.currentRole === 'tecnico') { container.classList.add('hidden'); return; }
-        
         const list = document.getElementById('alertsList');
-        const pendingReqs = [];
+        const badge = document.getElementById('alertsCountBadge');
+        const titleSpan = container.querySelector('span.uppercase');
+
+        const alerts = [];
         this.orders.forEach(o => {
-          if (o.solicitudes_terreno) o.solicitudes_terreno.forEach((req, idx) => {
-            if (!req.respuesta) pendingReqs.push({ ot: o, req, idx });
-          });
+          if (o.estado === 'Terminada') return; // Ocultar notificaciones de OTs cerradas
+          
+          if (o.solicitudes_terreno) {
+            o.solicitudes_terreno.forEach((req, idx) => {
+              if (this.currentRole === 'supervisor' && !req.respuesta) {
+                alerts.push({ ot: o, req, idx });
+              } else if (this.currentRole === 'tecnico' && req.respuesta) {
+                alerts.push({ ot: o, req, idx });
+              }
+            });
+          }
         });
 
-        if (pendingReqs.length === 0) { container.classList.add('hidden'); return; }
+        if (alerts.length === 0) {
+          container.classList.add('hidden');
+          return;
+        }
+
         container.classList.remove('hidden');
-        document.getElementById('alertsCountBadge').textContent = `${pendingReqs.length} req.`;
-        list.innerHTML = pendingReqs.map(i => `
-          <div class="bg-white p-2.5 rounded-lg border border-amber-300 flex justify-between gap-2">
-            <div>
-              <span class="font-bold text-amber-900 text-xs">${escapeHtml(i.ot.folio)}:</span>
-              <span class="text-xs text-slate-700 block">${escapeHtml(i.req.tipo)} - "${escapeHtml(i.req.detalle)}"</span>
+        badge.textContent = `${alerts.length} ${this.currentRole === 'supervisor' ? 'req.' : 'resp.'}`;
+        
+        if (this.currentRole === 'supervisor') {
+          container.className = "mb-4 bg-amber-50 border border-amber-200 rounded-xl p-3 shadow-sm";
+          badge.className = "text-xs font-extrabold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900";
+          titleSpan.className = "text-xs font-bold text-amber-900 uppercase flex items-center space-x-1";
+          titleSpan.innerHTML = '<span aria-hidden="true">📢</span> <span>Requerimientos de Cuadrilla Activos</span>';
+          
+          list.innerHTML = alerts.map(i => `
+            <div class="bg-white p-2.5 rounded-lg border border-amber-300 flex justify-between gap-2">
+              <div>
+                <span class="font-bold text-amber-900 text-xs">${escapeHtml(i.ot.folio)}:</span>
+                <span class="text-xs text-slate-700 block">${escapeHtml(i.req.tipo)} - "${escapeHtml(i.req.detalle)}"</span>
+              </div>
+              <button onclick="window.app.openManageModal('${i.ot.id}')" class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-md h-fit whitespace-nowrap">Atender</button>
             </div>
-            <button onclick="window.app.openManageModal('${i.ot.id}')" class="px-3 py-1 bg-amber-600 text-white text-xs font-bold rounded-md h-fit">Atender</button>
-          </div>
-        `).join('');
+          `).join('');
+        } else {
+          // Vista de alertas para el TÉCNICO
+          container.className = "mb-4 bg-indigo-50 border border-indigo-200 rounded-xl p-3 shadow-sm";
+          badge.className = "text-xs font-extrabold px-2 py-0.5 rounded-full bg-indigo-200 text-indigo-900";
+          titleSpan.className = "text-xs font-bold text-indigo-900 uppercase flex items-center space-x-1";
+          titleSpan.innerHTML = '<span aria-hidden="true">🔔</span> <span>Respuestas de Jefatura</span>';
+          
+          list.innerHTML = alerts.map(i => `
+            <div class="bg-white p-2.5 rounded-lg border border-indigo-300 flex justify-between gap-2 items-center">
+              <div>
+                <span class="font-bold text-indigo-900 text-xs">${escapeHtml(i.ot.folio)}:</span>
+                <span class="text-[11px] text-slate-500 block truncate max-w-[200px] sm:max-w-xs">Tú: "${escapeHtml(i.req.detalle)}"</span>
+                <span class="text-xs text-indigo-700 font-bold block mt-0.5">↳ Jefatura: "${escapeHtml(i.req.respuesta)}"</span>
+              </div>
+              <button onclick="window.app.openOperativeView('${i.ot.id}')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-md h-fit whitespace-nowrap">Ver Ficha</button>
+            </div>
+          `).join('');
+        }
       }
 
       renderOrdersList() {
@@ -1397,58 +1435,58 @@
         }
       }
 
-      startFaena() {
-        if (!this.activeOperativeOt || this.activeOperativeOt.faena_iniciada || this.activeOperativeOt.estado === 'Solicitud Cierre' || this.activeOperativeOt.estado === 'Terminada') return;
-        this.activeOperativeOt.faena_iniciada = new Date().toISOString();
-        if (this.activeOperativeOt.estado === 'Pendiente') this.activeOperativeOt.estado = 'En Ejecución';
-        this.syncOrderToCloud(this.activeOperativeOt);
-        this.openOperativeView(this.activeOperativeOt.id);
-        this.updateKpis();
-      }
+      openOperativeView(id) {
+        const o = this.orders.find(item => item.id === id);
+        if (!o) return;
 
-      submitTechnicianRequest() {
-        if (!this.activeOperativeOt || this.activeOperativeOt.estado === 'Solicitud Cierre' || this.activeOperativeOt.estado === 'Terminada') return;
-        const details = document.getElementById('opNewRequestDetails').value.trim();
-        if (!details) return;
+        this.activeOperativeOt = o;
+        const isLocked = o.estado === 'Solicitud Cierre' || o.estado === 'Terminada';
+
+        document.getElementById('opStatusBadge').textContent = o.estado;
+        document.getElementById('opFolioRecinto').textContent = `${o.folio} • ${o.recinto}`;
+        document.getElementById('opEspecialidadPrioridad').textContent = `${o.especialidad} • Prioridad ${o.prioridad}`;
+        document.getElementById('opSlaBadge').textContent = `SLA: ${SGM_CONFIG.slaHours[o.prioridad] || 24}h`;
+        document.getElementById('opDescripcion').textContent = o.descripcion;
+        document.getElementById('opSolicitante').textContent = o.solicitante;
+        document.getElementById('opTicket').textContent = o.ticket || 'N/A';
         
-        if (!this.activeOperativeOt.solicitudes_terreno) this.activeOperativeOt.solicitudes_terreno = [];
-        this.activeOperativeOt.solicitudes_terreno.push({
-          tipo: document.getElementById('opNewRequestType').value,
-          detalle: details,
-          fecha: new Date().toISOString(),
-          respuesta: null
-        });
-
-        this.syncOrderToCloud(this.activeOperativeOt);
-        document.getElementById('opNewRequestDetails').value = '';
-        this.refreshOperativeHistoryUI(this.activeOperativeOt);
-      }
-
-      saveOperativeProgress(requestClose = false) {
-        if (!this.activeOperativeOt || this.activeOperativeOt.estado === 'Solicitud Cierre' || this.activeOperativeOt.estado === 'Terminada') return;
-        this.activeOperativeOt.diagnostico = document.getElementById('opDiagnosticoSolucion').value.trim();
-
-        if (requestClose) {
-          this.activeOperativeOt.estado = 'Solicitud Cierre';
-          if (!this.activeOperativeOt.fechaTermino) this.activeOperativeOt.fechaTermino = new Date().toISOString();
+        if (o.instrucciones) {
+          document.getElementById('opInstruccionesContainer').classList.remove('hidden');
+          document.getElementById('opInstruccionesText').textContent = o.instrucciones;
+        } else {
+          document.getElementById('opInstruccionesContainer').classList.add('hidden');
         }
 
-        this.syncOrderToCloud(this.activeOperativeOt);
-        this.closeOperativeView();
-        this.updateKpis();
-        this.renderOrdersList();
-      }
+        document.getElementById('opWhatsappBtn').onclick = () => this.shareWhatsApp(o.id);
+        document.getElementById('opLockedBanner').classList.toggle('hidden', !isLocked);
+        
+        const startBtn = document.getElementById('startWorkBtn');
+        const startLabel = document.getElementById('opStartTimeLabel');
+        if (o.faena_iniciada) {
+          startLabel.textContent = new Date(o.faena_iniciada).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+          startBtn.disabled = true;
+          startBtn.className = "px-4 py-2 bg-slate-200 text-slate-400 text-xs font-black rounded-lg cursor-not-allowed";
+          startBtn.textContent = "🔒 Faena Iniciada";
+        } else {
+          startLabel.textContent = "Sin iniciar";
+          startBtn.disabled = isLocked;
+          startBtn.className = `px-4 py-2 ${isLocked ? 'bg-slate-200 text-slate-400' : 'bg-emerald-600 hover:bg-emerald-700'} text-white text-xs font-black rounded-lg shadow-sm`;
+          startBtn.textContent = "▶ Iniciar";
+        }
 
-      openSettingsModal() {
-        if (this.currentRole !== 'supervisor') return;
-        document.getElementById('cfgHospitalName').value = this.hospitalName;
-        document.getElementById('cfgFolioPrefix').value = this.folioPrefix;
-        document.getElementById('cfgPinSupervisor').value = "";
-        document.getElementById('cfgPinTecnico').value = "";
-        this.renderTechList();
-        document.getElementById('settingsModal').classList.remove('hidden');
+        const endLabel = document.getElementById('opEndTimeLabel');
+        endLabel.textContent = o.fechaTermino ? new Date(o.fechaTermino).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : "En proceso";
+
+        this.refreshOperativeHistoryUI(o);
+
+        // Bloqueo de consultas para Supervisor o si la OT está cerrada
+        document.getElementById('opRequestForm').style.display = (isLocked || this.currentRole === 'supervisor') ? 'none' : 'block';
+        document.getElementById('opCloseForm').style.display = isLocked ? 'none' : 'block';
+        document.getElementById('opDiagnosticoSolucion').value = o.diagnostico || '';
+
+        document.getElementById('operativeView').classList.remove('hidden');
       }
-      closeSettingsModal() { document.getElementById('settingsModal').classList.add('hidden'); }
+      closeOperativeView() { document.getElementById('operativeView').classList.add('hidden'); this.activeOperativeOt = null; }
 
       handleLogoUpload(e) {
         const file = e.target.files[0];
