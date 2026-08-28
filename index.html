@@ -885,6 +885,7 @@
         this.hospitalName = DEFAULT_HOSPITAL_NAME;
         this.logoUrl = null;
         this.tempLogoUrl = null;
+        this.pendingOtId = null;
 
         this.initCanvas();
         this.listenToOrders();
@@ -967,6 +968,10 @@
 
             this.orders = normalOrders;
             this.orders.sort((a, b) => new Date(b.fecha_solicitud) - new Date(a.fecha_solicitud));
+
+            if (this.pendingOtId && this.currentRole) {
+              this.tryOpenPendingOt();
+            }
 
             if (this.currentRole === 'supervisor' && !document.getElementById('viewDashboardSupervisor').classList.contains('hidden')) {
               this.renderDashboardSupervisor();
@@ -2294,7 +2299,11 @@
             sessionStorage.setItem('sdo_role', 'supervisor');
             document.getElementById('loginModal').classList.add('hidden');
             this.updateUIPermissions();
-            this.navigate('dashboard_supervisor');
+            if (this.pendingOtId) {
+              this.tryOpenPendingOt();
+            } else {
+              this.navigate('dashboard_supervisor');
+            }
           } else {
             showModal({ title: 'Acceso Denegado', message: 'El PIN de Supervisor ingresado es incorrecto.', type: 'error', icon: '❌' });
             this.keypadClear();
@@ -2305,7 +2314,11 @@
             sessionStorage.setItem('sdo_role', 'tecnico');
             document.getElementById('loginModal').classList.add('hidden');
             this.updateUIPermissions();
-            this.navigate('dashboard_tecnico');
+            if (this.pendingOtId) {
+              this.tryOpenPendingOt();
+            } else {
+              this.navigate('dashboard_tecnico');
+            }
           } else {
             showModal({ title: 'Acceso Denegado', message: 'El PIN de Técnico ingresado es incorrecto.', type: 'error', icon: '❌' });
             this.keypadClear();
@@ -2313,18 +2326,43 @@
         }
       }
 
+      tryOpenPendingOt() {
+        if (!this.pendingOtId) return;
+        const ot = this.orders.find(o => o.id === this.pendingOtId || o.numero_ot.toUpperCase() === this.pendingOtId.toUpperCase());
+        if (ot) {
+          this.currentOrder = ot;
+          this.populateOperativeView(ot);
+          this.navigate('operative');
+          this.pendingOtId = null;
+        }
+      }
+
       checkAuthAndRoute() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const otParam = urlParams.get('ot');
+        if (otParam) {
+          this.pendingOtId = otParam;
+        }
+
         const savedRole = sessionStorage.getItem('sdo_role');
         if (savedRole === 'supervisor') {
           this.currentRole = 'supervisor';
           this.updateUIPermissions();
-          this.navigate('dashboard_supervisor');
+          if (this.pendingOtId) {
+            this.tryOpenPendingOt();
+          } else {
+            this.navigate('dashboard_supervisor');
+          }
         } else if (savedRole === 'tecnico') {
           this.currentRole = 'tecnico';
           this.updateUIPermissions();
-          this.navigate('dashboard_tecnico');
+          if (this.pendingOtId) {
+            this.tryOpenPendingOt();
+          } else {
+            this.navigate('dashboard_tecnico');
+          }
         } else {
-          this.promptLoginModal('supervisor');
+          this.promptLoginModal(otParam ? 'tecnico' : 'supervisor');
         }
       }
 
@@ -2458,7 +2496,39 @@
 
       shareOTWhatsApp(id) {
         const ot = this.orders.find(o => o.id === id) || this.currentOrder;
-        const msg = `🏥 *ORDEN DE TRABAJO: ${ot.numero_ot}*\n📍 *Recinto:* ${ot.recinto_pma}\n🛠️ *Especialidad:* ${ot.especialidad || 'Infraestructura'}\n⚠️ *Prioridad:* ${ot.prioridad}\n🔧 *Estado:* ${ot.estado}\n👤 *Encargado:* ${ot.encargado_cuadrilla || 'Por asignar'}`;
+        if (!ot) return;
+        
+        const directUrl = `${window.location.origin}${window.location.pathname}?ot=${encodeURIComponent(ot.id)}`;
+        
+        const prioIcon = ot.prioridad === 'Urgente' ? '🚨' :
+                         ot.prioridad === 'Alta' ? '🟠' :
+                         ot.prioridad === 'Media' ? '🟡' : '🟢';
+        
+        const slaText = getSlaHours(ot.prioridad);
+        const hospitalHeader = this.hospitalName || DEFAULT_HOSPITAL_NAME;
+
+        let msg = `🏥 *${hospitalHeader.toUpperCase()}*\n`;
+        msg += `📋 *DESPACHO DE ORDEN DE TRABAJO*\n`;
+        msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+        msg += `🔢 *Folio:* *${ot.numero_ot}*\n`;
+        msg += `${prioIcon} *Prioridad:* *${ot.prioridad}* (${slaText})\n`;
+        msg += `📍 *Recinto / PMA:* *${ot.recinto_pma}*\n`;
+        msg += `🛠️ *Especialidad:* ${ot.especialidad || 'Infraestructura'} (${ot.tipo_mantenimiento || 'Correctivo'})\n`;
+        msg += `👤 *Solicitante:* ${ot.solicitante_nombre} ${ot.ticket_referencia ? `[Ref: ${ot.ticket_referencia}]` : ''}\n`;
+        msg += `👷 *Cuadrilla Encargada:* ${ot.encargado_cuadrilla || 'Sin asignar'}\n`;
+        msg += `📊 *Estado Actual:* *${ot.estado}*\n`;
+        msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+        msg += `📝 *Falla Reportada:*\n_${ot.descripcion_problema || 'Sin detalle'划}_\n`;
+
+        if (ot.notas_supervisor && ot.notas_supervisor.trim().length > 0) {
+          msg += `\n👨‍💼 *Instrucción de Jefatura:*\n_${ot.notas_supervisor}_\n`;
+        }
+
+        msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+        msg += `📲 *Abrir Ficha Operativa en Línea:*\n${directUrl}\n`;
+        msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+        msg += `_SDO Cloud • Gestión Hospitalaria en Terreno_`;
+
         window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
       }
 
