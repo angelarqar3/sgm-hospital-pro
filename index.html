@@ -21,12 +21,8 @@
     html, body {
       touch-action: manipulation;
       -webkit-text-size-adjust: 100%;
-      user-select: none;
-      -webkit-user-select: none;
     }
     input, textarea, select {
-      user-select: text;
-      -webkit-user-select: text;
       font-size: 16px !important;
       touch-action: manipulation;
     }
@@ -77,34 +73,34 @@
         <div id="appMenuDropdown" class="hidden absolute right-4 top-14 w-56 bg-white rounded-xl shadow-2xl border border-slate-200 text-slate-800 z-50 overflow-hidden py-1">
           <button onclick="window.app.renderDashboard(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2">
             <span>📊</span> <span>Panel General</span>
-          </button>
-          
-          <!-- Elementos Exclusivos del Supervisor (Ocultos por defecto para técnicos) -->
-          <div id="supervisorOnlyMenuItems" class="hidden space-y-1">
-            <button onclick="window.app.openCreateModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2 text-blue-600">
-              <span>➕</span> <span>Nueva OT</span>
-            </button>
-            <button onclick="window.app.openAdvanceReportModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2">
-              <span>📈</span> <span>Reporte de Avance</span>
-            </button>
-            <button onclick="window.app.openSettingsModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2">
-              <span>⚙️</span> <span>Configuración</span>
-            </button>
-          </div>
-
-          <hr id="menuDivider" class="my-1 border-slate-100 hidden">
-          <button onclick="window.app.openAuthModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2 text-amber-700">
-            <span>🔄</span> <span>Cambiar Rol / PIN</span>
-          </button>
-        </div>
+  <!-- ==================== MODAL: CONFIRMACIÓN PERSONALIZADA ==================== -->
+  <div id="customConfirmModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl border border-slate-200 text-center space-y-4">
+      <div id="confirmIconContainer" class="w-12 h-12 mx-auto rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center text-2xl">
+        ⚠️
+      </div>
+      <div>
+        <h3 id="confirmModalTitle" class="font-bold text-base text-slate-900">¿Confirmar acción?</h3>
+        <p id="confirmModalMessage" class="text-xs text-slate-500 mt-1 leading-relaxed">Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="flex space-x-2 pt-2">
+        <button type="button" id="confirmCancelBtn" class="flex-1 py-2 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg">Cancelar</button>
+        <button type="button" id="confirmAcceptBtn" class="flex-1 py-2 text-xs font-black text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-sm">Confirmar</button>
       </div>
     </div>
-  </header>
+  </div>
 
-  <!-- ==================== TOAST NOTIFICATION CONTAINER ==================== -->
-  <div id="toastNotification" class="fixed bottom-4 right-4 z-50 transform transition-all duration-300 translate-y-20 opacity-0 pointer-events-none bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2 text-xs font-bold border border-slate-700">
-    <span id="toastIcon">✅</span>
-    <span id="toastMessage">Operación realizada con éxito</span>
+  <!-- ==================== MODAL: PROMPT / INGRESO PERSONALIZADO ==================== -->
+  <div id="customPromptModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl border border-slate-200 space-y-3">
+      <h3 id="promptModalTitle" class="font-bold text-sm text-slate-900">Ingresar dato</h3>
+      <p id="promptModalSubtitle" class="text-xs text-slate-500">Ingrese el valor requerido a continuación:</p>
+      <input type="text" id="promptModalInput" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium focus:bg-white focus:ring-2 focus:ring-blue-500">
+      <div class="flex space-x-2 pt-2 justify-end">
+        <button type="button" id="promptCancelBtn" class="px-4 py-2 text-xs font-bold text-slate-600 bg-slate-100 rounded-lg">Cancelar</button>
+        <button type="button" id="promptAcceptBtn" class="px-5 py-2 text-xs font-black text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm">Aceptar</button>
+      </div>
+    </div>
   </div>
 
   <!-- ==================== MAIN CONTAINER ==================== -->
@@ -258,7 +254,7 @@
       <form id="createOtForm" onsubmit="window.app.handleCreateOT(event)" class="space-y-3 pt-3 overflow-y-auto custom-scroll flex-1">
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Especialidad</label>
+            <label for="newOtEspecialidad" class="block text-xs font-bold text-slate-600 mb-1">Especialidad</label>
             <select id="newOtEspecialidad" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
               <option value="Infraestructura" selected>Infraestructura</option>
               <option value="Climatización">Climatización</option>
@@ -268,7 +264,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Prioridad (SLA)</label>
+            <label for="newOtPrioridad" class="block text-xs font-bold text-slate-600 mb-1">Prioridad (SLA)</label>
             <select id="newOtPrioridad" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
               <option value="Urgente">🚨 Urgente (2h)</option>
               <option value="Alta" selected>🟠 Alta (6h)</option>
@@ -280,23 +276,23 @@
 
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Recinto / Servicio</label>
+            <label for="newOtRecinto" class="block text-xs font-bold text-slate-600 mb-1">Recinto / Servicio</label>
             <input type="text" id="newOtRecinto" required placeholder="Ej: Pabellón 3, UCI Camas" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">PMA</label>
+            <label for="newOtTicket" class="block text-xs font-bold text-slate-600 mb-1">PMA</label>
             <input type="text" id="newOtTicket" placeholder="Ej: PMA-8941" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Solicitante</label>
+            <label for="newOtSolicitante" class="block text-xs font-bold text-slate-600 mb-1">Solicitante</label>
             <input type="text" id="newOtSolicitante" required placeholder="Nombre o cargo" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
           <div>
             <div class="flex justify-between items-center mb-1">
-              <label class="text-xs font-bold text-slate-600">Técnico Asignado:</label>
+              <label for="newOtEncargado" class="text-xs font-bold text-slate-600">Técnico Asignado:</label>
               <button type="button" onclick="window.app.quickAddTechnician()" class="text-[10px] text-blue-600 font-bold hover:underline">+ Agregar</button>
             </div>
             <select id="newOtEncargado" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
@@ -306,12 +302,12 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">Descripción de la Falla</label>
+          <label for="newOtDescripcion" class="block text-xs font-bold text-slate-600 mb-1">Descripción de la Falla</label>
           <textarea id="newOtDescripcion" required rows="2" placeholder="Detalle técnico de la anomalía..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">Instrucciones de Jefatura (Opcional)</label>
+          <label for="newOtInstrucciones" class="block text-xs font-bold text-slate-600 mb-1">Instrucciones de Jefatura (Opcional)</label>
           <textarea id="newOtInstrucciones" rows="2" placeholder="Directriz inicial para la cuadrilla..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
         </div>
 
@@ -702,12 +698,35 @@
 
   <!-- ==================== JAVASCRIPT LOGIC ==================== -->
   <script>
+    // Helper de escape HTML para neutralizar XSS
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Hasheador SHA-256 criptográfico para PINs
+    async function hashPin(pin) {
+      const msgBuffer = new TextEncoder().encode(String(pin));
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
     const SGM_CONFIG = {
       supabaseUrl: "https://your-project.supabase.co",
       supabaseAnonKey: "your-anon-key",
       defaultHospital: "SDO Hospital Regional",
       defaultPrefix: "OT-INFRA",
-      defaultPins: { supervisor: "1234", tecnico: "5678" },
+      // Hashes SHA-256 de los PINs por defecto: "1234" y "5678"
+      defaultPinHashes: {
+        supervisor: "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", // 1234
+        tecnico: "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f"    // 5678
+      },
       slaHours: { Urgente: 2, Alta: 6, Media: 24, Baja: 72 },
       defaultTechnicians: ["Pablo Loira", "Mantenimiento General", "Cuadrilla Turno"]
     };
@@ -719,13 +738,15 @@
         this.selectedAuthRole = this.currentRole;
         this.orders = [];
         this.technicians = [...SGM_CONFIG.defaultTechnicians];
-        this.viewMode = 'cards'; // 'cards' | 'table'
+        this.viewMode = 'cards';
         this.filterStatus = 'TODOS';
         this.activeOperativeOt = null;
         this.customLogo = null;
-        this.pins = { ...SGM_CONFIG.defaultPins };
+        this.pinHashes = { ...SGM_CONFIG.defaultPinHashes };
         this.hospitalName = SGM_CONFIG.defaultHospital;
         this.folioPrefix = SGM_CONFIG.defaultPrefix;
+        this.currentReportFilteredList = [];
+        this.isModalOpen = false;
 
         this.supabase = null;
         this.initSupabase();
@@ -735,11 +756,27 @@
         this.updateRoleBadge();
         this.applyRoleRestrictions();
 
-        // Actualización de tiempos y SLA cada 60s
         setInterval(() => this.updateTimeElapsedElements(), 60000);
       }
 
       showToast(message, icon = '✅') {
+        const toast = document.getElementById('toastNotification');
+        const toastMsg = document.getElementById('toastMessage');
+        const toastIcon = document.getElementById('toastIcon');
+        if (!toast || !toastMsg || !toastIcon) return;
+
+        toastMsg.textContent = message;
+        toastIcon.textContent = icon;
+        toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        toast.classList.add('translate-y-0', 'opacity-100');
+
+        clearTimeout(this._toastTimeout);
+        this._toastTimeout = setTimeout(() => {
+          toast.classList.remove('translate-y-0', 'opacity-100');
+          toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+        }, 3000);
+      }
+
       updateRoleBadge() {
         const badge = document.getElementById('roleBadge');
         if (badge) {
@@ -753,7 +790,6 @@
       applyRoleRestrictions() {
         const supervisorMenu = document.getElementById('supervisorOnlyMenuItems');
         const menuDivider = document.getElementById('menuDivider');
-        
         const isSupervisor = this.currentRole === 'supervisor';
 
         if (supervisorMenu) {
@@ -775,12 +811,12 @@
 
       initSupabase() {
         try {
-          if (window.supabase && SGM_CONFIG.supabaseUrl.startsWith("https://")) {
+          if (window.supabase && SGM_CONFIG.supabaseUrl.startsWith("https://") && SGM_CONFIG.supabaseAnonKey !== 'your-anon-key') {
             this.supabase = window.supabase.createClient(SGM_CONFIG.supabaseUrl, SGM_CONFIG.supabaseAnonKey);
             this.subscribeRealtime();
           }
         } catch (e) {
-          console.warn("Supabase en modo local:", e);
+          console.warn("Supabase en modo local/offline:", e);
         }
       }
 
@@ -788,7 +824,10 @@
         if (!this.supabase) return;
         this.supabase.channel('orders_realtime')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
-            this.fetchOrdersFromSupabase();
+            // Evitar que la recarga de datos sobreescriba formularios abiertos activamente
+            if (!this.isModalOpen && !this.activeOperativeOt) {
+              this.fetchOrdersFromSupabase();
+            }
           })
           .subscribe();
       }
@@ -799,12 +838,14 @@
           const { data, error } = await this.supabase.from('orders').select('*');
           if (!error && data) {
             this.orders = data.map(row => row.data);
+            this.saveCache();
             this.updateKpis();
             this.renderOrdersList();
             this.renderAlerts();
+            this.checkDeepLink();
           }
         } catch (e) {
-          console.error("Error al cargar OTs:", e);
+          console.error("Error al cargar OTs de Supabase:", e);
         }
       }
 
@@ -813,7 +854,6 @@
         if (stored) {
           try { this.orders = JSON.parse(stored); } catch (e) {}
         } else {
-          // Datos iniciales de prueba
           this.orders = [
             {
               id: 'OT-INFRA-001-2026',
@@ -830,6 +870,7 @@
               fechaCreacion: new Date(Date.now() - 4 * 3600000).toISOString(),
               faena_iniciada: new Date(Date.now() - 3 * 3600000).toISOString(),
               faena_terminada: null,
+              fechaTermino: null,
               solicitudes_terreno: [
                 {
                   tipo: 'Permisos / IAAS / Acceso Restringido',
@@ -855,7 +896,7 @@
         if (otId) {
           const target = this.orders.find(o => o.id === otId || o.folio === otId);
           if (target) {
-            setTimeout(() => this.openOperativeView(target.id), 300);
+            this.openOperativeView(target.id);
           }
         }
       }
@@ -868,15 +909,77 @@
         this.saveCache();
         if (this.supabase) {
           try {
-            await this.supabase.from('orders').upsert({
+            const { error } = await this.supabase.from('orders').upsert({
               id: order.id,
               data: order,
               created_at: order.fechaCreacion || new Date().toISOString()
             });
+            if (error) {
+              console.error("Error sincronizando OT con Supabase:", error);
+              this.showToast("Guardado local (Nube no disponible)", "⚠️");
+              return false;
+            }
+            return true;
           } catch (e) {
-            console.error("Error sincronizando OT con nube:", e);
+            console.error("Excepción al sincronizar OT:", e);
+            this.showToast("Guardado localmente", "💾");
+            return false;
           }
         }
+        return true;
+      }
+
+      // ================= DIÁLOGOS Y MODALES PERSONALIZADOS =================
+      showCustomConfirm(title, message, onAccept) {
+        const modal = document.getElementById('customConfirmModal');
+        const titleEl = document.getElementById('confirmModalTitle');
+        const msgEl = document.getElementById('confirmModalMessage');
+        const acceptBtn = document.getElementById('confirmAcceptBtn');
+        const cancelBtn = document.getElementById('confirmCancelBtn');
+
+        titleEl.textContent = title;
+        msgEl.textContent = message;
+        modal.classList.remove('hidden');
+
+        const cleanup = () => {
+          modal.classList.add('hidden');
+          acceptBtn.onclick = null;
+          cancelBtn.onclick = null;
+        };
+
+        acceptBtn.onclick = () => {
+          cleanup();
+          onAccept();
+        };
+        cancelBtn.onclick = cleanup;
+      }
+
+      showCustomPrompt(title, subtitle, onAccept) {
+        const modal = document.getElementById('customPromptModal');
+        const titleEl = document.getElementById('promptModalTitle');
+        const subEl = document.getElementById('promptModalSubtitle');
+        const input = document.getElementById('promptModalInput');
+        const acceptBtn = document.getElementById('promptAcceptBtn');
+        const cancelBtn = document.getElementById('promptCancelBtn');
+
+        titleEl.textContent = title;
+        subEl.textContent = subtitle;
+        input.value = '';
+        modal.classList.remove('hidden');
+        input.focus();
+
+        const cleanup = () => {
+          modal.classList.add('hidden');
+          acceptBtn.onclick = null;
+          cancelBtn.onclick = null;
+        };
+
+        acceptBtn.onclick = () => {
+          const val = input.value.trim();
+          cleanup();
+          if (val) onAccept(val);
+        };
+        cancelBtn.onclick = cleanup;
       }
 
       // ================= GESTIÓN DE TÉCNICOS =================
@@ -884,7 +987,7 @@
         const createSel = document.getElementById('newOtEncargado');
         const manageSel = document.getElementById('manageOtEncargado');
         
-        const optionsHtml = this.technicians.map(t => `<option value="${t}">${t}</option>`).join('');
+        const optionsHtml = this.technicians.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
 
         if (createSel) {
           createSel.innerHTML = optionsHtml;
@@ -905,36 +1008,48 @@
 
       quickAddTechnician() {
         if (this.currentRole !== 'supervisor') {
-          this.showToast("Solo el Supervisor puede modificar la lista de técnicos.", "🔒");
+          this.showToast("Solo el Supervisor puede modificar técnicos.", "🔒");
           return;
         }
-        const name = prompt("Ingrese el nombre y apellido del nuevo técnico:");
-        if (name && name.trim()) {
-          const cleanName = name.trim();
-          if (!this.technicians.includes(cleanName)) {
-            this.technicians.push(cleanName);
+
+        this.showCustomPrompt("Añadir Técnico", "Ingrese nombre y apellido del técnico:", (name) => {
+          if (!this.technicians.includes(name)) {
+            this.technicians.push(name);
             this.saveSettingsToStorage();
             this.populateTechnicianSelects();
-            this.showToast(`Técnico ${cleanName} añadido correctamente.`);
+            this.showToast(`Técnico ${name} añadido.`);
           }
-        }
+        });
       }
 
       removeTechnician(index) {
         if (this.currentRole !== 'supervisor') {
-          this.showToast("Solo el Supervisor puede modificar la lista de técnicos.", "🔒");
+          this.showToast("Solo el Supervisor puede modificar técnicos.", "🔒");
           return;
         }
         if (this.technicians.length <= 1) {
-          this.showToast("Debe existir al menos un técnico en el sistema.", "⚠️");
+          this.showToast("Debe existir al menos un técnico.", "⚠️");
           return;
         }
-        if (confirm(`¿Eliminar a ${this.technicians[index]} de la lista?`)) {
-          this.technicians.splice(index, 1);
-          this.saveSettingsToStorage();
-          this.populateTechnicianSelects();
-          this.showToast("Técnico eliminado.");
+
+        const techName = this.technicians[index];
+        const assignedOts = this.orders.filter(o => o.encargado === techName && o.estado !== 'Terminada');
+
+        if (assignedOts.length > 0) {
+          this.showToast(`No se puede eliminar: tiene ${assignedOts.length} OT(s) activas asignadas.`, "⚠️");
+          return;
         }
+
+        this.showCustomConfirm(
+          `¿Eliminar a ${techName}?`,
+          "El técnico será removido de la lista desplegable del sistema.",
+          () => {
+            this.technicians.splice(index, 1);
+            this.saveSettingsToStorage();
+            this.populateTechnicianSelects();
+            this.showToast("Técnico eliminado.");
+          }
+        );
       }
 
       renderSettingsTechList() {
@@ -942,8 +1057,8 @@
         if (!container) return;
         container.innerHTML = this.technicians.map((t, idx) => `
           <div class="flex items-center justify-between bg-white px-2.5 py-1.5 rounded-lg border border-slate-200">
-            <span class="font-medium text-slate-800 text-xs">${t}</span>
-            <button type="button" onclick="window.app.removeTechnician(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold">✕</button>
+            <span class="font-medium text-slate-800 text-xs">${escapeHtml(t)}</span>
+            <button type="button" onclick="window.app.removeTechnician(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold p-1">✕</button>
           </div>
         `).join('');
       }
@@ -1004,9 +1119,11 @@
         }
       }
 
-      validatePin() {
-        const expectedPin = this.selectedAuthRole === 'supervisor' ? this.pins.supervisor : this.pins.tecnico;
-        if (this.enteredPin === expectedPin) {
+      async validatePin() {
+        const inputHash = await hashPin(this.enteredPin);
+        const expectedHash = this.selectedAuthRole === 'supervisor' ? this.pinHashes.supervisor : this.pinHashes.tecnico;
+
+        if (inputHash === expectedHash) {
           this.currentRole = this.selectedAuthRole;
           localStorage.setItem('sdo_current_role', this.currentRole);
           this.updateRoleBadge();
@@ -1028,6 +1145,7 @@
       }
 
       renderDashboard() {
+        this.isModalOpen = false;
         document.getElementById('operativeView').classList.add('hidden');
         document.getElementById('manageModal').classList.add('hidden');
         this.updateKpis();
@@ -1067,7 +1185,11 @@
         const created = new Date(order.fechaCreacion || Date.now());
         const maxHours = SGM_CONFIG.slaHours[order.prioridad] || 24;
         const maxMs = maxHours * 3600000;
-        const endRef = (order.estado === 'Terminada' || order.estado === 'Solicitud Cierre') && order.faena_terminada ? new Date(order.faena_terminada) : new Date();
+        // Unificación estricta de tiempo de término
+        const completionTime = order.faena_terminada || order.fechaTermino;
+        const endRef = (order.estado === 'Terminada' || order.estado === 'Solicitud Cierre') && completionTime 
+          ? new Date(completionTime) 
+          : new Date();
         const elapsedMs = Math.max(0, endRef - created);
         const elapsedHours = elapsedMs / 3600000;
         const elapsedDays = Math.floor(elapsedHours / 24);
@@ -1136,12 +1258,12 @@
         alertsList.innerHTML = pendingReqs.map(item => `
           <div class="bg-white p-2.5 rounded-lg border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <span class="font-bold text-amber-900 text-xs">${item.ot.folio} (${item.ot.recinto}) - ${item.ot.encargado}:</span>
-              <span class="text-xs text-slate-700 block">${item.req.tipo} - "${item.req.detalle}"</span>
+              <span class="font-bold text-amber-900 text-xs">${escapeHtml(item.ot.folio)} (${escapeHtml(item.ot.recinto)}) - ${escapeHtml(item.ot.encargado || 'Técnico')}:</span>
+              <span class="text-xs text-slate-700 block">${escapeHtml(item.req.tipo)} - "${escapeHtml(item.req.detalle)}"</span>
               <span class="text-[10px] text-slate-400 font-medium">${new Date(item.req.fecha).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} hrs</span>
             </div>
             ${this.currentRole === 'supervisor' ? `
-              <button onclick="window.app.openManageModal('${item.ot.id}')" class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-md self-end sm:self-auto">
+              <button onclick="window.app.openManageModal('${escapeHtml(item.ot.id)}')" class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-md self-end sm:self-auto">
                 Atender
               </button>
             ` : ''}
@@ -1155,8 +1277,8 @@
 
         const filtered = this.orders.filter(o => {
           const matchQuery = !query || 
-            o.folio.toLowerCase().includes(query) ||
-            o.recinto.toLowerCase().includes(query) ||
+            (o.folio && o.folio.toLowerCase().includes(query)) ||
+            (o.recinto && o.recinto.toLowerCase().includes(query)) ||
             (o.ticket && o.ticket.toLowerCase().includes(query)) ||
             (o.solicitante && o.solicitante.toLowerCase().includes(query)) ||
             (o.encargado && o.encargado.toLowerCase().includes(query));
@@ -1220,17 +1342,16 @@
           <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-3">
             <div>
               <div class="flex items-center justify-between">
-                <span class="font-black text-xs text-slate-900">${o.folio}</span>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${statusColors[o.estado] || 'bg-slate-100 text-slate-700'}">${o.estado}</span>
+                <span class="font-black text-xs text-slate-900 select-all">${escapeHtml(o.folio)}</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${statusColors[o.estado] || 'bg-slate-100 text-slate-700'}">${escapeHtml(o.estado)}</span>
               </div>
-              <h4 class="font-bold text-sm text-slate-800 mt-1">${o.recinto}</h4>
-              <p class="text-xs text-slate-500 font-medium">${o.especialidad} • Prioridad ${o.prioridad}</p>
+              <h4 class="font-bold text-sm text-slate-800 mt-1">${escapeHtml(o.recinto)}</h4>
+              <p class="text-xs text-slate-500 font-medium">${escapeHtml(o.especialidad)} • Prioridad ${escapeHtml(o.prioridad)}</p>
               <div class="text-[11px] text-slate-600 mt-1 flex items-center justify-between">
-                <span>Técnico: <b class="text-slate-800">${o.encargado || 'Pablo Loira'}</b></span>
-                <span>PMA: <b class="text-slate-800">${o.ticket || 'N/A'}</b></span>
+                <span>Técnico: <b class="text-slate-800">${escapeHtml(o.encargado || 'Pablo Loira')}</b></span>
+                <span>PMA: <b class="text-slate-800">${escapeHtml(o.ticket || 'N/A')}</b></span>
               </div>
               
-              <!-- Barra de Tiempo Transcurrido -->
               <div class="mt-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
                 <div class="flex justify-between text-[11px] font-semibold mb-1">
                   <span class="text-slate-600">Transcurrido:</span>
@@ -1242,21 +1363,20 @@
               </div>
             </div>
 
-            <!-- Acciones -->
             <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1.5">
-              <button onclick="window.app.openOperativeView('${o.id}')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg text-center">
+              <button onclick="window.app.openOperativeView('${escapeHtml(o.id)}')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg text-center">
                 📋 Ficha
               </button>
               ${this.currentRole === 'supervisor' ? `
-                <button onclick="window.app.openManageModal('${o.id}')" class="flex-1 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold rounded-lg border border-blue-200">
+                <button onclick="window.app.openManageModal('${escapeHtml(o.id)}')" class="flex-1 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold rounded-lg border border-blue-200">
                   ⚙️ Gestionar OT
                 </button>
               ` : ''}
-              <button onclick="window.app.shareWhatsApp('${o.id}')" class="px-3 py-2 bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-bold rounded-lg border border-[#25D366]/30 flex items-center justify-center space-x-1" title="Compartir por WhatsApp">
+              <button onclick="window.app.shareWhatsApp('${escapeHtml(o.id)}')" class="px-3 py-2 bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-bold rounded-lg border border-[#25D366]/30 flex items-center justify-center space-x-1" title="Compartir por WhatsApp">
                 <svg class="w-4 h-4 fill-[#25D366]" viewBox="0 0 24 24"><path d="M12.031 2C6.496 2 2 6.496 2 12.031c0 1.956.562 3.844 1.625 5.48L2 22l4.633-1.578a10.02 10.02 0 0 0 5.398 1.578c5.535 0 10.031-4.496 10.031-10.031C22.062 6.496 17.566 2 12.031 2zm0 18.375a8.31 8.31 0 0 1-4.437-1.273l-.317-.188-2.75.938.938-2.688-.207-.332a8.347 8.347 0 0 1-1.258-4.481c0-4.606 3.75-8.356 8.356-8.356 4.606 0 8.356 3.75 8.356 8.356 0 4.606-3.75 8.356-8.356 8.356zm4.582-6.262c-.25-.125-1.48-.73-1.71-.813-.23-.083-.398-.125-.565.125-.167.25-.646.813-.792.98-.146.166-.292.187-.542.062s-1.058-.39-2.016-1.244c-.744-.664-1.246-1.484-1.392-1.734-.146-.25-.016-.385.11-.51.114-.113.25-.292.375-.438.125-.146.167-.25.25-.417.083-.166.042-.312-.021-.437-.063-.125-.563-1.354-.77-1.854-.203-.488-.41-.422-.565-.43-.146-.008-.312-.01-.48-.01s-.437.062-.666.312c-.23.25-.875.854-.875 2.083s.896 2.417 1.02 2.583c.126.167 1.766 2.7 4.28 3.785.598.258 1.066.413 1.43.529.602.191 1.15.164 1.583.1.483-.072 1.48-.605 1.688-1.188.208-.583.208-1.083.146-1.188-.063-.104-.23-.166-.48-.291z"/></svg>
                 <span>WhatsApp</span>
               </button>
-              <button onclick="window.app.generatePDF('${o.id}')" class="px-2.5 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold rounded-lg border border-slate-200" title="PDF">
+              <button onclick="window.app.generatePDF('${escapeHtml(o.id)}')" class="px-2.5 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold rounded-lg border border-slate-200" title="PDF">
                 📄
               </button>
             </div>
@@ -1275,15 +1395,15 @@
 
         return `
           <tr class="hover:bg-slate-50 transition">
-            <td class="p-3 font-bold text-slate-900">${o.folio}</td>
+            <td class="p-3 font-bold text-slate-900 select-all">${escapeHtml(o.folio)}</td>
             <td class="p-3">
-              <span class="font-bold text-slate-800 block">${o.recinto}</span>
-              <span class="text-[10px] text-slate-400 font-medium">PMA: ${o.ticket || 'N/A'} • ${o.solicitante || ''}</span>
+              <span class="font-bold text-slate-800 block">${escapeHtml(o.recinto)}</span>
+              <span class="text-[10px] text-slate-400 font-medium">PMA: ${escapeHtml(o.ticket || 'N/A')} • ${escapeHtml(o.solicitante || '')}</span>
             </td>
-            <td class="p-3 font-medium text-slate-600">${o.especialidad}</td>
-            <td class="p-3 font-bold text-slate-800">${o.encargado || 'Pablo Loira'}</td>
+            <td class="p-3 font-medium text-slate-600">${escapeHtml(o.especialidad)}</td>
+            <td class="p-3 font-bold text-slate-800">${escapeHtml(o.encargado || 'Pablo Loira')}</td>
             <td class="p-3">
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${statusColors[o.estado]}">${o.estado}</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${statusColors[o.estado]}">${escapeHtml(o.estado)}</span>
             </td>
             <td class="p-3">
               <div class="text-[11px] font-semibold ${sla.textClass} mb-1">${sla.elapsedString} (${sla.percent}%)</div>
@@ -1292,47 +1412,62 @@
               </div>
             </td>
             <td class="p-3 text-right space-x-1 whitespace-nowrap">
-              <button onclick="window.app.openOperativeView('${o.id}')" class="px-2.5 py-1 bg-slate-800 text-white rounded text-xs font-bold">Ficha</button>
+              <button onclick="window.app.openOperativeView('${escapeHtml(o.id)}')" class="px-2.5 py-1 bg-slate-800 text-white rounded text-xs font-bold">Ficha</button>
               ${this.currentRole === 'supervisor' ? `
-                <button onclick="window.app.openManageModal('${o.id}')" class="px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded text-xs font-bold">⚙️ Gestionar</button>
+                <button onclick="window.app.openManageModal('${escapeHtml(o.id)}')" class="px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded text-xs font-bold">⚙️ Gestionar</button>
               ` : ''}
-              <button onclick="window.app.shareWhatsApp('${o.id}')" class="px-2 py-1 bg-[#25D366]/10 text-[#128C7E] border border-[#25D366]/30 rounded text-xs font-bold inline-flex items-center space-x-1">
+              <button onclick="window.app.shareWhatsApp('${escapeHtml(o.id)}')" class="px-2 py-1 bg-[#25D366]/10 text-[#128C7E] border border-[#25D366]/30 rounded text-xs font-bold inline-flex items-center space-x-1">
                 <svg class="w-3.5 h-3.5 fill-[#25D366]" viewBox="0 0 24 24"><path d="M12.031 2C6.496 2 2 6.496 2 12.031c0 1.956.562 3.844 1.625 5.48L2 22l4.633-1.578a10.02 10.02 0 0 0 5.398 1.578c5.535 0 10.031-4.496 10.031-10.031C22.062 6.496 17.566 2 12.031 2zm0 18.375a8.31 8.31 0 0 1-4.437-1.273l-.317-.188-2.75.938.938-2.688-.207-.332a8.347 8.347 0 0 1-1.258-4.481c0-4.606 3.75-8.356 8.356-8.356 4.606 0 8.356 3.75 8.356 8.356 0 4.606-3.75 8.356-8.356 8.356zm4.582-6.262c-.25-.125-1.48-.73-1.71-.813-.23-.083-.398-.125-.565.125-.167.25-.646.813-.792.98-.146.166-.292.187-.542.062s-1.058-.39-2.016-1.244c-.744-.664-1.246-1.484-1.392-1.734-.146-.25-.016-.385.11-.51.114-.113.25-.292.375-.438.125-.146.167-.25.25-.417.083-.166.042-.312-.021-.437-.063-.125-.563-1.354-.77-1.854-.203-.488-.41-.422-.565-.43-.146-.008-.312-.01-.48-.01s-.437.062-.666.312c-.23.25-.875.854-.875 2.083s.896 2.417 1.02 2.583c.126.167 1.766 2.7 4.28 3.785.598.258 1.066.413 1.43.529.602.191 1.15.164 1.583.1.483-.072 1.48-.605 1.688-1.188.208-.583.208-1.083.146-1.188-.063-.104-.23-.166-.48-.291z"/></svg>
                 <span>WhatsApp</span>
               </button>
-              <button onclick="window.app.generatePDF('${o.id}')" class="px-2 py-1 bg-slate-100 text-slate-700 border border-slate-200 rounded text-xs font-bold">📄</button>
+              <button onclick="window.app.generatePDF('${escapeHtml(o.id)}')" class="px-2 py-1 bg-slate-100 text-slate-700 border border-slate-200 rounded text-xs font-bold">📄</button>
             </td>
           </tr>
         `;
       }
 
-      // ================= CREAR NUEVA OT (SUPERVISOR ONLY) =================
+      // ================= CREAR NUEVA OT =================
       openCreateModal() {
         if (this.currentRole !== 'supervisor') {
-          this.showToast("Acceso denegado: Solo el Supervisor puede crear una OT.", "🔒");
+          this.showToast("Solo el Supervisor puede crear una OT.", "🔒");
           return;
         }
+        this.isModalOpen = true;
         document.getElementById('createOtForm').reset();
         this.populateTechnicianSelects();
         document.getElementById('createModal').classList.remove('hidden');
       }
 
       closeCreateModal() {
+        this.isModalOpen = false;
         document.getElementById('createModal').classList.add('hidden');
       }
 
-      handleCreateOT(event) {
+      // Generador de folios robusto e incremental
+      generateNextFolio() {
+        const year = new Date().getFullYear();
+        let maxSeq = 0;
+        this.orders.forEach(o => {
+          if (o.folio) {
+            const match = o.folio.match(/-(\d+)-\d{4}$/);
+            if (match) {
+              const num = parseInt(match[1], 10);
+              if (num > maxSeq) maxSeq = num;
+            }
+          }
+        });
+        const nextNum = String(maxSeq + 1).padStart(3, '0');
+        return `${this.folioPrefix}-${nextNum}-${year}`;
+      }
+
+      async handleCreateOT(event) {
         event.preventDefault();
         if (this.currentRole !== 'supervisor') {
-          this.showToast("Solo el Supervisor puede registrar y despachar OTs.", "🔒");
+          this.showToast("Acceso denegado: rol inválido.", "🔒");
           return;
         }
 
-        const year = new Date().getFullYear();
-        const count = this.orders.length + 1;
-        const countStr = String(count).padStart(3, '0');
-        const folio = `${this.folioPrefix}-${countStr}-${year}`;
-
+        const folio = this.generateNextFolio();
         const newOrder = {
           id: folio,
           folio: folio,
@@ -1348,27 +1483,30 @@
           fechaCreacion: new Date().toISOString(),
           faena_iniciada: null,
           faena_terminada: null,
+          fechaTermino: null,
           solicitudes_terreno: []
         };
 
         this.orders.unshift(newOrder);
-        this.syncOrderToCloud(newOrder);
         this.closeCreateModal();
         this.updateKpis();
         this.renderOrdersList();
-        this.showToast(`OT ${newOrder.folio} creada y despachada con éxito.`);
+        
+        await this.syncOrderToCloud(newOrder);
+        this.showToast(`OT ${newOrder.folio} creada y despachada.`);
       }
 
       // ================= GESTIONAR OT (SUPERVISOR) =================
       openManageModal(id) {
         if (this.currentRole !== 'supervisor') {
-          this.showToast("Acceso denegado: Solo el Supervisor puede gestionar la OT.", "🔒");
+          this.showToast("Solo el Supervisor puede gestionar la OT.", "🔒");
           return;
         }
 
         const o = this.orders.find(item => item.id === id);
         if (!o) return;
 
+        this.isModalOpen = true;
         document.getElementById('manageOtId').value = o.id;
         document.getElementById('manageModalFolio').textContent = o.folio;
         document.getElementById('manageModalSubtitle').textContent = `${o.recinto} • Prioridad ${o.prioridad}`;
@@ -1384,24 +1522,23 @@
         document.getElementById('manageOtEstado').value = o.estado;
         document.getElementById('manageOtInstrucciones').value = o.instrucciones || '';
 
-        // Historial de solicitudes de cuadrilla
         const reqList = document.getElementById('manageRequestsList');
         if (o.solicitudes_terreno && o.solicitudes_terreno.length) {
           reqList.innerHTML = o.solicitudes_terreno.map((r, i) => `
             <div class="bg-white p-2 rounded border border-amber-200">
               <div class="flex justify-between items-center text-[10px] text-slate-500 mb-1">
-                <span class="font-bold text-amber-800">${r.tipo} (${o.encargado || 'Técnico'})</span>
+                <span class="font-bold text-amber-800">${escapeHtml(r.tipo)} (${escapeHtml(o.encargado || 'Técnico')})</span>
                 <span>${new Date(r.fecha).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</span>
               </div>
-              <p class="text-slate-800 font-medium">"${r.detalle}"</p>
+              <p class="text-slate-800 font-medium">"${escapeHtml(r.detalle)}"</p>
               ${r.respuesta ? `
                 <div class="mt-1 pt-1 border-t border-slate-100 text-blue-800 font-semibold text-[11px]">
-                  ↳ Jefatura: "${r.respuesta}" <span class="text-[9px] text-slate-400 font-normal">(${new Date(r.fecha_respuesta).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})})</span>
+                  ↳ Jefatura: "${escapeHtml(r.respuesta)}" <span class="text-[9px] text-slate-400 font-normal">(${new Date(r.fecha_respuesta).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})})</span>
                 </div>
               ` : `
                 <div class="mt-1 flex items-center space-x-1">
                   <input type="text" id="respInput_${i}" placeholder="Escribir respuesta..." class="flex-1 p-1 bg-slate-50 border border-slate-200 rounded text-[11px]">
-                  <button type="button" onclick="window.app.answerRequest('${o.id}', ${i})" class="px-2 py-1 bg-blue-600 text-white rounded text-[10px] font-bold">Responder</button>
+                  <button type="button" onclick="window.app.answerRequest('${escapeHtml(o.id)}', ${i})" class="px-2 py-1 bg-blue-600 text-white rounded text-[10px] font-bold">Responder</button>
                 </div>
               `}
             </div>
@@ -1414,10 +1551,11 @@
       }
 
       closeManageModal() {
+        this.isModalOpen = false;
         document.getElementById('manageModal').classList.add('hidden');
       }
 
-      answerRequest(otId, reqIndex) {
+      async answerRequest(otId, reqIndex) {
         const input = document.getElementById(`respInput_${reqIndex}`);
         if (!input || !input.value.trim()) return;
 
@@ -1425,14 +1563,14 @@
         if (o && o.solicitudes_terreno[reqIndex]) {
           o.solicitudes_terreno[reqIndex].respuesta = input.value.trim();
           o.solicitudes_terreno[reqIndex].fecha_respuesta = new Date().toISOString();
-          this.syncOrderToCloud(o);
+          await this.syncOrderToCloud(o);
           this.openManageModal(otId);
           this.renderAlerts();
           this.showToast("Respuesta enviada a la cuadrilla.");
         }
       }
 
-      handleSaveManagement(event) {
+      async handleSaveManagement(event) {
         event.preventDefault();
         const id = document.getElementById('manageOtId').value;
         const o = this.orders.find(item => item.id === id);
@@ -1448,32 +1586,38 @@
         o.estado = document.getElementById('manageOtEstado').value;
         o.instrucciones = document.getElementById('manageOtInstrucciones').value.trim();
 
-        if (o.estado === 'Terminada' && !o.fechaTermino) {
-          o.fechaTermino = new Date().toISOString();
-          if (!o.faena_terminada) o.faena_terminada = o.fechaTermino;
+        if (o.estado === 'Terminada') {
+          const nowIso = new Date().toISOString();
+          o.fechaTermino = o.fechaTermino || nowIso;
+          o.faena_terminada = o.faena_terminada || nowIso;
         }
 
-        this.syncOrderToCloud(o);
         this.closeManageModal();
         this.updateKpis();
         this.renderOrdersList();
-        this.showToast(`OT ${o.folio} actualizada exitosamente.`);
+        
+        await this.syncOrderToCloud(o);
+        this.showToast(`OT ${o.folio} actualizada.`);
       }
 
       deleteOrderFromModal() {
         const id = document.getElementById('manageOtId').value;
-        if (confirm("¿Confirmar eliminación definitiva de esta Orden de Trabajo?")) {
-          this.orders = this.orders.filter(o => o.id !== id);
-          if (this.supabase) {
-            this.supabase.from('orders').delete().eq('id', id);
+        this.showCustomConfirm(
+          "¿Eliminar Orden de Trabajo?",
+          "Esta acción eliminará definitivamente la OT seleccionada del sistema.",
+          async () => {
+            this.orders = this.orders.filter(o => o.id !== id);
+            if (this.supabase) {
+              await this.supabase.from('orders').delete().eq('id', id);
+            }
+            this.saveCache();
+            this.closeManageModal();
+            this.updateKpis();
+            this.renderOrdersList();
+            this.renderAlerts();
+            this.showToast("Orden de Trabajo eliminada.", "🗑️");
           }
-          this.saveCache();
-          this.closeManageModal();
-          this.updateKpis();
-          this.renderOrdersList();
-          this.renderAlerts();
-          this.showToast("Orden de Trabajo eliminada.");
-        }
+        );
       }
 
       // ================= FICHA OPERATIVA DE TERRENO =================
@@ -1482,6 +1626,8 @@
         if (!o) return;
 
         this.activeOperativeOt = o;
+        this.isModalOpen = true;
+
         document.getElementById('opFolioTitle').textContent = o.folio;
         document.getElementById('opStatusBadge').textContent = o.estado;
         document.getElementById('opRecinto').textContent = o.recinto;
@@ -1494,7 +1640,6 @@
         document.getElementById('opQueryTechName').textContent = o.encargado || 'Pablo Loira';
         document.getElementById('opDiagnosticoSolucion').value = o.diagnostico || '';
 
-        // Instrucciones de Jefatura
         const instContainer = document.getElementById('opInstruccionesContainer');
         const instText = document.getElementById('opInstruccionesTexto');
         if (o.instrucciones && o.instrucciones.trim()) {
@@ -1504,13 +1649,11 @@
           instContainer.classList.add('hidden');
         }
 
-        // Botón WhatsApp en la Ficha
         const wsBtn = document.getElementById('opShareWhatsAppBtn');
         if (wsBtn) {
           wsBtn.onclick = () => this.shareWhatsApp(o.id);
         }
 
-        // Tiempos de inicio (Bloqueo si ya inició)
         const startBtn = document.getElementById('startWorkBtn');
         const startLabel = document.getElementById('opStartTimeLabel');
         if (o.faena_iniciada) {
@@ -1525,25 +1668,25 @@
           startBtn.textContent = "▶ Iniciar Ahora";
         }
 
-        // Tiempo de término
         const endLabel = document.getElementById('opEndTimeLabel');
-        if (o.faena_terminada) {
-          endLabel.textContent = new Date(o.faena_terminada).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+        const compTime = o.faena_terminada || o.fechaTermino;
+        if (compTime) {
+          endLabel.textContent = new Date(compTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
         } else {
           endLabel.textContent = "En proceso";
         }
 
         this.renderOperativeHistory(o);
-
         document.getElementById('operativeView').classList.remove('hidden');
       }
 
       closeOperativeView() {
+        this.isModalOpen = false;
         document.getElementById('operativeView').classList.add('hidden');
         this.activeOperativeOt = null;
       }
 
-      startFaena() {
+      async startFaena() {
         if (!this.activeOperativeOt || this.activeOperativeOt.faena_iniciada) return;
         const now = new Date().toISOString();
         this.activeOperativeOt.faena_iniciada = now;
@@ -1551,17 +1694,19 @@
           this.activeOperativeOt.estado = 'En Ejecución';
         }
 
-        this.syncOrderToCloud(this.activeOperativeOt);
+        await this.syncOrderToCloud(this.activeOperativeOt);
         this.openOperativeView(this.activeOperativeOt.id);
         this.updateKpis();
-        this.showToast("Inicio de faena registrado correctamente.");
+        this.showToast("Inicio de faena registrado.");
       }
 
-      endFaena() {
+      async endFaena() {
         if (!this.activeOperativeOt) return;
-        this.activeOperativeOt.faena_terminada = new Date().toISOString();
-        this.syncOrderToCloud(this.activeOperativeOt);
-        document.getElementById('opEndTimeLabel').textContent = new Date(this.activeOperativeOt.faena_terminada).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+        const now = new Date().toISOString();
+        this.activeOperativeOt.faena_terminada = now;
+        this.activeOperativeOt.fechaTermino = now;
+        await this.syncOrderToCloud(this.activeOperativeOt);
+        document.getElementById('opEndTimeLabel').textContent = new Date(now).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
         this.showToast("Término de faena registrado.");
       }
 
@@ -1571,13 +1716,13 @@
           container.innerHTML = o.solicitudes_terreno.map(r => `
             <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
               <div class="flex justify-between items-center text-[10px] text-slate-500 mb-1">
-                <span class="font-bold text-slate-700">${r.tipo} • <span class="text-blue-700">${o.encargado || 'Técnico'}</span></span>
+                <span class="font-bold text-slate-700">${escapeHtml(r.tipo)} • <span class="text-blue-700">${escapeHtml(o.encargado || 'Técnico')}</span></span>
                 <span>${new Date(r.fecha).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</span>
               </div>
-              <p class="text-slate-800 font-medium">"${r.detalle}"</p>
+              <p class="text-slate-800 font-medium">"${escapeHtml(r.detalle)}"</p>
               ${r.respuesta ? `
                 <div class="mt-1.5 pt-1.5 border-t border-slate-200 text-blue-800 text-[11px]">
-                  <span class="font-bold">Respuesta Jefatura:</span> "${r.respuesta}"
+                  <span class="font-bold">Respuesta Jefatura:</span> "${escapeHtml(r.respuesta)}"
                   <span class="text-[9px] text-slate-400 block">${new Date(r.fecha_respuesta).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</span>
                 </div>
               ` : `
@@ -1590,11 +1735,11 @@
         }
       }
 
-      submitTechnicianRequest() {
+      async submitTechnicianRequest() {
         if (!this.activeOperativeOt) return;
         const details = document.getElementById('opNewRequestDetails').value.trim();
         if (!details) {
-          this.showToast("Por favor escriba el detalle de la consulta.", "⚠️");
+          this.showToast("Escriba el detalle de la consulta.", "⚠️");
           return;
         }
 
@@ -1613,60 +1758,60 @@
         }
         this.activeOperativeOt.solicitudes_terreno.push(newReq);
 
-        this.syncOrderToCloud(this.activeOperativeOt);
+        await this.syncOrderToCloud(this.activeOperativeOt);
         document.getElementById('opNewRequestDetails').value = '';
         this.renderOperativeHistory(this.activeOperativeOt);
         this.renderAlerts();
         this.showToast("Consulta enviada a supervisión.");
       }
 
-      saveOperativeProgress(requestClose = false) {
-        if (!this.activeOperativeOt) {
-          this.showToast("Error: No hay orden activa seleccionada.", "⚠️");
-          return;
-        }
+      async saveOperativeProgress(requestClose = false) {
+        if (!this.activeOperativeOt) return;
         
         const diagVal = document.getElementById('opDiagnosticoSolucion').value.trim();
         this.activeOperativeOt.diagnostico = diagVal;
 
         if (requestClose) {
           this.activeOperativeOt.estado = 'Solicitud Cierre';
+          const nowIso = new Date().toISOString();
           if (!this.activeOperativeOt.faena_terminada) {
-            this.activeOperativeOt.faena_terminada = new Date().toISOString();
+            this.activeOperativeOt.faena_terminada = nowIso;
+            this.activeOperativeOt.fechaTermino = nowIso;
           }
           this.showToast("⚡ Solicitud de cierre enviada a Supervisión");
         } else {
-          this.showToast("💾 Progreso guardado correctamente");
+          this.showToast("💾 Progreso guardado");
         }
 
-        // Actualizar en memoria y sincronizar
         const index = this.orders.findIndex(item => item.id === this.activeOperativeOt.id);
         if (index !== -1) {
           this.orders[index] = { ...this.activeOperativeOt };
         }
 
-        this.syncOrderToCloud(this.activeOperativeOt);
+        await this.syncOrderToCloud(this.activeOperativeOt);
         this.closeOperativeView();
         this.updateKpis();
         this.renderOrdersList();
         this.renderAlerts();
       }
 
-      // ================= CONFIGURACIÓN DEL SISTEMA (SUPERVISOR ONLY) =================
+      // ================= CONFIGURACIÓN DEL SISTEMA =================
       openSettingsModal() {
         if (this.currentRole !== 'supervisor') {
-          this.showToast("Acceso denegado: Solo el Supervisor puede acceder a Configuración.", "🔒");
+          this.showToast("Solo el Supervisor puede acceder a Configuración.", "🔒");
           return;
         }
+        this.isModalOpen = true;
         document.getElementById('cfgHospitalName').value = this.hospitalName;
         document.getElementById('cfgFolioPrefix').value = this.folioPrefix;
-        document.getElementById('cfgPinSupervisor').value = this.pins.supervisor;
-        document.getElementById('cfgPinTecnico').value = this.pins.tecnico;
+        document.getElementById('cfgPinSupervisor').value = '';
+        document.getElementById('cfgPinTecnico').value = '';
         this.renderSettingsTechList();
         document.getElementById('settingsModal').classList.remove('hidden');
       }
 
       closeSettingsModal() {
+        this.isModalOpen = false;
         document.getElementById('settingsModal').classList.add('hidden');
       }
 
@@ -1693,7 +1838,7 @@
           const el = document.getElementById(id);
           if (el) {
             if (this.customLogo) {
-              el.innerHTML = `<img src="${this.customLogo}" class="w-full h-full object-contain">`;
+              el.innerHTML = `<img src="${escapeHtml(this.customLogo)}" class="w-full h-full object-contain">`;
             } else {
               el.innerHTML = `<span class="text-xl">🏥</span>`;
             }
@@ -1708,7 +1853,7 @@
             const parsed = JSON.parse(stored);
             this.hospitalName = parsed.hospitalName || SGM_CONFIG.defaultHospital;
             this.folioPrefix = parsed.folioPrefix || SGM_CONFIG.defaultPrefix;
-            this.pins = parsed.pins || { ...SGM_CONFIG.defaultPins };
+            this.pinHashes = parsed.pinHashes || { ...SGM_CONFIG.defaultPinHashes };
             this.customLogo = parsed.customLogo || null;
             if (parsed.technicians && Array.isArray(parsed.technicians) && parsed.technicians.length) {
               this.technicians = parsed.technicians;
@@ -1723,14 +1868,14 @@
         const config = {
           hospitalName: this.hospitalName,
           folioPrefix: this.folioPrefix,
-          pins: this.pins,
+          pinHashes: this.pinHashes,
           customLogo: this.customLogo,
           technicians: this.technicians
         };
         localStorage.setItem('sdo_settings_config', JSON.stringify(config));
       }
 
-      saveSystemSettings(event) {
+      async saveSystemSettings(event) {
         event.preventDefault();
         if (this.currentRole !== 'supervisor') {
           this.showToast("Solo el Supervisor puede guardar configuraciones.", "🔒");
@@ -1739,22 +1884,31 @@
 
         this.hospitalName = document.getElementById('cfgHospitalName').value.trim();
         this.folioPrefix = document.getElementById('cfgFolioPrefix').value.trim();
-        this.pins.supervisor = document.getElementById('cfgPinSupervisor').value.trim();
-        this.pins.tecnico = document.getElementById('cfgPinTecnico').value.trim();
+
+        const pinSup = document.getElementById('cfgPinSupervisor').value.trim();
+        const pinTec = document.getElementById('cfgPinTecnico').value.trim();
+
+        if (pinSup.length === 4) {
+          this.pinHashes.supervisor = await hashPin(pinSup);
+        }
+        if (pinTec.length === 4) {
+          this.pinHashes.tecnico = await hashPin(pinTec);
+        }
 
         this.saveSettingsToStorage();
         document.getElementById('headerHospitalName').textContent = this.hospitalName;
         this.populateTechnicianSelects();
         this.closeSettingsModal();
-        this.showToast("Configuración guardada correctamente.");
+        this.showToast("Configuración guardada.");
       }
 
-      // ================= REPORTE DE AVANCE (SUPERVISOR ONLY) =================
+      // ================= REPORTE DE AVANCE =================
       openAdvanceReportModal() {
         if (this.currentRole !== 'supervisor') {
-          this.showToast("Acceso denegado: Solo el Supervisor puede generar Reportes de Avance.", "🔒");
+          this.showToast("Solo el Supervisor puede generar Reportes.", "🔒");
           return;
         }
+        this.isModalOpen = true;
         const today = new Date().toISOString().split('T')[0];
         const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0];
         document.getElementById('repDateFrom').value = thirtyDaysAgo;
@@ -1764,6 +1918,7 @@
       }
 
       closeAdvanceReportModal() {
+        this.isModalOpen = false;
         document.getElementById('advanceReportModal').classList.add('hidden');
       }
 
@@ -1773,19 +1928,20 @@
         const to = new Date(document.getElementById('repDateTo').value);
         to.setHours(23, 59, 59);
 
-        const list = this.orders.filter(o => {
+        this.currentReportFilteredList = this.orders.filter(o => {
           const d = new Date(o.fechaCreacion);
           return d >= from && d <= to;
         });
 
-        const total = list.length;
+        const total = this.currentReportFilteredList.length;
         let compliantCount = 0;
         let totalElapsedHours = 0;
 
-        list.forEach(o => {
+        this.currentReportFilteredList.forEach(o => {
           const sla = this.calculateSlaInfo(o);
           if (sla.percent <= 100) compliantCount++;
-          const end = o.fechaTermino ? new Date(o.fechaTermino) : new Date();
+          const comp = o.faena_terminada || o.fechaTermino;
+          const end = comp ? new Date(comp) : new Date();
           totalElapsedHours += Math.max(0, (end - new Date(o.fechaCreacion)) / 3600000);
         });
 
@@ -1797,13 +1953,13 @@
         document.getElementById('statAvgTime').textContent = `${avgHours}h`;
 
         const tbody = document.getElementById('reportTableBody');
-        tbody.innerHTML = list.map(o => {
+        tbody.innerHTML = this.currentReportFilteredList.map(o => {
           const sla = this.calculateSlaInfo(o);
           return `
             <tr>
-              <td class="p-2 font-bold">${o.folio}</td>
-              <td class="p-2">${o.recinto}</td>
-              <td class="p-2">${o.estado}</td>
+              <td class="p-2 font-bold">${escapeHtml(o.folio)}</td>
+              <td class="p-2">${escapeHtml(o.recinto)}</td>
+              <td class="p-2">${escapeHtml(o.estado)}</td>
               <td class="p-2 text-right font-semibold ${sla.textClass}">${sla.elapsedString}</td>
             </tr>
           `;
@@ -1818,13 +1974,17 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
+        const dateFrom = document.getElementById('repDateFrom').value;
+        const dateTo = document.getElementById('repDateTo').value;
+        const listToExport = this.currentReportFilteredList.length > 0 ? this.currentReportFilteredList : this.orders;
+
         doc.setFontSize(14);
         doc.text(`INFORME EJECUTIVO DE AVANCE - ${this.hospitalName}`, 14, 15);
         doc.setFontSize(9);
-        doc.text(`Rango: ${document.getElementById('repDateFrom').value} al ${document.getElementById('repDateTo').value}`, 14, 22);
+        doc.text(`Rango: ${dateFrom} al ${dateTo}`, 14, 22);
 
         const headers = [["Folio", "Recinto", "Especialidad", "Técnico", "Estado", "SLA Cumplido"]];
-        const data = this.orders.map(o => [
+        const data = listToExport.map(o => [
           o.folio,
           o.recinto,
           o.especialidad,
@@ -1841,7 +2001,7 @@
           styles: { fontSize: 8 }
         });
 
-        doc.save(`Informe_Avance_${Date.now()}.pdf`);
+        doc.save(`Informe_Avance_${dateFrom}_al_${dateTo}.pdf`);
       }
 
       // ================= WHATSAPP Y PDF DE OT =================
@@ -1871,9 +2031,7 @@ ${o.instrucciones ? `\n📋 *Instrucción Supervisión:*\n${o.instrucciones}` : 
 🔗 *Abrir en SDO Cloud:*
 ${directLink}`;
 
-        const encodedMsg = encodeURIComponent(message);
-        const waUrl = `https://api.whatsapp.com/send?text=${encodedMsg}`;
-
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
         const link = document.createElement('a');
         link.href = waUrl;
         link.target = '_blank';
@@ -1937,7 +2095,6 @@ ${directLink}`;
       }
     }
 
-    // Instanciación global de la aplicación
     window.addEventListener('DOMContentLoaded', () => {
       window.app = new HospitalApp();
     });
