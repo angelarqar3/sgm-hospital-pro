@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SGM-Hospital Cloud | Sistema de Gestión de OTs</title>
+  <title>HBQP-Hospital Cloud | Sistema de Gestión de OTs</title>
   <meta name="theme-color" content="#0284c7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -42,7 +42,6 @@
 </head>
 <body class="h-full flex flex-col font-sans text-slate-800 bg-slate-100 antialiased safe-bottom select-none sm:select-auto">
 
-  <!-- HEADER UNIFICADO CON MENÚ DESPLEGABLE -->
   <header class="sticky top-0 z-40 bg-slate-900 text-white border-b border-slate-800 shadow-md">
     <div class="max-w-7xl mx-auto px-3 sm:px-6">
       <div class="flex items-center justify-between h-14 sm:h-16 relative">
@@ -113,7 +112,6 @@
     </div>
   </header>
 
-  <!-- CONTENIDO PRINCIPAL -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 space-y-4" onclick="window.app && window.app.closeMainMenu()">
     
     <!-- VISTA 1: DASHBOARD SUPERVISOR -->
@@ -504,46 +502,125 @@
     </div>
   </div>
 
-  <!-- MODAL: GESTIÓN DE SUPERVISOR (DESPACHO) -->
+  <!-- MODAL: GESTIÓN & EDICIÓN COMPLETA DE OT POR SUPERVISOR -->
   <div id="supervisorMgmtModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-3.5 max-h-[90vh] overflow-y-auto">
-      <div class="flex justify-between items-start border-b border-slate-100 pb-2.5">
-        <div>
-          <span class="text-[10px] font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full">Despacho</span>
-          <h3 id="mgmtModalOtTitle" class="text-base font-black text-slate-800 mt-0.5">OT-INFRA-...</h3>
-          <p id="mgmtModalRecinto" class="text-xs text-slate-500 font-semibold"></p>
-        </div>
-        <button onclick="window.app.closeSupervisorMgmtModal()" class="text-slate-400 text-xl font-bold p-1">✕</button>
-      </div>
-
-      <div class="space-y-1.5">
-        <h4 class="text-xs font-black text-slate-700 uppercase">Requerimientos de Cuadrilla:</h4>
-        <div id="mgmtModalRequestsList" class="space-y-1.5 max-h-40 overflow-y-auto pr-1"></div>
-      </div>
-
-      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2.5 text-xs">
-        <h4 class="font-black text-sky-900 uppercase">Instrucciones de Jefatura:</h4>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <div>
-            <label class="block font-bold text-slate-700 mb-0.5">Estado Materiales / IAAS:</label>
-            <input type="text" id="mgmtMaterialStatus" placeholder="Ej: Material autorizado / Pañol" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-bold" />
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[92vh] overflow-y-auto">
+      
+      <!-- Cabecera del modal -->
+      <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-600 to-teal-500 text-white flex items-center justify-center text-lg font-black shadow-md">
+            ✏️
           </div>
           <div>
-            <label class="block font-bold text-slate-700 mb-0.5">Actualizar Etapa:</label>
-            <select id="mgmtStageSelect" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-bold">
-              <option value="Pendiente">Pendiente</option>
-              <option value="En Ejecución">En Ejecución</option>
-              <option value="Con Problemas">Con Problemas</option>
+            <div class="flex items-center space-x-2">
+              <h3 id="mgmtModalOtTitle" class="text-base sm:text-lg font-black font-mono text-slate-900">OT-INFRA-...</h3>
+              <span id="mgmtModalStatusBadge" class="text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-sm">Pendiente</span>
+            </div>
+            <p id="mgmtModalRecinto" class="text-xs text-slate-500 font-semibold"></p>
+          </div>
+        </div>
+        <button onclick="window.app.closeSupervisorMgmtModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold p-1">✕</button>
+      </div>
+
+      <!-- Sección de Solicitudes de Cuadrilla -->
+      <div class="bg-amber-50/70 p-3 rounded-2xl border border-amber-200 space-y-2">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-black text-amber-950 uppercase flex items-center space-x-1.5">
+            <span>📢</span><span>Requerimientos de Cuadrilla en Terreno</span>
+          </h4>
+          <span id="mgmtModalReqCount" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500 text-white shadow">0</span>
+        </div>
+        <div id="mgmtModalRequestsList" class="space-y-1.5 max-h-36 overflow-y-auto pr-1"></div>
+      </div>
+
+      <!-- Formulario de Edición Integral de la OT -->
+      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 text-xs">
+        <h4 class="font-black text-sky-900 uppercase flex items-center space-x-1.5 text-xs">
+          <span>⚙️</span><span>Datos Generales de la Orden</span>
+        </h4>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5">Especialidad Operativa *</label>
+            <select id="mgmtEspecialidad" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-xs text-slate-800">
+              <option value="Infraestructura y Obras Civiles">Infraestructura y Obras Civiles</option>
+              <option value="Gasfitería y Redes Sanitarias">Gasfitería y Redes Sanitarias</option>
+              <option value="Electricidad y Climatización">Electricidad y Climatización</option>
+              <option value="Cerrajería y Puertas Clínicas">Cerrajería y Puertas Clínicas</option>
+              <option value="Gases Clínicos y Equipamiento">Gases Clínicos y Equipamiento</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5">Tipo de Mantenimiento *</label>
+            <select id="mgmtTipoMant" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-xs text-slate-800">
+              <option value="Correctivo">Mantenimiento Correctivo</option>
+              <option value="Emergencia Crítica">Emergencia Crítica</option>
+              <option value="Preventivo">Mantenimiento Preventivo</option>
+              <option value="Mejora / Modificación">Mejora / Adecuación</option>
             </select>
           </div>
         </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div class="sm:col-span-2">
+            <label class="block font-bold text-slate-700 mb-0.5">Recinto Clínico / PMA *</label>
+            <input type="text" id="mgmtRecinto" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-xs text-slate-800" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5">Nivel de Prioridad *</label>
+            <select id="mgmtPrioridad" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-xs text-slate-800">
+              <option value="Baja">🟢 Baja (72h)</option>
+              <option value="Media">🟡 Media (24h)</option>
+              <option value="Alta">🟠 Alta (6h)</option>
+              <option value="Urgente">🚨 Urgente (2h)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5">Ticket / Ref *</label>
+            <input type="text" id="mgmtTicket" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-mono font-bold text-xs" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5">Solicitante *</label>
+            <input type="text" id="mgmtSolicitante" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-xs" />
+          </div>
+        </div>
+
         <div>
-          <label class="block font-bold text-slate-700 mb-0.5">Instrucción para la Cuadrilla:</label>
-          <textarea id="mgmtSupervisorNotes" rows="2" placeholder="Instrucción técnica directa..." class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-semibold"></textarea>
+          <label class="block font-bold text-slate-700 mb-0.5">Descripción de la Falla Técnica *</label>
+          <textarea id="mgmtDescripcion" rows="2" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-medium text-xs"></textarea>
         </div>
-        <div class="flex justify-end pt-1">
-          <button type="button" onclick="window.app.saveSupervisorManagement()" class="px-4 py-2 bg-sky-700 hover:bg-sky-600 text-white font-black text-xs rounded-xl shadow active:scale-95">Guardar y Sincronizar</button>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 border-t border-slate-200/80">
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5">Encargado de Cuadrilla Asignado:</label>
+            <input type="text" id="mgmtEncargado" placeholder="Ej: Téc. Roberto Valenzuela" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-xs" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5">Estado Operativo de la OT:</label>
+            <select id="mgmtStageSelect" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-black text-xs text-slate-800">
+              <option value="Pendiente">Pendiente</option>
+              <option value="En Ejecución">En Ejecución</option>
+              <option value="Con Problemas">Con Problemas</option>
+              <option value="Solicitud de Cierre">Solicitud de Cierre</option>
+              <option value="Terminada">Terminada</option>
+            </select>
+          </div>
         </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-0.5">Instrucción Técnica / Notas de Supervisión:</label>
+          <textarea id="mgmtSupervisorNotes" rows="2" placeholder="Instrucciones operativas para la cuadrilla en terreno..." class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-semibold text-xs"></textarea>
+        </div>
+      </div>
+
+      <!-- Botones de acción del modal -->
+      <div class="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+        <button type="button" onclick="window.app.closeSupervisorMgmtModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold active:scale-95 transition">Cancelar</button>
+        <button type="button" onclick="window.app.saveSupervisorManagement()" class="px-5 py-2 bg-sky-700 hover:bg-sky-600 text-white font-black text-xs sm:text-sm rounded-xl shadow active:scale-95 transition">Guardar Cambios</button>
       </div>
     </div>
   </div>
@@ -682,7 +759,6 @@
       });
     };
 
-    // Clase principal de gestión
     class HospitalApp {
       constructor() {
         this.orders = [];
@@ -1234,20 +1310,41 @@
         if (!ot) return;
 
         this.managingOrderId = id;
-        document.getElementById('mgmtModalOtTitle').innerText = `${ot.numero_ot} - ${ot.estado}`;
-        document.getElementById('mgmtModalRecinto').innerText = `Recinto: ${ot.recinto_pma} | Prioridad: ${ot.prioridad}`;
-        document.getElementById('mgmtStageSelect').value = ot.estado === 'Terminada' ? 'En Ejecución' : ot.estado;
+        document.getElementById('mgmtModalOtTitle').innerText = `${ot.numero_ot}`;
+        document.getElementById('mgmtModalRecinto').innerText = `Recinto: ${ot.recinto_pma} | Ref: ${ot.ticket_referencia}`;
+        
+        const badge = document.getElementById('mgmtModalStatusBadge');
+        badge.innerText = ot.estado;
+        badge.className = 'text-[10px] font-black px-2.5 py-0.5 rounded-full ' + (
+          ot.estado === 'Terminada' ? 'bg-emerald-400 text-slate-950' :
+          ot.estado === 'Solicitud de Cierre' ? 'bg-teal-400 text-slate-950' :
+          ot.estado === 'En Ejecución' ? 'bg-sky-400 text-slate-950' :
+          ot.estado === 'Con Problemas' ? 'bg-rose-400 text-white' :
+          'bg-amber-400 text-slate-950'
+        );
+
+        // Carga de campos editables completos
+        document.getElementById('mgmtEspecialidad').value = ot.especialidad || 'Infraestructura y Obras Civiles';
+        document.getElementById('mgmtTipoMant').value = ot.tipo_mantenimiento || 'Correctivo';
+        document.getElementById('mgmtRecinto').value = ot.recinto_pma || '';
+        document.getElementById('mgmtPrioridad').value = ot.prioridad || 'Media';
+        document.getElementById('mgmtTicket').value = ot.ticket_referencia || '';
+        document.getElementById('mgmtSolicitante').value = ot.solicitante_nombre || '';
+        document.getElementById('mgmtDescripcion').value = ot.descripcion_problema || '';
+        document.getElementById('mgmtEncargado').value = ot.encargado_cuadrilla || '';
+        document.getElementById('mgmtStageSelect').value = ot.estado || 'Pendiente';
         document.getElementById('mgmtSupervisorNotes').value = ot.notas_supervisor || '';
-        document.getElementById('mgmtMaterialStatus').value = '';
 
         const reqList = document.getElementById('mgmtModalRequestsList');
+        const reqCount = document.getElementById('mgmtModalReqCount');
         const reqs = ot.solicitudes_supervisor || [];
+        reqCount.innerText = reqs.length;
 
         if (reqs.length === 0) {
-          reqList.innerHTML = `<div class="text-xs text-slate-400 bg-slate-100 p-2.5 rounded-xl text-center font-bold">La cuadrilla no ha emitido solicitudes.</div>`;
+          reqList.innerHTML = `<div class="text-xs text-amber-900/70 bg-amber-100/50 p-2.5 rounded-xl text-center font-bold">✓ La cuadrilla no ha emitido solicitudes pendientes.</div>`;
         } else {
           reqList.innerHTML = reqs.map((r, i) => `
-            <div class="bg-white p-2.5 rounded-xl border text-xs space-y-1 ${r.estado === 'Pendiente' ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200'}">
+            <div class="bg-white p-2.5 rounded-xl border text-xs space-y-1 shadow-sm ${r.estado === 'Pendiente' ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200'}">
               <div class="flex justify-between items-center">
                 <span class="font-black text-slate-800">${esc(r.tipo)}</span>
                 <span class="text-[9px] font-black px-2 py-0.5 rounded-full ${r.estado === 'Pendiente' ? 'bg-amber-500 text-white' : 'bg-emerald-100 text-emerald-800'}">${esc(r.estado)}</span>
@@ -1291,16 +1388,40 @@
         const ot = this.orders.find(o => o.id === this.managingOrderId);
         if (!ot) return;
 
-        ot.estado = document.getElementById('mgmtStageSelect').value;
-        const notes = document.getElementById('mgmtSupervisorNotes').value.trim();
-        const matStatus = document.getElementById('mgmtMaterialStatus').value.trim();
+        const recinto = document.getElementById('mgmtRecinto').value.trim();
+        const solicitante = document.getElementById('mgmtSolicitante').value.trim();
+        const ticket = document.getElementById('mgmtTicket').value.trim();
+        const descripcion = document.getElementById('mgmtDescripcion').value.trim();
 
-        if (matStatus) ot.notas_supervisor = notes ? `[Estado: ${matStatus}]\n${notes}` : `[Estado: ${matStatus}]`;
-        else ot.notas_supervisor = notes;
+        if (!recinto || !solicitante || !ticket || !descripcion) {
+          return showModal({
+            title: 'Campos requeridos',
+            message: 'Por favor complete todos los datos obligatorios del recinto, ticket, solicitante y descripción.',
+            type: 'error',
+            icon: '⚠️'
+          });
+        }
+
+        // Guardado de todos los datos editables de la OT
+        ot.especialidad = document.getElementById('mgmtEspecialidad').value;
+        ot.tipo_mantenimiento = document.getElementById('mgmtTipoMant').value;
+        ot.recinto_pma = recinto;
+        ot.prioridad = document.getElementById('mgmtPrioridad').value;
+        ot.ticket_referencia = ticket;
+        ot.solicitante_nombre = solicitante;
+        ot.descripcion_problema = descripcion;
+        ot.encargado_cuadrilla = document.getElementById('mgmtEncargado').value.trim();
+        ot.estado = document.getElementById('mgmtStageSelect').value;
+        ot.notas_supervisor = document.getElementById('mgmtSupervisorNotes').value.trim();
+
+        if (ot.estado === 'Terminada' && !ot.fecha_cierre) {
+          ot.fecha_cierre = new Date().toISOString();
+        }
 
         await this.saveOrderToCloud(ot);
         this.closeSupervisorMgmtModal();
-        showModal({title: 'Éxito', message: 'Gestión guardada en la nube.', type: 'success', icon: '✅'});
+        this.renderDashboardSupervisor();
+        showModal({title: 'Éxito', message: `Orden ${ot.numero_ot} actualizada y sincronizada.`, type: 'success', icon: '✅'});
       }
 
       async approveOrderClosure(id) {
@@ -1872,7 +1993,7 @@
           doc.addImage(ot.firma_digital_recepcion, 'JPEG', 115, 152, 55, 20);
           doc.setFontSize(7.5);
           doc.setTextColor(30, 41, 59);
-          doc.text(`Recepción Conforme: ${ot.nombre_recepcion || 'Jefatura Clínica'}`, 115, 176);
+          doc.text(`Recepción Conforme: ${ot.nombre_recepcion || 'Jefatura Clínico'}`, 115, 176);
         }
 
         doc.setFontSize(7);
