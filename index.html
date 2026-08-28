@@ -34,7 +34,6 @@
     .sla-progress-fill {
       transition: width 0.3s ease;
     }
-    /* Toast animation */
     @keyframes slideUpFade {
       0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
@@ -52,7 +51,7 @@
     <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="window.app.renderDashboard()">
         <div id="headerLogoContainer" class="w-10 h-10 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden shrink-0">
-          <span class="text-xl">🏥</span>
+          <span class="text-xl" aria-hidden="true">🏥</span>
         </div>
         <div>
           <div class="flex items-center space-x-2">
@@ -181,8 +180,6 @@
 
   <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-xs rounded-2xl p-5 shadow-2xl border border-slate-200 text-center relative">
-      <button onclick="window.app.closeAuthModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700" aria-label="Cerrar">✕</button>
-      
       <div id="authLogoContainer" class="w-12 h-12 mx-auto rounded-xl bg-slate-100 flex items-center justify-center mb-2 overflow-hidden border border-slate-200">
         <span class="text-2xl" aria-hidden="true">🏥</span>
       </div>
@@ -190,10 +187,10 @@
       <p class="text-xs text-slate-500 mb-4">Seleccione su rol e ingrese su PIN</p>
 
       <div class="grid grid-cols-2 gap-2 mb-4">
-        <button id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="py-2 text-xs font-bold rounded-lg border-2 border-blue-600 bg-blue-50 text-blue-700">
+        <button id="roleBtnSupervisor" onpointerdown="window.app.selectAuthRole('supervisor')" class="py-2 text-xs font-bold rounded-lg border-2 border-blue-600 bg-blue-50 text-blue-700">
           Supervisor
         </button>
-        <button id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="py-2 text-xs font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600">
+        <button id="roleBtnTecnico" onpointerdown="window.app.selectAuthRole('tecnico')" class="py-2 text-xs font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600">
           Técnico
         </button>
       </div>
@@ -206,18 +203,18 @@
       </div>
 
       <div class="grid grid-cols-3 gap-2 max-w-[220px] mx-auto mb-3">
-        <button onclick="window.app.typePin(1)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">1</button>
-        <button onclick="window.app.typePin(2)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">2</button>
-        <button onclick="window.app.typePin(3)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">3</button>
-        <button onclick="window.app.typePin(4)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">4</button>
-        <button onclick="window.app.typePin(5)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">5</button>
-        <button onclick="window.app.typePin(6)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">6</button>
-        <button onclick="window.app.typePin(7)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">7</button>
-        <button onclick="window.app.typePin(8)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">8</button>
-        <button onclick="window.app.typePin(9)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">9</button>
-        <button onclick="window.app.clearPin()" class="h-12 text-xs font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">Borrar</button>
-        <button onclick="window.app.typePin(0)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">0</button>
-        <button onclick="window.app.deletePin()" class="h-12 text-base font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">⌫</button>
+        <button onpointerdown="window.app.typePin(1)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">1</button>
+        <button onpointerdown="window.app.typePin(2)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">2</button>
+        <button onpointerdown="window.app.typePin(3)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">3</button>
+        <button onpointerdown="window.app.typePin(4)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">4</button>
+        <button onpointerdown="window.app.typePin(5)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">5</button>
+        <button onpointerdown="window.app.typePin(6)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">6</button>
+        <button onpointerdown="window.app.typePin(7)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">7</button>
+        <button onpointerdown="window.app.typePin(8)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">8</button>
+        <button onpointerdown="window.app.typePin(9)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">9</button>
+        <button onpointerdown="window.app.clearPin()" class="h-12 text-xs font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">Borrar</button>
+        <button onpointerdown="window.app.typePin(0)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">0</button>
+        <button onpointerdown="window.app.deletePin()" class="h-12 text-base font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">⌫</button>
       </div>
 
       <div id="authErrorMsg" class="hidden text-xs text-rose-600 font-bold mt-2">PIN Incorrecto</div>
@@ -567,6 +564,10 @@
           <button type="button" onclick="window.app.closeSettingsModal()" class="px-4 py-2 font-bold text-slate-600 bg-slate-100 rounded-lg">Cancelar</button>
           <button type="submit" class="px-5 py-2 font-black text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md">Guardar Global</button>
         </div>
+
+        <div class="pt-4 mt-4 border-t border-rose-200">
+          <button type="button" onclick="window.app.hardReset()" class="w-full py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold rounded-lg border border-rose-200 transition">⚠️ BORRAR TODO (Resetear Sistema)</button>
+        </div>
       </form>
     </div>
   </div>
@@ -704,6 +705,7 @@
       }
 
       async initAuth() {
+        // En primer inicio, establecer hashes base.
         this.hashes.supervisor = await hashPin(SGM_CONFIG.defaultPins.supervisor);
         this.hashes.tecnico = await hashPin(SGM_CONFIG.defaultPins.tecnico);
         
@@ -715,6 +717,7 @@
         if (cachedRole) {
           this.currentRole = cachedRole;
           this.applyRoleRestrictions();
+          document.getElementById('authModal').classList.add('hidden');
         } else {
           this.openAuthModal();
         }
@@ -735,6 +738,7 @@
         if (!this.supabase) return;
         this.supabase.channel('orders_realtime')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+            // Solo sincronizamos masivo si no estamos editando algo activamente
             if (document.getElementById('manageModal').classList.contains('hidden') && 
                 document.getElementById('operativeView').classList.contains('hidden')) {
               this.fetchOrdersFromSupabase();
@@ -752,6 +756,7 @@
           const { data, error } = await this.supabase.from('orders').select('*');
           if (!error && data) {
             this.orders = data.map(row => row.data);
+            this.orders.sort((a,b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
             this.updateKpis();
             this.renderOrdersList();
             this.renderAlerts();
@@ -863,7 +868,8 @@
             if (error) throw error;
             this.showToast('Sincronizado con Supabase');
           } catch (e) {
-            this.showToast('Guardado local (Sin conexión)', '⚠️');
+            console.warn(e);
+            this.showToast('Guardado local (Falla nube)', '⚠️');
           } finally {
             this.syncing = false;
           }
@@ -997,6 +1003,7 @@
 
       toggleMenu() {
         if (!this.currentRole) return;
+        this.applyRoleRestrictions();
         document.getElementById('appMenuDropdown').classList.toggle('hidden');
       }
 
@@ -1293,36 +1300,6 @@
         this.renderOrdersList();
       }
 
-      deleteOrderFromModal() {
-        const id = document.getElementById('manageOtId').value;
-        if (!id) return;
-        
-        this.customConfirm("Eliminar OT", "Esta acción es irreversible y borrará la orden de todos los dispositivos permanentemente.", async () => {
-          // 1. Borrado local inmediato para una respuesta rápida en pantalla (Optimistic UI)
-          this.orders = this.orders.filter(o => o.id !== id);
-          localStorage.setItem('sdo_orders_cache', JSON.stringify(this.orders));
-          this.closeManageModal();
-          this.updateKpis();
-          this.renderOrdersList();
-          
-          // 2. Intentar el borrado real en Supabase
-          if (this.supabase) {
-            try {
-              const { error } = await this.supabase.from('orders').delete().eq('id', id);
-              if (error) {
-                console.error("Error al eliminar en Supabase:", error);
-                throw error;
-              }
-              this.showToast('OT Eliminada permanentemente de la nube', '🗑️');
-            } catch (e) {
-              this.showToast('Nube bloqueó el borrado (Faltan permisos). Re-sincronizando...', '⚠️');
-              // Si la nube falla, revertimos el borrado trayendo la tabla real de vuelta
-              setTimeout(() => this.fetchOrdersFromSupabase(), 1500);
-            }
-          }
-        });
-      }
-
       openOperativeView(id) {
         const o = this.orders.find(item => item.id === id);
         if (!o) return;
@@ -1381,6 +1358,7 @@
         document.getElementById('opRequestForm').style.display = isLocked ? 'none' : 'block';
         document.getElementById('opCloseForm').style.display = isLocked ? 'none' : 'block';
         document.getElementById('opDiagnosticoSolucion').value = o.diagnostico || '';
+        document.getElementById('opDiagnosticoSolucion').disabled = isLocked;
 
         document.getElementById('operativeView').classList.remove('hidden');
       }
@@ -1589,18 +1567,44 @@
         btn.onclick = () => { this.closeConfirmModal(true); onYes(); };
         document.getElementById('customConfirmModal').classList.remove('hidden');
       }
-      closeConfirmModal() { document.getElementById('customConfirmModal').classList.add('hidden'); }
+      
+      closeConfirmModal() { 
+        document.getElementById('customConfirmModal').classList.add('hidden'); 
+      }
 
-      deleteOrderFromModal() {
+      async deleteOrderFromModal() {
         const id = document.getElementById('manageOtId').value;
-        this.customConfirm("Eliminar OT", "Esta acción es irreversible y borrará la orden de todos los dispositivos.", () => {
+        if (!id) return;
+        
+        this.customConfirm("Eliminar OT", "Esta acción es irreversible y borrará la orden de todos los dispositivos permanentemente.", async () => {
+          
           this.orders = this.orders.filter(o => o.id !== id);
-          if (this.supabase) this.supabase.from('orders').delete().eq('id', id);
           localStorage.setItem('sdo_orders_cache', JSON.stringify(this.orders));
           this.closeManageModal();
           this.updateKpis();
           this.renderOrdersList();
-          this.showToast('OT Eliminada permanentemente');
+          
+          if (this.supabase) {
+            const { error } = await this.supabase.from('orders').delete().eq('id', id);
+            if (error) {
+              console.error("Nube rechazó el borrado:", error);
+              this.showToast('Nube bloqueó el borrado (Seguridad). Restaurando...', '⚠️');
+              setTimeout(() => this.fetchOrdersFromSupabase(), 1500);
+            } else {
+              this.showToast('OT Eliminada permanentemente', '🗑️');
+            }
+          }
+        });
+      }
+
+      async hardReset() {
+        this.customConfirm("⚠️ PELIGRO: BORRAR TODO", "Esto eliminará TODAS las órdenes del sistema permanentemente. Es irreversible. ¿Continuar?", async () => {
+           if (this.supabase) {
+               await this.supabase.from('orders').delete().neq('id', 'borrado_masivo');
+           }
+           localStorage.clear();
+           sessionStorage.clear();
+           window.location.reload();
         });
       }
     }
