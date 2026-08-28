@@ -79,8 +79,8 @@
             <span>📊</span> <span>Panel General</span>
           </button>
           
-          <!-- Elementos Exclusivos del Supervisor -->
-          <div id="supervisorOnlyMenuItems" class="space-y-1">
+          <!-- Elementos Exclusivos del Supervisor (Ocultos por defecto para técnicos) -->
+          <div id="supervisorOnlyMenuItems" class="hidden space-y-1">
             <button onclick="window.app.openCreateModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2 text-blue-600">
               <span>➕</span> <span>Nueva OT</span>
             </button>
@@ -92,7 +92,7 @@
             </button>
           </div>
 
-          <hr class="my-1 border-slate-100">
+          <hr id="menuDivider" class="my-1 border-slate-100 hidden">
           <button onclick="window.app.openAuthModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2 text-amber-700">
             <span>🔄</span> <span>Cambiar Rol / PIN</span>
           </button>
@@ -714,9 +714,9 @@
 
     class HospitalApp {
       constructor() {
-        this.currentRole = 'supervisor';
+        this.currentRole = localStorage.getItem('sdo_current_role') || 'supervisor';
         this.enteredPin = '';
-        this.selectedAuthRole = 'supervisor';
+        this.selectedAuthRole = this.currentRole;
         this.orders = [];
         this.technicians = [...SGM_CONFIG.defaultTechnicians];
         this.viewMode = 'cards'; // 'cards' | 'table'
@@ -732,6 +732,7 @@
         this.loadSettings();
         this.populateTechnicianSelects();
         this.loadInitialData();
+        this.updateRoleBadge();
         this.applyRoleRestrictions();
 
         // Actualización de tiempos y SLA cada 60s
@@ -739,29 +740,35 @@
       }
 
       showToast(message, icon = '✅') {
-        const toast = document.getElementById('toastNotification');
-        const msgEl = document.getElementById('toastMessage');
-        const iconEl = document.getElementById('toastIcon');
-        if (!toast) return;
-
-        msgEl.textContent = message;
-        iconEl.textContent = icon;
-        toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
-        toast.classList.add('translate-y-0', 'opacity-100');
-
-        setTimeout(() => {
-          toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
-          toast.classList.remove('translate-y-0', 'opacity-100');
-        }, 3500);
+      updateRoleBadge() {
+        const badge = document.getElementById('roleBadge');
+        if (badge) {
+          badge.textContent = this.currentRole.toUpperCase();
+          badge.className = this.currentRole === 'supervisor' 
+            ? 'text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-600 text-white'
+            : 'text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-600 text-white';
+        }
       }
 
       applyRoleRestrictions() {
         const supervisorMenu = document.getElementById('supervisorOnlyMenuItems');
+        const menuDivider = document.getElementById('menuDivider');
+        
+        const isSupervisor = this.currentRole === 'supervisor';
+
         if (supervisorMenu) {
-          if (this.currentRole === 'supervisor') {
+          if (isSupervisor) {
             supervisorMenu.classList.remove('hidden');
           } else {
             supervisorMenu.classList.add('hidden');
+          }
+        }
+
+        if (menuDivider) {
+          if (isSupervisor) {
+            menuDivider.classList.remove('hidden');
+          } else {
+            menuDivider.classList.add('hidden');
           }
         }
       }
@@ -1001,11 +1008,8 @@
         const expectedPin = this.selectedAuthRole === 'supervisor' ? this.pins.supervisor : this.pins.tecnico;
         if (this.enteredPin === expectedPin) {
           this.currentRole = this.selectedAuthRole;
-          document.getElementById('roleBadge').textContent = this.currentRole.toUpperCase();
-          document.getElementById('roleBadge').className = this.currentRole === 'supervisor' 
-            ? 'text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-600 text-white'
-            : 'text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-600 text-white';
-          
+          localStorage.setItem('sdo_current_role', this.currentRole);
+          this.updateRoleBadge();
           this.applyRoleRestrictions();
           this.closeAuthModal();
           this.renderOrdersList();
@@ -1019,6 +1023,7 @@
 
       // ================= NAVEGACIÓN Y VISTAS =================
       toggleMenu() {
+        this.applyRoleRestrictions();
         document.getElementById('appMenuDropdown').classList.toggle('hidden');
       }
 
