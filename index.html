@@ -40,6 +40,17 @@
     .sla-progress-fill {
       transition: width 0.3s ease;
     }
+    /* Estilos para inputs deshabilitados */
+    input:disabled, textarea:disabled, select:disabled {
+      background-color: #f1f5f9;
+      color: #94a3b8;
+      cursor: not-allowed;
+      border-color: #e2e8f0;
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col font-sans pb-12">
@@ -227,7 +238,8 @@
   </main>
 
   <!-- ==================== MODAL: AUTENTICACIÓN / PIN ==================== -->
-  <div id="authModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+  <!-- Modificado: hidden por defecto para evitar que la pantalla se congele al cargar la app -->
+  <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-xs rounded-2xl p-5 shadow-2xl border border-slate-200 text-center relative">
       <button onclick="window.app.closeAuthModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 text-xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition">✕</button>
       
@@ -254,20 +266,20 @@
         <div id="pinDot3" class="w-3.5 h-3.5 rounded-full border-2 border-slate-300 bg-white"></div>
       </div>
 
-      <!-- Teclado Numérico Optimizado -->
+      <!-- Teclado Numérico Optimizado (Usando onclick para garantizar compatibilidad móvil universal) -->
       <div class="grid grid-cols-3 gap-2 max-w-[220px] mx-auto mb-3">
-        <button onpointerdown="window.app.typePin(1)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">1</button>
-        <button onpointerdown="window.app.typePin(2)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">2</button>
-        <button onpointerdown="window.app.typePin(3)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">3</button>
-        <button onpointerdown="window.app.typePin(4)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">4</button>
-        <button onpointerdown="window.app.typePin(5)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">5</button>
-        <button onpointerdown="window.app.typePin(6)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">6</button>
-        <button onpointerdown="window.app.typePin(7)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">7</button>
-        <button onpointerdown="window.app.typePin(8)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">8</button>
-        <button onpointerdown="window.app.typePin(9)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">9</button>
-        <button onpointerdown="window.app.clearPin()" class="h-12 text-xs font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600 touch-manipulation">Borrar</button>
-        <button onpointerdown="window.app.typePin(0)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800 touch-manipulation">0</button>
-        <button onpointerdown="window.app.deletePin()" class="h-12 text-base font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600 touch-manipulation">⌫</button>
+        <button onclick="window.app.typePin(1)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">1</button>
+        <button onclick="window.app.typePin(2)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">2</button>
+        <button onclick="window.app.typePin(3)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">3</button>
+        <button onclick="window.app.typePin(4)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">4</button>
+        <button onclick="window.app.typePin(5)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">5</button>
+        <button onclick="window.app.typePin(6)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">6</button>
+        <button onclick="window.app.typePin(7)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">7</button>
+        <button onclick="window.app.typePin(8)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">8</button>
+        <button onclick="window.app.typePin(9)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">9</button>
+        <button onclick="window.app.clearPin()" class="h-12 text-xs font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">Borrar</button>
+        <button onclick="window.app.typePin(0)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">0</button>
+        <button onclick="window.app.deletePin()" class="h-12 text-base font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">⌫</button>
       </div>
 
       <div id="authErrorMsg" class="hidden text-xs text-rose-600 font-bold mt-2">PIN Incorrecto</div>
@@ -365,6 +377,11 @@
         <button onclick="window.app.closeManageModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1">✕</button>
       </div>
 
+      <!-- Banner de Bloqueo OT Terminada -->
+      <div id="manageLockBanner" class="hidden mb-3 p-3 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-800 font-medium">
+        ✅ <b>OT Terminada:</b> Documento cerrado. Solo es posible eliminar el registro.
+      </div>
+
       <form id="manageOtForm" onsubmit="window.app.handleSaveManagement(event)" class="space-y-3.5 pt-3 overflow-y-auto custom-scroll flex-1">
         <input type="hidden" id="manageOtId">
 
@@ -420,7 +437,7 @@
           <div>
             <div class="flex justify-between items-center mb-1">
               <label class="text-xs font-bold text-slate-600">Técnico Asignado:</label>
-              <button type="button" onclick="window.app.quickAddTechnician()" class="text-[10px] text-blue-600 font-bold hover:underline">+ Agregar</button>
+              <button type="button" id="manageQuickAddTechBtn" onclick="window.app.quickAddTechnician()" class="text-[10px] text-blue-600 font-bold hover:underline">+ Agregar</button>
             </div>
             <select id="manageOtEncargado" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
               <!-- Inyectado dinámicamente -->
@@ -439,8 +456,8 @@
             <select id="manageOtEstado" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-blue-700">
               <option value="Pendiente">Pendiente</option>
               <option value="En Ejecución">En Ejecución</option>
-              <option value="Solicitud Cierre">Solicitud Cierre</option>
-              <option value="Terminada">Terminada</option>
+              <option value="Solicitud Cierre">Solicitud Cierre (En Revisión)</option>
+              <option value="Terminada">Terminada (Autorizar Cierre)</option>
             </select>
           </div>
           <div>
@@ -455,7 +472,7 @@
           </button>
           <div class="flex space-x-2">
             <button type="button" onclick="window.app.closeManageModal()" class="px-4 py-2 text-xs font-bold text-slate-600 bg-slate-100 rounded-lg">Cancelar</button>
-            <button type="submit" class="px-5 py-2 text-xs font-black text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md">Guardar y Sincronizar</button>
+            <button type="submit" id="manageSaveBtn" class="px-5 py-2 text-xs font-black text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md">Guardar y Sincronizar</button>
           </div>
         </div>
       </form>
@@ -481,6 +498,11 @@
         </button>
 
         <span id="opStatusBadge" class="text-xs font-bold px-3 py-2 rounded-lg bg-amber-100 text-amber-800 text-center shrink-0">En Ejecución</span>
+      </div>
+
+      <!-- Banner de Bloqueo / Sólo Lectura -->
+      <div id="opLockBanner" class="hidden p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 font-medium">
+        <!-- Contenido dinámico inyectado por JS -->
       </div>
 
       <!-- Resumen Falla -->
@@ -559,7 +581,7 @@
             <option value="Consulta Operativa a Supervisión">Consulta Operativa a Supervisión</option>
           </select>
           <textarea id="opNewRequestDetails" rows="2" placeholder="Detalle del requerimiento..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
-          <button onclick="window.app.submitTechnicianRequest()" class="w-full py-2 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs font-black rounded-lg shadow-sm">
+          <button id="opSendReqBtn" onclick="window.app.submitTechnicianRequest()" class="w-full py-2 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs font-black rounded-lg shadow-sm">
             📤 Enviar Consulta a Supervisión
           </button>
         </div>
@@ -575,10 +597,10 @@
         </div>
 
         <div class="pt-3 flex flex-col sm:flex-row gap-2.5">
-          <button type="button" onclick="window.app.saveOperativeProgress(false)" class="flex-1 py-3 bg-slate-800 hover:bg-slate-900 active:scale-98 text-white text-xs font-black rounded-xl shadow transition">
+          <button type="button" id="opSaveBtn" onclick="window.app.saveOperativeProgress(false)" class="flex-1 py-3 bg-slate-800 hover:bg-slate-900 active:scale-98 text-white text-xs font-black rounded-xl shadow transition">
             💾 Guardar Progreso
           </button>
-          <button type="button" onclick="window.app.saveOperativeProgress(true)" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white text-xs font-black rounded-xl shadow-lg transition flex items-center justify-center space-x-1">
+          <button type="button" id="opCloseReqBtn" onclick="window.app.saveOperativeProgress(true)" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white text-xs font-black rounded-xl shadow-lg transition flex items-center justify-center space-x-1">
             <span>⚡</span>
             <span>Solicitar Cierre a Supervisión</span>
           </button>
@@ -615,12 +637,12 @@
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Nombre del Hospital / Establecimiento</label>
+          <label for="cfgHospitalName" class="block font-bold text-slate-700 mb-1">Nombre del Hospital / Establecimiento</label>
           <input type="text" id="cfgHospitalName" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg font-medium">
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Prefijo de Folio Único</label>
+          <label for="cfgFolioPrefix" class="block font-bold text-slate-700 mb-1">Prefijo de Folio Único</label>
           <input type="text" id="cfgFolioPrefix" required placeholder="Ej: OT-INFRA" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg font-medium">
         </div>
 
@@ -637,17 +659,18 @@
 
         <!-- Claves PIN -->
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-          <span class="block font-bold text-slate-800">PINs de Acceso</span>
+          <span class="block font-bold text-slate-800">PINs de Acceso (Modificable)</span>
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block text-slate-600 mb-1">PIN Supervisor</label>
-              <input type="password" id="cfgPinSupervisor" maxlength="4" required class="w-full p-2 bg-white border border-slate-200 rounded-lg text-center font-bold tracking-widest">
+              <label for="cfgPinSupervisor" class="block text-slate-600 mb-1">Nuevo PIN Supervisor</label>
+              <input type="password" id="cfgPinSupervisor" maxlength="4" placeholder="****" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-center font-bold tracking-widest">
             </div>
             <div>
-              <label class="block text-slate-600 mb-1">PIN Técnico</label>
-              <input type="password" id="cfgPinTecnico" maxlength="4" required class="w-full p-2 bg-white border border-slate-200 rounded-lg text-center font-bold tracking-widest">
+              <label for="cfgPinTecnico" class="block text-slate-600 mb-1">Nuevo PIN Técnico</label>
+              <input type="password" id="cfgPinTecnico" maxlength="4" placeholder="****" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-center font-bold tracking-widest">
             </div>
           </div>
+          <p class="text-[9px] text-slate-400 leading-tight">Dejar en blanco si no desea cambiar el PIN actual.</p>
         </div>
 
         <div class="pt-2 flex justify-end space-x-2">
@@ -674,11 +697,11 @@
         <!-- Selector de Fechas -->
         <div class="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
           <div>
-            <label class="block font-bold text-slate-700 mb-1">Fecha Desde:</label>
+            <label for="repDateFrom" class="block font-bold text-slate-700 mb-1">Fecha Desde:</label>
             <input type="date" id="repDateFrom" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold">
           </div>
           <div>
-            <label class="block font-bold text-slate-700 mb-1">Fecha Hasta:</label>
+            <label for="repDateTo" class="block font-bold text-slate-700 mb-1">Fecha Hasta:</label>
             <input type="date" id="repDateTo" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold">
           </div>
         </div>
@@ -874,7 +897,7 @@
       async fetchOrdersFromSupabase() {
         if (!this.supabase) return;
         try {
-          const { data, error } = await this.supabase.from('orders').select('*');
+          const { data, error } = await this.supabase.from('orders').select('*').order('created_at', { ascending: false }).limit(200);
           if (!error && data) {
             this.orders = data.map(row => row.data);
             this.saveCache();
@@ -909,7 +932,6 @@
               fechaCreacion: new Date(Date.now() - 4 * 3600000).toISOString(),
               faena_iniciada: new Date(Date.now() - 3 * 3600000).toISOString(),
               faena_terminada: null,
-              fechaTermino: null,
               solicitudes_terreno: [
                 {
                   tipo: 'Permisos / IAAS / Acceso Restringido',
@@ -1424,10 +1446,10 @@
                   ⚙️ Gestionar OT
                 </button>
               ` : ''}
-              <button onclick="window.app.shareWhatsApp('${escapeHtml(o.id)}')" class="px-3 py-2 bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-bold rounded-lg border border-[#25D366]/30 flex items-center justify-center space-x-1" title="Compartir por WhatsApp">
+              <a href="${this.generateWhatsAppUrl(o)}" target="_blank" rel="noopener noreferrer" class="px-3 py-2 bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-bold rounded-lg border border-[#25D366]/30 flex items-center justify-center space-x-1" title="Compartir por WhatsApp">
                 <svg class="w-4 h-4 fill-[#25D366]" viewBox="0 0 24 24"><path d="M12.031 2C6.496 2 2 6.496 2 12.031c0 1.956.562 3.844 1.625 5.48L2 22l4.633-1.578a10.02 10.02 0 0 0 5.398 1.578c5.535 0 10.031-4.496 10.031-10.031C22.062 6.496 17.566 2 12.031 2zm0 18.375a8.31 8.31 0 0 1-4.437-1.273l-.317-.188-2.75.938.938-2.688-.207-.332a8.347 8.347 0 0 1-1.258-4.481c0-4.606 3.75-8.356 8.356-8.356 4.606 0 8.356 3.75 8.356 8.356 0 4.606-3.75 8.356-8.356 8.356zm4.582-6.262c-.25-.125-1.48-.73-1.71-.813-.23-.083-.398-.125-.565.125-.167.25-.646.813-.792.98-.146.166-.292.187-.542.062s-1.058-.39-2.016-1.244c-.744-.664-1.246-1.484-1.392-1.734-.146-.25-.016-.385.11-.51.114-.113.25-.292.375-.438.125-.146.167-.25.25-.417.083-.166.042-.312-.021-.437-.063-.125-.563-1.354-.77-1.854-.203-.488-.41-.422-.565-.43-.146-.008-.312-.01-.48-.01s-.437.062-.666.312c-.23.25-.875.854-.875 2.083s.896 2.417 1.02 2.583c.126.167 1.766 2.7 4.28 3.785.598.258 1.066.413 1.43.529.602.191 1.15.164 1.583.1.483-.072 1.48-.605 1.688-1.188.208-.583.208-1.083.146-1.188-.063-.104-.23-.166-.48-.291z"/></svg>
                 <span>WhatsApp</span>
-              </button>
+              </a>
               <button onclick="window.app.generatePDF('${escapeHtml(o.id)}')" class="px-2.5 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold rounded-lg border border-slate-200" title="PDF">
                 📄
               </button>
@@ -1468,10 +1490,10 @@
               ${this.currentRole === 'supervisor' ? `
                 <button onclick="window.app.openManageModal('${escapeHtml(o.id)}')" class="px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded text-xs font-bold">⚙️ Gestionar</button>
               ` : ''}
-              <button onclick="window.app.shareWhatsApp('${escapeHtml(o.id)}')" class="px-2 py-1 bg-[#25D366]/10 text-[#128C7E] border border-[#25D366]/30 rounded text-xs font-bold inline-flex items-center space-x-1">
+              <a href="${this.generateWhatsAppUrl(o)}" target="_blank" rel="noopener noreferrer" class="px-2 py-1 bg-[#25D366]/10 text-[#128C7E] border border-[#25D366]/30 rounded text-xs font-bold inline-flex items-center space-x-1">
                 <svg class="w-3.5 h-3.5 fill-[#25D366]" viewBox="0 0 24 24"><path d="M12.031 2C6.496 2 2 6.496 2 12.031c0 1.956.562 3.844 1.625 5.48L2 22l4.633-1.578a10.02 10.02 0 0 0 5.398 1.578c5.535 0 10.031-4.496 10.031-10.031C22.062 6.496 17.566 2 12.031 2zm0 18.375a8.31 8.31 0 0 1-4.437-1.273l-.317-.188-2.75.938.938-2.688-.207-.332a8.347 8.347 0 0 1-1.258-4.481c0-4.606 3.75-8.356 8.356-8.356 4.606 0 8.356 3.75 8.356 8.356 0 4.606-3.75 8.356-8.356 8.356zm4.582-6.262c-.25-.125-1.48-.73-1.71-.813-.23-.083-.398-.125-.565.125-.167.25-.646.813-.792.98-.146.166-.292.187-.542.062s-1.058-.39-2.016-1.244c-.744-.664-1.246-1.484-1.392-1.734-.146-.25-.016-.385.11-.51.114-.113.25-.292.375-.438.125-.146.167-.25.25-.417.083-.166.042-.312-.021-.437-.063-.125-.563-1.354-.77-1.854-.203-.488-.41-.422-.565-.43-.146-.008-.312-.01-.48-.01s-.437.062-.666.312c-.23.25-.875.854-.875 2.083s.896 2.417 1.02 2.583c.126.167 1.766 2.7 4.28 3.785.598.258 1.066.413 1.43.529.602.191 1.15.164 1.583.1.483-.072 1.48-.605 1.688-1.188.208-.583.208-1.083.146-1.188-.063-.104-.23-.166-.48-.291z"/></svg>
                 <span>WhatsApp</span>
-              </button>
+              </a>
               <button onclick="window.app.generatePDF('${escapeHtml(o.id)}')" class="px-2 py-1 bg-slate-100 text-slate-700 border border-slate-200 rounded text-xs font-bold">📄</button>
             </td>
           </tr>
@@ -1599,6 +1621,24 @@
           reqList.innerHTML = `<p class="text-slate-400 italic">No hay consultas de terreno registradas.</p>`;
         }
 
+        // BLOQUEO EN CASO DE OT TERMINADA
+        const isTerminada = o.estado === 'Terminada';
+        const mLockBanner = document.getElementById('manageLockBanner');
+        const saveBtn = document.getElementById('manageSaveBtn');
+        const formElements = document.querySelectorAll('#manageOtForm input:not([type="hidden"]), #manageOtForm select, #manageOtForm textarea');
+
+        if (isTerminada) {
+            mLockBanner.classList.remove('hidden');
+            saveBtn.classList.add('hidden');
+            formElements.forEach(el => el.disabled = true);
+            document.getElementById('manageQuickAddTechBtn').classList.add('hidden');
+        } else {
+            mLockBanner.classList.add('hidden');
+            saveBtn.classList.remove('hidden');
+            formElements.forEach(el => el.disabled = false);
+            document.getElementById('manageQuickAddTechBtn').classList.remove('hidden');
+        }
+
         document.getElementById('manageModal').classList.remove('hidden');
       }
 
@@ -1703,7 +1743,10 @@
 
         const wsBtn = document.getElementById('opShareWhatsAppBtn');
         if (wsBtn) {
-          wsBtn.onclick = () => this.shareWhatsApp(o.id);
+          const directLink = this.generateWhatsAppUrl(o);
+          wsBtn.onclick = () => {
+             window.open(directLink, '_blank', 'noopener,noreferrer');
+          };
         }
 
         const startBtn = document.getElementById('startWorkBtn');
@@ -1726,6 +1769,36 @@
           endLabel.textContent = new Date(compTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
         } else {
           endLabel.textContent = "En proceso";
+        }
+
+        // LÓGICA DE BLOQUEO DE FICHA (SOLICITUD CIERRE Y TERMINADA)
+        const isLocked = (o.estado === 'Solicitud Cierre' || o.estado === 'Terminada');
+        const lockBanner = document.getElementById('opLockBanner');
+        if (isLocked) {
+          lockBanner.classList.remove('hidden');
+          lockBanner.innerHTML = o.estado === 'Solicitud Cierre'
+            ? '🔒 <b>OT en Revisión:</b> No se puede modificar. Esperando autorización de supervisión.'
+            : '✅ <b>OT Terminada:</b> Documento cerrado. No admite modificaciones.';
+          
+          document.getElementById('opDiagnosticoSolucion').disabled = true;
+          document.getElementById('opNewRequestDetails').disabled = true;
+          document.getElementById('opNewRequestType').disabled = true;
+          document.getElementById('startWorkBtn').disabled = true;
+          document.getElementById('endWorkBtn').disabled = true;
+          document.getElementById('opSaveBtn').disabled = true;
+          document.getElementById('opCloseReqBtn').disabled = true;
+          document.getElementById('opSendReqBtn').disabled = true;
+        } else {
+          lockBanner.classList.add('hidden');
+          
+          document.getElementById('opDiagnosticoSolucion').disabled = false;
+          document.getElementById('opNewRequestDetails').disabled = false;
+          document.getElementById('opNewRequestType').disabled = false;
+          document.getElementById('startWorkBtn').disabled = !!o.faena_iniciada; // Keep disabled if already started
+          document.getElementById('endWorkBtn').disabled = false;
+          document.getElementById('opSaveBtn').disabled = false;
+          document.getElementById('opCloseReqBtn').disabled = false;
+          document.getElementById('opSendReqBtn').disabled = false;
         }
 
         this.renderOperativeHistory(o);
@@ -1841,7 +1914,8 @@
         }
 
         await this.syncOrderToCloud(this.activeOperativeOt);
-        this.closeOperativeView();
+        // Volver a abrir para aplicar los bloqueos visuales
+        this.openOperativeView(this.activeOperativeOt.id);
         this.updateKpis();
         this.renderOrdersList();
         this.renderAlerts();
@@ -2081,10 +2155,7 @@
       }
 
       // ================= WHATSAPP Y PDF DE OT =================
-      shareWhatsApp(id) {
-        const o = this.orders.find(item => item.id === id);
-        if (!o) return;
-
+      generateWhatsAppUrl(o) {
         const priorityEmojis = { Urgente: '🚨', Alta: '🟠', Media: '🟡', Baja: '🟢' };
         const cleanBaseUrl = window.location.origin + window.location.pathname;
         const directLink = `${cleanBaseUrl}?ot=${encodeURIComponent(o.id)}`;
@@ -2098,7 +2169,7 @@ ${priorityEmojis[o.prioridad] || '📌'} *Prioridad:* ${o.prioridad} (SLA ${SGM_
 🛠️ *Especialidad:* ${o.especialidad}
 👷 *Técnico Asignado:* ${o.encargado || 'Pablo Loira'}
 👤 *Solicitante:* ${o.solicitante}
-🎫 *PMA:* ${o.ticket || 'N/A'}
+🎫 *PMA recinto:* ${o.ticket || 'N/A'}
 ----------------------------------------
 📝 *Problema:*
 ${o.descripcion}
@@ -2107,14 +2178,7 @@ ${o.instrucciones ? `\n📋 *Instrucción Supervisión:*\n${o.instrucciones}` : 
 🔗 *Abrir en SDO Cloud:*
 ${directLink}`;
 
-        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-        const link = document.createElement('a');
-        link.href = waUrl;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        return `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
       }
 
       generatePDF(id) {
