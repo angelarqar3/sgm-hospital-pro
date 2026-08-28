@@ -1293,6 +1293,36 @@
         this.renderOrdersList();
       }
 
+      deleteOrderFromModal() {
+        const id = document.getElementById('manageOtId').value;
+        if (!id) return;
+        
+        this.customConfirm("Eliminar OT", "Esta acción es irreversible y borrará la orden de todos los dispositivos permanentemente.", async () => {
+          // 1. Borrado local inmediato para una respuesta rápida en pantalla (Optimistic UI)
+          this.orders = this.orders.filter(o => o.id !== id);
+          localStorage.setItem('sdo_orders_cache', JSON.stringify(this.orders));
+          this.closeManageModal();
+          this.updateKpis();
+          this.renderOrdersList();
+          
+          // 2. Intentar el borrado real en Supabase
+          if (this.supabase) {
+            try {
+              const { error } = await this.supabase.from('orders').delete().eq('id', id);
+              if (error) {
+                console.error("Error al eliminar en Supabase:", error);
+                throw error;
+              }
+              this.showToast('OT Eliminada permanentemente de la nube', '🗑️');
+            } catch (e) {
+              this.showToast('Nube bloqueó el borrado (Faltan permisos). Re-sincronizando...', '⚠️');
+              // Si la nube falla, revertimos el borrado trayendo la tabla real de vuelta
+              setTimeout(() => this.fetchOrdersFromSupabase(), 1500);
+            }
+          }
+        });
+      }
+
       openOperativeView(id) {
         const o = this.orders.find(item => item.id === id);
         if (!o) return;
