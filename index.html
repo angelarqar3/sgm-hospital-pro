@@ -1,21 +1,36 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-50">
+<html lang="es" class="h-full bg-slate-100">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>SGM-Hospital Cloud | Gestión de OTs</title>
-  <meta name="theme-color" content="#0369a1">
+  <meta name="theme-color" content="#0284c7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
           colors: {
-            hospital: { 50: '#f0f9ff', 100: '#e0f2fe', 500: '#0ea5e9', 700: '#0369a1', 900: '#0c4a6e' }
+            hospital: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49'
+            }
           }
         }
       }
@@ -23,59 +38,68 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
+    /* Estilos globales y optimización táctil */
+    * { -webkit-tap-highlight-color: transparent; }
     .touch-none { touch-action: none; }
-    .scrollbar-thin::-webkit-scrollbar { height: 5px; width: 5px; }
-    .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     .canvas-sig { cursor: crosshair; touch-action: none; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    .modal-backdrop { animation: fadeIn 0.18s ease-out forwards; }
-    .modal-content { animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .safe-bottom { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)); }
+    
+    @keyframes pulse-subtle { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+    .animate-pulse-subtle { animation: pulse-subtle 2s infinite ease-in-out; }
+    
+    .safe-top { padding-top: env(safe-area-inset-top, 0px); }
+    .safe-bottom { padding-bottom: calc(5.2rem + env(safe-area-inset-bottom, 0px)); }
+    
+    .glass-nav {
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
   </style>
 </head>
-<body class="h-full flex flex-col font-sans text-slate-800 antialiased bg-slate-100 safe-bottom sm:pb-8">
+<body class="h-full flex flex-col font-sans text-slate-800 bg-slate-100 antialiased safe-bottom select-none sm:select-auto">
 
-  <!-- HEADER PRINCIPAL OPTIMIZADO (RESPONSIVE & ANTI-DESBORDAMIENTO) -->
-  <header class="bg-gradient-to-r from-slate-950 via-slate-900 to-sky-950 text-white shadow-md sticky top-0 z-40 border-b border-sky-800/40 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+  <!-- HEADER MODERNO Y LIMPIO (MOBILE-FIRST) -->
+  <header class="sticky top-0 z-40 bg-slate-900 text-white border-b border-slate-800 shadow-md">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6">
       <div class="flex items-center justify-between h-14 sm:h-16">
         
-        <!-- Logo e Identificación -->
-        <div class="flex items-center space-x-2.5 cursor-pointer select-none" onclick="window.app && window.app.navigateHomeByRole()">
-          <div class="bg-gradient-to-tr from-sky-500 to-teal-400 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-xl shadow flex items-center justify-center text-lg sm:text-xl font-black">
+        <!-- Logotipo e Identificación del Hospital -->
+        <div class="flex items-center space-x-2.5 cursor-pointer active:opacity-80 transition" onclick="window.app && window.app.navigateHomeByRole()">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-teal-400 flex items-center justify-center text-lg sm:text-xl shadow-md font-bold">
             🏥
           </div>
           <div>
             <div class="flex items-center space-x-1.5">
-              <span class="font-black text-base sm:text-lg tracking-tight text-white">SGM<span class="text-sky-400">Hospital</span></span>
-              <span id="roleBadgeHeader" class="text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-md uppercase tracking-wider bg-sky-800/90 text-sky-100 border border-sky-500/30">Cargando...</span>
+              <span class="font-extrabold text-sm sm:text-base tracking-tight text-white">SGM<span class="text-sky-400">Hospital</span></span>
+              <span id="roleBadgeHeader" class="text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-400/30">Cargando...</span>
             </div>
-            <p id="headerHospitalSubtitle" class="text-[10px] text-slate-400 hidden sm:block font-medium truncate max-w-[240px]">Operaciones e Infraestructura</p>
+            <p id="headerHospitalSubtitle" class="text-[10px] text-slate-400 font-medium truncate max-w-[170px] sm:max-w-[280px]">Operaciones e Infraestructura</p>
           </div>
         </div>
 
-        <!-- Controles de Escritorio (Desktop) y Botón de Ajustes Rápido -->
-        <div class="flex items-center space-x-1.5 sm:space-x-2.5">
-          <!-- Supervisor Desktop Buttons -->
+        <!-- Acciones Rápidas Superior -->
+        <div class="flex items-center space-x-1.5 sm:space-x-2">
+          <!-- Botón Escritorio: Supervisor -->
           <div id="supervisorNavControls" class="hidden sm:flex items-center space-x-1.5">
-            <button onclick="window.app.navigate('dashboard_supervisor')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center space-x-1"><span>📊</span><span>Panel</span></button>
-            <button onclick="window.app.navigate('new_ot')" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md transition flex items-center space-x-1"><span>+</span><span>Nueva OT</span></button>
+            <button onclick="window.app.navigate('dashboard_supervisor')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">📊 Panel</button>
+            <button onclick="window.app.navigate('new_ot')" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-sky-600 hover:bg-sky-500 text-white shadow-md transition">+ Nueva OT</button>
           </div>
 
-          <!-- Técnico Desktop Buttons -->
+          <!-- Botón Escritorio: Técnico -->
           <div id="technicianNavControls" class="hidden sm:flex items-center space-x-1.5">
-            <button onclick="window.app.navigate('dashboard_tecnico')" class="px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-600 hover:bg-amber-500 text-white transition shadow flex items-center space-x-1.5"><span>📋 Mis OTs</span></button>
+            <button onclick="window.app.navigate('dashboard_tecnico')" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-amber-600 hover:bg-amber-500 text-white shadow transition">👷 Mis Trabajos</button>
           </div>
 
-          <!-- Botón de Configuración Universal -->
-          <button onclick="window.app.openSettingsModal()" title="Configuración de la Aplicación" class="p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold bg-slate-800/90 hover:bg-slate-700 text-sky-300 hover:text-white border border-slate-700 transition flex items-center space-x-1.5 shadow-sm active:scale-95">
-            <span class="text-sm sm:text-base">⚙️</span>
-            <span class="hidden md:inline font-bold">Configuración</span>
+          <!-- Botón Ajustes -->
+          <button onclick="window.app.openSettingsModal()" title="Configuración" class="w-9 h-9 sm:w-auto sm:px-3 sm:py-1.5 rounded-xl flex items-center justify-center space-x-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 active:scale-95 transition">
+            <span class="text-sm">⚙️</span>
+            <span class="hidden md:inline text-xs font-bold">Ajustes</span>
           </button>
 
-          <!-- Botón Cambiar Perfil -->
-          <button onclick="window.app.promptLoginModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-950/80 hover:bg-sky-900 text-sky-200 border border-sky-600/40 transition flex items-center space-x-1 active:scale-95">
+          <!-- Botón Cambiar Rol / PIN -->
+          <button onclick="window.app.promptLoginModal()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-sky-950/80 hover:bg-sky-900 text-sky-200 border border-sky-700/50 active:scale-95 transition flex items-center space-x-1">
             <span id="userRoleBtnLabel">🔐 Rol</span>
           </button>
         </div>
@@ -84,136 +108,173 @@
     </div>
   </header>
 
-  <!-- BARRA DE NAVEGACIÓN INFERIOR MÓVIL (NATIVE BOTTOM BAR) -->
-  <nav id="mobileBottomNav" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-lg border-t border-slate-800/80 px-2 py-1.5 shadow-2xl flex items-center justify-around">
-    <!-- Items Supervisor -->
+  <!-- BARRA DE NAVEGACIÓN TÁCTIL INFERIOR (ESTILO NATIVO MÓVIL) -->
+  <nav id="mobileBottomNav" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 glass-nav border-t border-slate-800/80 px-2 py-1 shadow-2xl flex items-center justify-around">
+    <!-- Navegación Supervisor -->
     <div id="mobileSupervisorNav" class="flex items-center justify-around w-full">
-      <button onclick="window.app.navigate('dashboard_supervisor')" class="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-sky-400 font-bold active:scale-90 transition">
+      <button onclick="window.app.navigate('dashboard_supervisor')" id="navBtnSupPanel" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-sky-400 font-extrabold active:scale-90 transition">
         <span class="text-lg">📊</span>
-        <span class="text-[10px] font-black uppercase tracking-tight mt-0.5">Panel</span>
+        <span class="text-[10px] uppercase tracking-tight mt-0.5">Panel</span>
       </button>
-      <button onclick="window.app.navigate('new_ot')" class="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-emerald-400 font-bold active:scale-90 transition">
-        <span class="text-xl leading-none font-black bg-emerald-600 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-lg">+</span>
-        <span class="text-[10px] font-black uppercase tracking-tight mt-0.5">Nueva OT</span>
+      <button onclick="window.app.navigate('new_ot')" id="navBtnSupNew" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-600 to-teal-500 text-white flex items-center justify-center text-lg font-black shadow-md -mt-2">+</div>
+        <span class="text-[10px] uppercase tracking-tight mt-0.5">Crear</span>
       </button>
-      <button onclick="window.app.scrollToAlerts()" class="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-amber-400 font-bold active:scale-90 transition relative">
+      <button onclick="window.app.scrollToAlerts()" id="navBtnSupAlerts" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition relative">
         <span class="text-lg">📢</span>
-        <span id="mobilePendingBadge" class="hidden absolute top-0.5 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
-        <span class="text-[10px] font-black uppercase tracking-tight mt-0.5">Bandeja</span>
+        <span id="mobilePendingBadge" class="hidden absolute top-1 right-2.5 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
+        <span class="text-[10px] uppercase tracking-tight mt-0.5">Bandeja</span>
       </button>
-      <button onclick="window.app.openSettingsModal()" class="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-slate-400 font-bold active:scale-90 transition">
+      <button onclick="window.app.openSettingsModal()" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition">
         <span class="text-lg">⚙️</span>
-        <span class="text-[10px] font-black uppercase tracking-tight mt-0.5">Ajustes</span>
+        <span class="text-[10px] uppercase tracking-tight mt-0.5">Ajustes</span>
       </button>
     </div>
 
-    <!-- Items Técnico -->
+    <!-- Navegación Técnico -->
     <div id="mobileTechnicianNav" class="hidden flex items-center justify-around w-full">
-      <button onclick="window.app.navigate('dashboard_tecnico')" class="flex flex-col items-center justify-center py-1 px-4 rounded-xl text-amber-400 font-bold active:scale-90 transition">
-        <span class="text-lg">👷</span>
-        <span class="text-[10px] font-black uppercase tracking-tight mt-0.5">Mis Tareas</span>
+      <button onclick="window.app.navigate('dashboard_tecnico')" id="navBtnTecTasks" class="flex flex-col items-center justify-center py-1.5 px-4 rounded-2xl text-amber-400 font-extrabold active:scale-90 transition">
+        <span class="text-lg">📋</span>
+        <span class="text-[10px] uppercase tracking-tight mt-0.5">Mis OTs</span>
       </button>
-      <button onclick="window.app.focusTechSearch()" class="flex flex-col items-center justify-center py-1 px-4 rounded-xl text-sky-400 font-bold active:scale-90 transition">
+      <button onclick="window.app.focusTechSearch()" class="flex flex-col items-center justify-center py-1.5 px-4 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition">
         <span class="text-lg">🔍</span>
-        <span class="text-[10px] font-black uppercase tracking-tight mt-0.5">Buscar</span>
+        <span class="text-[10px] uppercase tracking-tight mt-0.5">Buscar</span>
       </button>
-      <button onclick="window.app.openSettingsModal()" class="flex flex-col items-center justify-center py-1 px-4 rounded-xl text-slate-400 font-bold active:scale-90 transition">
+      <button onclick="window.app.openSettingsModal()" class="flex flex-col items-center justify-center py-1.5 px-4 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition">
         <span class="text-lg">⚙️</span>
-        <span class="text-[10px] font-black uppercase tracking-tight mt-0.5">Ajustes</span>
+        <span class="text-[10px] uppercase tracking-tight mt-0.5">Ajustes</span>
       </button>
     </div>
   </nav>
 
+  <!-- CONTENIDO PRINCIPAL -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 space-y-4">
     
-    <!-- VISTA 1: DASHBOARD SUPERVISOR -->
-    <section id="viewDashboardSupervisor" class="space-y-4 sm:space-y-6">
+    <!-- ========================================================================= -->
+    <!-- VISTA 1: DASHBOARD SUPERVISOR                                            -->
+    <!-- ========================================================================= -->
+    <section id="viewDashboardSupervisor" class="space-y-3.5 sm:space-y-5">
       
-      <!-- KPIs GRID (CONDENSADO Y NUMEROS GRANDES EN MÓVIL) -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3" id="kpiStatsContainer"></div>
+      <!-- KPIs CARRUSEL RÁPIDO PARA MÓVIL (HORIZONTAL SCROLL) -->
+      <div class="flex sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 overflow-x-auto pb-1 scrollbar-none" id="kpiStatsContainer">
+        <!-- Renderizado dinámico -->
+      </div>
       
-      <div id="supervisorAlertsInbox" class="bg-gradient-to-r from-amber-500/15 via-sky-500/10 to-teal-500/10 border-2 border-amber-400/80 rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-sm space-y-2.5">
+      <!-- BANDEJA DE TERRENO (ALERTAS & SOLICITUDES) -->
+      <div id="supervisorAlertsInbox" class="bg-amber-50 border-2 border-amber-300 rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm space-y-2">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
             <span class="text-xl sm:text-2xl animate-bounce">📢</span>
-            <div><h3 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wide">Bandeja de Terreno</h3><p class="text-[10px] sm:text-[11px] text-slate-500">Solicitudes y contingencias reportadas</p></div>
-          </div>
-          <span id="pendingRequestsCountBadge" class="text-[11px] sm:text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-500 text-white shadow">0 req.</span>
-        </div>
-        <div id="pendingRequestsListContainer" class="space-y-2"></div>
-      </div>
-
-      <div class="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-sm border border-slate-200 space-y-3">
-        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-3 items-center">
-          <div class="sm:col-span-5"><input type="text" id="searchInput" oninput="window.app.renderDashboardSupervisor()" placeholder="🔍 Buscar Folio, Recinto, Solicitante..." class="w-full pl-3.5 pr-3 py-2 sm:py-2.5 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-sky-500 focus:bg-white" /></div>
-          <div class="sm:col-span-3">
-            <select id="specialtyFilter" onchange="window.app.renderDashboardSupervisor()" class="w-full bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl px-3 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-slate-700">
-              <option value="ALL">🛠️ Especialidades</option>
-              <option value="Infraestructura y Obras Civiles">Infraestructura y Obras</option>
-              <option value="Gasfitería y Redes Sanitarias">Gasfitería y Sanitaria</option>
-              <option value="Electricidad y Climatización">Electricidad y Clima</option>
-              <option value="Cerrajería y Puertas Clínicas">Cerrajería y Puertas</option>
-              <option value="Gases Clínicos y Equipamiento">Gases Clínicos</option>
-            </select>
-          </div>
-          <div class="sm:col-span-2">
-            <select id="scopeFilter" onchange="window.app.renderDashboardSupervisor()" class="w-full bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl px-3 py-2 sm:py-2.5 text-xs sm:text-sm font-black text-slate-700">
-              <option value="ACTIVE" selected>⏳ En Curso</option>
-              <option value="ALL">📁 Todas</option>
-              <option value="TERMINATED">✓ Terminadas</option>
-            </select>
-          </div>
-          <div class="sm:col-span-2">
-            <select id="priorityFilter" onchange="window.app.renderDashboardSupervisor()" class="w-full bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-700 font-bold">
-              <option value="ALL">Prioridad</option>
-              <option value="Urgente">🚨 Urgente</option>
-              <option value="Alta">🟠 Alta</option>
-              <option value="Media">🟡 Media</option>
-              <option value="Baja">🟢 Baja</option>
-            </select>
-          </div>
-        </div>
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-thin" id="statusFilterPills"></div>
-      </div>
-      <div id="otCardsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5"></div>
-      <div id="emptyState" class="hidden text-center py-12 bg-white rounded-3xl border-2 border-dashed border-slate-300"><span class="text-3xl block mb-2">🔍</span><p class="text-sm font-bold text-slate-600">No hay órdenes con los filtros aplicados.</p></div>
-    </section>
-
-    <!-- VISTA 2: DASHBOARD TÉCNICO (TERRENO) -->
-    <section id="viewDashboardTecnico" class="hidden space-y-4 sm:space-y-5">
-      <div class="bg-gradient-to-r from-amber-600 via-amber-700 to-slate-900 rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-white shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <div class="flex items-center space-x-2"><span class="text-2xl sm:text-3xl">👷</span><h2 class="text-lg sm:text-2xl font-black tracking-tight">Mis Trabajos de Terreno</h2></div>
-          <p class="text-xs text-amber-100 mt-0.5">Seleccione una orden para registrar tiempos de faena o solicitar soporte.</p>
-        </div>
-        <div class="flex items-center space-x-2 bg-white/10 p-1.5 rounded-xl sm:rounded-2xl border border-white/20">
-          <input type="text" id="techQuickFolioInput" placeholder="OT-INFRA-001-2026" class="px-3 py-1.5 sm:py-2 bg-white text-slate-800 rounded-lg sm:rounded-xl text-xs font-mono font-black uppercase focus:outline-none w-full sm:w-52" />
-          <button onclick="window.app.jumpToTechFolio()" class="px-3 py-1.5 sm:py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg sm:rounded-xl text-xs font-black transition shadow whitespace-nowrap">Abrir</button>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" id="techKpiStatsContainer"></div>
-      <div class="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-slate-200 space-y-2.5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-          <input type="text" id="techSearchInput" oninput="window.app.renderDashboardTecnico()" placeholder="🔍 Buscar por recinto o falla..." class="w-full sm:w-80 pl-3.5 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-amber-500 focus:bg-white transition" />
-          <div class="flex items-center gap-1.5 overflow-x-auto text-xs scrollbar-thin" id="techStatusFilterPills"></div>
-        </div>
-      </div>
-      <div id="techOtCardsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5"></div>
-      <div id="techEmptyState" class="hidden text-center py-12 bg-white rounded-3xl border-2 border-dashed border-slate-300"><span class="text-3xl block mb-2">📋</span><p class="text-sm font-bold text-slate-600">No tiene órdenes asignadas en esta sección.</p></div>
-    </section>
-
-    <!-- VISTA 3: NUEVA OT (SUPERVISOR) -->
-    <section id="viewNewOT" class="hidden max-w-4xl mx-auto space-y-4 sm:space-y-6">
-      <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-sm border border-slate-200">
-        <div class="border-b border-slate-100 pb-3 sm:pb-4 mb-4 sm:mb-6 flex justify-between items-center">
-          <div><span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Despacho Técnico</span><h2 class="text-xl sm:text-3xl font-black text-slate-800">Emisión de Orden</h2></div>
-          <span id="nextOtNumberPreview" class="text-sm sm:text-base font-black text-sky-900 bg-sky-100 border border-sky-300 px-3 py-1 rounded-xl font-mono shadow-sm">OT-INFRA-001-2026</span>
-        </div>
-        <form id="createOTForm" onsubmit="window.app.handleCreateOT(event)" class="space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Especialidad Operativa *</label>
-              <select id="newEspecialidad" required class="w-full px-3.5 py-2 sm:py-2.5 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-black text-slate-800">
+              <h3 class="text-xs sm:text-sm font-extrabold text-amber-950 uppercase tracking-tight">Requerimientos de Terreno</h3>
+              <p class="text-[10px] text-amber-800">Solicitudes de compras, IAAS o bloqueos</p>
+            </div>
+          </div>
+          <span id="pendingRequestsCountBadge" class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-500 text-white shadow">0 req.</span>
+        </div>
+        <div id="pendingRequestsListContainer" class="space-y-1.5"></div>
+      </div>
+
+      <!-- FILTROS Y BÚSQUEDA INTUITIVA -->
+      <div class="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-slate-200 space-y-2.5">
+        <div class="relative">
+          <input type="text" id="searchInput" oninput="window.app.renderDashboardSupervisor()" placeholder="🔍 Buscar por Folio, Recinto o Solicitante..." class="w-full pl-3.5 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-sky-500 focus:bg-white transition" />
+        </div>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <select id="specialtyFilter" onchange="window.app.renderDashboardSupervisor()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-700">
+            <option value="ALL">🛠️ Especialidad (Todas)</option>
+            <option value="Infraestructura y Obras Civiles">Infraestructura</option>
+            <option value="Gasfitería y Redes Sanitarias">Gasfitería</option>
+            <option value="Electricidad y Climatización">Electricidad</option>
+            <option value="Cerrajería y Puertas Clínicas">Cerrajería</option>
+            <option value="Gases Clínicos y Equipamiento">Gases Clínicos</option>
+          </select>
+
+          <select id="priorityFilter" onchange="window.app.renderDashboardSupervisor()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-700">
+            <option value="ALL">Prioridad (Todas)</option>
+            <option value="Urgente">🚨 Urgente</option>
+            <option value="Alta">🟠 Alta</option>
+            <option value="Media">🟡 Media</option>
+            <option value="Baja">🟢 Baja</option>
+          </select>
+
+          <select id="scopeFilter" onchange="window.app.renderDashboardSupervisor()" class="col-span-2 sm:col-span-1 w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-black text-sky-900">
+            <option value="ACTIVE" selected>⏳ En Curso (Activas)</option>
+            <option value="ALL">📁 Todas las OTs</option>
+            <option value="TERMINATED">✓ Terminadas</option>
+          </select>
+        </div>
+
+        <!-- Píldoras de Estado Rápido -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-xs scrollbar-none" id="statusFilterPills"></div>
+      </div>
+
+      <!-- LISTADO DE ÓRDENES SUPERVISOR -->
+      <div id="otCardsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"></div>
+      
+      <div id="emptyState" class="hidden text-center py-12 bg-white rounded-2xl border-2 border-dashed border-slate-300">
+        <span class="text-3xl block mb-1">🔍</span>
+        <p class="text-xs sm:text-sm font-bold text-slate-600">No se encontraron órdenes con estos filtros.</p>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VISTA 2: DASHBOARD TÉCNICO (MODO TERRENO ULTRA-SIMPLE)                   -->
+    <!-- ========================================================================= -->
+    <section id="viewDashboardTecnico" class="hidden space-y-3.5 sm:space-y-5">
+      <!-- Banner Técnico con Buscador de Folio Rápido -->
+      <div class="bg-gradient-to-r from-amber-600 via-amber-700 to-slate-900 rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="text-2xl">👷</span>
+            <h2 class="text-base sm:text-xl font-black tracking-tight">Mis Órdenes Asignadas</h2>
+          </div>
+          <p class="text-[11px] text-amber-100 mt-0.5">Selecciona una orden para registrar tiempos y faena.</p>
+        </div>
+        <div class="flex items-center space-x-1.5 bg-white/10 p-1 rounded-xl border border-white/20">
+          <input type="text" id="techQuickFolioInput" placeholder="OT-INFRA-001-2026" class="px-2.5 py-1.5 bg-white text-slate-800 rounded-lg text-xs font-mono font-black uppercase focus:outline-none w-full sm:w-48" />
+          <button onclick="window.app.jumpToTechFolio()" class="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg text-xs font-black transition shadow whitespace-nowrap active:scale-95">Abrir</button>
+        </div>
+      </div>
+
+      <!-- KPIs Técnico -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" id="techKpiStatsContainer"></div>
+
+      <!-- Buscador y Filtros Técnico -->
+      <div class="bg-white rounded-2xl sm:rounded-3xl p-3 shadow-sm border border-slate-200 space-y-2">
+        <input type="text" id="techSearchInput" oninput="window.app.renderDashboardTecnico()" placeholder="🔍 Buscar por recinto o falla..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-amber-500 focus:bg-white transition" />
+        <div class="flex items-center gap-1.5 overflow-x-auto text-xs scrollbar-none" id="techStatusFilterPills"></div>
+      </div>
+
+      <!-- Tarjetas de Órdenes Técnico -->
+      <div id="techOtCardsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"></div>
+      
+      <div id="techEmptyState" class="hidden text-center py-12 bg-white rounded-2xl border-2 border-dashed border-slate-300">
+        <span class="text-3xl block mb-1">📋</span>
+        <p class="text-xs sm:text-sm font-bold text-slate-600">No tienes órdenes en esta sección.</p>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VISTA 3: NUEVA OT (DESPACHO DE SUPERVISOR)                                -->
+    <!-- ========================================================================= -->
+    <section id="viewNewOT" class="hidden max-w-3xl mx-auto space-y-4">
+      <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-sm border border-slate-200">
+        <div class="border-b border-slate-100 pb-3 mb-4 flex justify-between items-center">
+          <div>
+            <span class="text-[10px] font-bold text-sky-600 uppercase tracking-wider">Despacho de Terreno</span>
+            <h2 class="text-lg sm:text-2xl font-black text-slate-800">Nueva Orden de Trabajo</h2>
+          </div>
+          <span id="nextOtNumberPreview" class="text-xs sm:text-sm font-black text-sky-900 bg-sky-50 border border-sky-300 px-2.5 py-1 rounded-xl font-mono shadow-sm">OT-INFRA-...</span>
+        </div>
+
+        <form id="createOTForm" onsubmit="window.app.handleCreateOT(event)" class="space-y-3.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Especialidad Operativa *</label>
+              <select id="newEspecialidad" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-800">
                 <option value="Infraestructura y Obras Civiles">Infraestructura y Obras Civiles</option>
                 <option value="Gasfitería y Redes Sanitarias">Gasfitería y Redes Sanitarias</option>
                 <option value="Electricidad y Climatización">Electricidad y Climatización</option>
@@ -222,8 +283,8 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tipo de Mantenimiento *</label>
-              <select id="newTipoMant" required class="w-full px-3.5 py-2 sm:py-2.5 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-bold text-slate-800">
+              <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Tipo de Mantenimiento *</label>
+              <select id="newTipoMant" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800">
                 <option value="Correctivo">Mantenimiento Correctivo</option>
                 <option value="Emergencia Crítica">Emergencia Crítica</option>
                 <option value="Preventivo">Mantenimiento Preventivo</option>
@@ -231,334 +292,415 @@
               </select>
             </div>
           </div>
+
           <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Recinto / Servicio Clínico / PMA *</label>
-            <input type="text" id="newRecinto" required placeholder="Ej: Pabellón Central Quirófano Nº 3..." class="w-full px-3.5 py-2 sm:py-2.5 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold" />
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Recinto Clínico / PMA *</label>
+            <input type="text" id="newRecinto" required placeholder="Ej: Pabellón Central Quirófano Nº 3, Box 12 Urgencias..." class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-800" />
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ticket / Ref *</label><input type="text" id="newTicket" required placeholder="Ej: TIC-84920" class="w-full px-3.5 py-2 sm:py-2.5 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-mono font-bold" /></div>
-            <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Solicitante Clínico *</label><input type="text" id="newSolicitante" required placeholder="Ej: Dra. Marcela Lagos" class="w-full px-3.5 py-2 sm:py-2.5 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold" /></div>
-            <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Activo Fijo / Ref</label><input type="text" id="newActivo" placeholder="Ej: Lavamanos Quirúrgico" class="w-full px-3.5 py-2 sm:py-2.5 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold" /></div>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Nivel de Prioridad & SLA *</label>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold">
-              <label class="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 cursor-pointer flex items-center"><input type="radio" name="newPriority" value="Baja" /><span class="ml-2">🟢 Baja (72h)</span></label>
-              <label class="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 cursor-pointer flex items-center"><input type="radio" name="newPriority" value="Media" checked /><span class="ml-2">🟡 Media (24h)</span></label>
-              <label class="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 cursor-pointer flex items-center"><input type="radio" name="newPriority" value="Alta" /><span class="ml-2 text-amber-800">🟠 Alta (6h)</span></label>
-              <label class="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border-2 border-rose-300 bg-rose-50 cursor-pointer flex items-center"><input type="radio" name="newPriority" value="Urgente" /><span class="ml-2 font-black text-rose-700">🚨 Urgente (2h)</span></label>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Ticket / Ref *</label>
+              <input type="text" id="newTicket" required placeholder="TIC-8492" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Solicitante *</label>
+              <input type="text" id="newSolicitante" required placeholder="Dra. Lagos" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Activo Fijo</label>
+              <input type="text" id="newActivo" placeholder="Lavamanos Quirúrgico" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
             </div>
           </div>
+
+          <!-- Selector Táctil de Prioridad -->
           <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Descripción de la Falla Técnica *</label>
-            <textarea id="newDescripcion" rows="3" required placeholder="Detalle de la falla técnica reportada..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-medium"></textarea>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Nivel de Prioridad & SLA *</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold">
+              <label class="p-2 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer flex items-center justify-center space-x-1.5 active:scale-95">
+                <input type="radio" name="newPriority" value="Baja" />
+                <span>🟢 Baja (72h)</span>
+              </label>
+              <label class="p-2 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer flex items-center justify-center space-x-1.5 active:scale-95">
+                <input type="radio" name="newPriority" value="Media" checked />
+                <span>🟡 Media (24h)</span>
+              </label>
+              <label class="p-2 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer flex items-center justify-center space-x-1.5 active:scale-95">
+                <input type="radio" name="newPriority" value="Alta" />
+                <span class="text-amber-800">🟠 Alta (6h)</span>
+              </label>
+              <label class="p-2 rounded-xl border-2 border-rose-300 bg-rose-50 cursor-pointer flex items-center justify-center space-x-1.5 active:scale-95">
+                <input type="radio" name="newPriority" value="Urgente" />
+                <span class="font-extrabold text-rose-700">🚨 Urgente (2h)</span>
+              </label>
+            </div>
           </div>
-          <div class="pt-3 border-t border-slate-100 flex justify-end space-x-2">
-            <button type="button" onclick="window.app.navigate('dashboard_supervisor')" class="px-4 py-2 sm:py-2.5 bg-slate-100 text-slate-700 rounded-xl sm:rounded-2xl text-xs font-bold">Cancelar</button>
-            <button type="submit" class="px-5 py-2 sm:py-2.5 bg-sky-700 hover:bg-sky-600 text-white font-black rounded-xl sm:rounded-2xl text-xs sm:text-sm shadow-md">Generar OT</button>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Descripción de la Falla Técnica *</label>
+            <textarea id="newDescripcion" rows="3" required placeholder="Detalle técnico de la anomalía o trabajo requerido..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium"></textarea>
+          </div>
+
+          <div class="pt-2 border-t border-slate-100 flex justify-end space-x-2">
+            <button type="button" onclick="window.app.navigate('dashboard_supervisor')" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold">Cancelar</button>
+            <button type="submit" class="px-5 py-2 bg-sky-700 hover:bg-sky-600 text-white font-extrabold rounded-xl text-xs sm:text-sm shadow-md active:scale-95">Generar Orden</button>
           </div>
         </form>
       </div>
     </section>
 
-    <!-- VISTA 4: FICHA OPERATIVA -->
-    <section id="viewOperativeOT" class="hidden max-w-5xl mx-auto space-y-4 sm:space-y-6">
+    <!-- ========================================================================= -->
+    <!-- VISTA 4: FICHA OPERATIVA DE TERRENO (TERRENO INTERACTION)                -->
+    <!-- ========================================================================= -->
+    <section id="viewOperativeOT" class="hidden max-w-4xl mx-auto space-y-3.5 sm:space-y-5">
       
-      <!-- CABECERA RESUMEN -->
-      <div class="bg-gradient-to-r from-slate-950 via-sky-950 to-slate-900 rounded-2xl sm:rounded-3xl p-4 sm:p-7 text-white shadow-lg border border-sky-700/40 space-y-3 sm:space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <!-- CABECERA RESUMEN DE LA ORDEN -->
+      <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-sky-950 rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-white shadow-lg border border-sky-800/40 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div class="space-y-1">
             <div class="flex flex-wrap items-center gap-2">
-              <span id="opOtNumber" class="text-xl sm:text-3xl font-black font-mono text-sky-400">OT-INFRA-001-2026</span>
-              <span id="opStatusHeaderBadge" class="px-3 py-0.5 rounded-full text-xs font-black bg-sky-600 text-white shadow">En Ejecución</span>
-              <span id="opPriorityBadge" class="px-2.5 py-0.5 rounded-full text-xs font-black shadow">Prioridad</span>
+              <span id="opOtNumber" class="text-xl sm:text-2xl font-black font-mono text-sky-400">OT-INFRA-...</span>
+              <span id="opStatusHeaderBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-sky-600 text-white shadow">En Ejecución</span>
+              <span id="opPriorityBadge" class="px-2 py-0.5 rounded-full text-[11px] font-extrabold shadow">Prioridad</span>
             </div>
-            <div class="flex flex-wrap items-center gap-2 text-xs text-sky-200 font-semibold">
-              <span id="opSpecialtyHeader" class="font-black text-teal-300">Infraestructura y Obras Civiles</span>
+            <div class="text-xs text-sky-200 font-semibold flex items-center space-x-2">
+              <span id="opSpecialtyHeader" class="font-extrabold text-teal-300">Infraestructura</span>
               <span>•</span>
-              <span id="opSlaHeader">SLA: 24 Horas</span>
+              <span id="opSlaHeader">SLA: 24h</span>
             </div>
           </div>
+          
           <div class="flex items-center space-x-2">
-            <button onclick="window.app.shareCurrentViaWhatsApp()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl text-xs font-black transition shadow flex items-center justify-center space-x-1"><span>💬</span><span>WhatsApp</span></button>
-            <button onclick="window.app.generatePDFFromCurrent()" class="flex-1 sm:flex-none bg-rose-700 hover:bg-rose-600 text-white px-3.5 py-2 rounded-xl text-xs font-black transition shadow flex items-center justify-center space-x-1"><span>📄</span><span>PDF</span></button>
+            <button onclick="window.app.shareCurrentViaWhatsApp()" class="flex-1 sm:flex-none px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold shadow active:scale-95 transition flex items-center justify-center space-x-1">
+              <span>💬</span><span>WhatsApp</span>
+            </button>
+            <button onclick="window.app.generatePDFFromCurrent()" class="flex-1 sm:flex-none px-3.5 py-1.5 bg-rose-700 hover:bg-rose-600 text-white rounded-xl text-xs font-extrabold shadow active:scale-95 transition flex items-center justify-center space-x-1">
+              <span>📄</span><span>PDF</span>
+            </button>
           </div>
         </div>
 
-        <!-- Barra Resumen de Cuadrilla y Tiempos de Faena -->
-        <div class="bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 border border-white/15 grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+        <!-- Barra de Cuadrilla y Tiempos de Faena -->
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-2.5 border border-white/15 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
           <div>
-            <span class="text-sky-300 font-black uppercase text-[10px] block">👷 Encargado:</span>
-            <span id="opHeaderEncargado" class="font-black text-white text-sm">Por definir en terreno</span>
+            <span class="text-sky-300 font-bold uppercase text-[9px] block">👷 Encargado:</span>
+            <span id="opHeaderEncargado" class="font-extrabold text-white text-xs truncate block">Por definir</span>
           </div>
           <div>
-            <span class="text-sky-300 font-black uppercase text-[10px] block">⏱️ Inicio Faena:</span>
-            <span id="opHeaderInicio" class="font-bold text-sky-100">No iniciado</span>
+            <span class="text-sky-300 font-bold uppercase text-[9px] block">⏱️ Inicio Faena:</span>
+            <span id="opHeaderInicio" class="font-bold text-sky-100 text-xs">No iniciado</span>
           </div>
           <div>
-            <span class="text-sky-300 font-black uppercase text-[10px] block">🏁 Término Faena:</span>
-            <span id="opHeaderTermino" class="font-bold text-sky-100">Pendiente</span>
+            <span class="text-sky-300 font-bold uppercase text-[9px] block">🏁 Término Faena:</span>
+            <span id="opHeaderTermino" class="font-bold text-sky-100 text-xs">Pendiente</span>
           </div>
         </div>
       </div>
 
-      <div id="opSupervisorNotesBanner" class="hidden rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 bg-gradient-to-r from-sky-50 to-blue-50 border-2 border-sky-300 text-sky-950 shadow-sm space-y-1">
-        <h4 class="font-black text-xs uppercase tracking-wider text-sky-900">👨‍💼 Instrucciones del Supervisor:</h4>
-        <p id="opSupervisorNotesText" class="text-xs text-slate-800 whitespace-pre-wrap pl-3 sm:pl-6 font-bold"></p>
+      <!-- Banner de Instrucciones de Supervisión -->
+      <div id="opSupervisorNotesBanner" class="hidden rounded-2xl p-3 bg-sky-50 border-2 border-sky-300 text-sky-950 shadow-sm space-y-1">
+        <h4 class="font-black text-xs uppercase text-sky-900 flex items-center space-x-1">
+          <span>👨‍💼</span><span>Instrucciones de Jefatura:</span>
+        </h4>
+        <p id="opSupervisorNotesText" class="text-xs text-slate-800 font-semibold pl-5 whitespace-pre-wrap"></p>
       </div>
 
-      <div id="opLockBanner" class="hidden rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 border-2 flex items-center space-x-3 shadow-sm">
-        <div id="opLockIcon" class="text-2xl sm:text-3xl">🔒</div>
-        <div><h4 id="opLockTitle" class="font-black text-xs sm:text-sm uppercase">Orden Bloqueada</h4><p id="opLockMsg" class="text-xs font-semibold"></p></div>
+      <!-- Banner de Bloqueo de Orden -->
+      <div id="opLockBanner" class="hidden rounded-2xl p-3 border-2 flex items-center space-x-3 shadow-sm">
+        <div id="opLockIcon" class="text-2xl">🔒</div>
+        <div>
+          <h4 id="opLockTitle" class="font-black text-xs sm:text-sm uppercase">Orden Bloqueada</h4>
+          <p id="opLockMsg" class="text-xs font-semibold"></p>
+        </div>
       </div>
 
-      <!-- 1. Antecedentes Clínicos del Requerimiento -->
-      <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200 space-y-3">
-        <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase tracking-wide">1. Antecedentes del Recinto Clínico</h3>
+      <!-- 1. Antecedentes del Recinto -->
+      <div class="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-sm border border-slate-200 space-y-2.5">
+        <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase">1. Antecedentes del Recinto Clínico</h3>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-          <div class="bg-slate-50 p-2.5 sm:p-3 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px] sm:text-[10px]">Recinto / PMA:</span><span id="opRecinto" class="font-black text-slate-800 text-xs sm:text-sm"></span></div>
-          <div class="bg-slate-50 p-2.5 sm:p-3 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px] sm:text-[10px]">Solicitante:</span><span id="opSolicitante" class="font-bold text-slate-800 truncate"></span></div>
-          <div class="bg-slate-50 p-2.5 sm:p-3 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px] sm:text-[10px]">Ticket Ref:</span><span id="opTicket" class="font-bold text-slate-800 font-mono"></span></div>
-          <div class="bg-slate-50 p-2.5 sm:p-3 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px] sm:text-[10px]">Activo:</span><span id="opActivo" class="font-bold text-slate-800"></span></div>
+          <div class="bg-slate-50 p-2.5 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px]">Recinto / PMA:</span><span id="opRecinto" class="font-extrabold text-slate-800 text-xs truncate block"></span></div>
+          <div class="bg-slate-50 p-2.5 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px]">Solicitante:</span><span id="opSolicitante" class="font-bold text-slate-800 text-xs truncate block"></span></div>
+          <div class="bg-slate-50 p-2.5 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px]">Ticket Ref:</span><span id="opTicket" class="font-mono font-bold text-slate-800 text-xs"></span></div>
+          <div class="bg-slate-50 p-2.5 rounded-xl"><span class="text-slate-400 block uppercase font-black text-[9px]">Activo:</span><span id="opActivo" class="font-bold text-slate-800 text-xs truncate block"></span></div>
         </div>
-        <div class="bg-sky-50/70 border border-sky-200 p-3 rounded-xl text-xs text-slate-800">
+        <div class="bg-sky-50/70 border border-sky-200 p-2.5 rounded-xl text-xs text-slate-800">
           <span class="text-[10px] font-black text-sky-800 uppercase block mb-0.5">Descripción de la Falla:</span>
-          <p id="opDescripcion" class="leading-relaxed font-semibold text-xs sm:text-sm"></p>
+          <p id="opDescripcion" class="leading-relaxed font-semibold text-xs"></p>
         </div>
       </div>
 
-      <!-- 2. Registro de Tiempos y Cuadrilla de Terreno -->
-      <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200 space-y-3">
+      <!-- 2. Registro de Tiempos y Cuadrilla (Botones Táctiles Gigantes) -->
+      <div class="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-sm border border-slate-200 space-y-3">
         <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-          <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase tracking-wide">2. Ejecución de Faena</h3>
-          <span class="text-[10px] sm:text-[11px] text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full font-black">⚡ 1 Toque</span>
+          <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase">2. Ejecución y Tiempos de Terreno</h3>
+          <span class="text-[10px] text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full font-black">⚡ 1 Toque</span>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Encargado de Cuadrilla *</label>
-          <input type="text" id="opEncargado" oninput="window.app.syncHeaderTeam()" placeholder="Nombre del técnico responsable..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl disabled:bg-slate-100 font-bold text-xs sm:text-sm" />
+          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Encargado de Cuadrilla *</label>
+          <input type="text" id="opEncargado" oninput="window.app.syncHeaderTeam()" placeholder="Nombre del técnico a cargo..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold disabled:bg-slate-100" />
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <!-- Botonera Táctil Rápida de Inicio / Término -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
           <!-- Inicio -->
-          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5">
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
             <div class="flex items-center justify-between">
               <span class="font-black text-slate-700 uppercase text-[10px]">Inicio de Faena</span>
-              <button type="button" id="btnQuickStart" onclick="window.app.markCurrentTime('start')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-black shadow transition">▶ Iniciar Ahora</button>
+              <button type="button" id="btnQuickStart" onclick="window.app.markCurrentTime('start')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white rounded-lg text-xs font-black shadow transition">▶ Iniciar Ahora</button>
             </div>
-            <input type="datetime-local" id="opFechaInicio" onchange="window.app.syncHeaderTeam()" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs disabled:bg-slate-100 font-bold" />
+            <input type="datetime-local" id="opFechaInicio" onchange="window.app.syncHeaderTeam()" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold disabled:bg-slate-100" />
           </div>
 
           <!-- Término -->
-          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5">
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
             <div class="flex items-center justify-between">
               <span class="font-black text-slate-700 uppercase text-[10px]">Término de Faena</span>
-              <button type="button" id="btnQuickEnd" onclick="window.app.markCurrentTime('end')" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-[10px] font-black shadow transition">⏹ Marcar Término</button>
+              <button type="button" id="btnQuickEnd" onclick="window.app.markCurrentTime('end')" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 active:scale-95 text-white rounded-lg text-xs font-black shadow transition">⏹ Marcar Término</button>
             </div>
-            <input type="datetime-local" id="opFechaTermino" onchange="window.app.syncHeaderTeam()" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs disabled:bg-slate-100 font-bold" />
+            <input type="datetime-local" id="opFechaTermino" onchange="window.app.syncHeaderTeam()" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold disabled:bg-slate-100" />
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Detalle / Observaciones del Trabajo:</label>
-          <textarea id="opContratiempos" rows="2" placeholder="Describa el trabajo realizado o contratiempos..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold disabled:bg-slate-100"></textarea>
+          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Detalle del Trabajo Realizado / Observaciones:</label>
+          <textarea id="opContratiempos" rows="2" placeholder="Describa el trabajo realizado o posibles contingencias..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold disabled:bg-slate-100"></textarea>
         </div>
       </div>
 
-      <!-- 3. Canal Cuadrilla a Supervisor -->
-      <div id="technicianToSupervisorPanel" class="bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-slate-100 border-2 border-amber-300 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-sm space-y-2.5">
-        <h3 class="text-xs sm:text-sm font-black text-amber-900 uppercase">3. Requerimiento Directo a Supervisión</h3>
-        <div class="space-y-2.5">
-          <div>
-            <select id="techReqType" class="w-full px-3 py-2 bg-white border border-amber-300 rounded-xl text-xs font-black text-slate-800">
-              <option value="Compra o Solicitud de Materiales">🛒 Compra o Solicitud de Materiales</option>
-              <option value="Permiso IAAS / Ingreso Clínico">🛡️ Permiso IAAS / Ingreso Clínico</option>
-              <option value="Bloqueo o Contingencia en Terreno">⚠️ Bloqueo o Contingencia en Terreno</option>
-              <option value="Asistencia Técnica / Apoyo Adicional">🤝 Asistencia Técnica / Apoyo Adicional</option>
-              <option value="Consulta Operativa a Supervisión">📋 Consulta Operativa a Supervisión</option>
-              <option value="Otro Requerimiento">💬 Otro Requerimiento</option>
-            </select>
-          </div>
-          <div>
-            <textarea id="techReqMsg" rows="2" placeholder="Describa el requerimiento o contingencia para la jefatura..." class="w-full px-3 py-2 bg-white border border-amber-300 rounded-xl text-xs font-semibold"></textarea>
-          </div>
-          <button type="button" onclick="window.app.sendRequestToSupervisor()" class="w-full sm:w-auto px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-black text-xs rounded-xl shadow transition">Enviar Solicitud a Supervisión ➔</button>
+      <!-- 3. Canal Directo a Supervisión -->
+      <div id="technicianToSupervisorPanel" class="bg-amber-50/70 border-2 border-amber-300 rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 space-y-2.5">
+        <h3 class="text-xs sm:text-sm font-black text-amber-950 uppercase flex items-center space-x-1">
+          <span>📢</span><span>3. Solicitar Soporte a Supervisión</span>
+        </h3>
+        <div class="space-y-2">
+          <select id="techReqType" class="w-full px-3 py-2 bg-white border border-amber-300 rounded-xl text-xs font-bold text-slate-800">
+            <option value="Compra o Solicitud de Materiales">🛒 Compra o Solicitud de Materiales</option>
+            <option value="Permiso IAAS / Ingreso Clínico">🛡️ Permiso IAAS / Ingreso Clínico</option>
+            <option value="Bloqueo o Contingencia en Terreno">⚠️ Bloqueo o Contingencia en Terreno</option>
+            <option value="Asistencia Técnica / Apoyo Adicional">🤝 Asistencia Técnica / Apoyo Adicional</option>
+            <option value="Consulta Operativa a Supervisión">📋 Consulta Operativa a Supervisión</option>
+            <option value="Otro Requerimiento">💬 Otro Requerimiento</option>
+          </select>
+          <textarea id="techReqMsg" rows="2" placeholder="Describa la necesidad para la jefatura..." class="w-full px-3 py-2 bg-white border border-amber-300 rounded-xl text-xs font-semibold"></textarea>
+          <button type="button" onclick="window.app.sendRequestToSupervisor()" class="w-full sm:w-auto px-4 py-2.5 bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-extrabold text-xs rounded-xl shadow transition">
+            Enviar Solicitud a Supervisión ➔
+          </button>
         </div>
       </div>
 
       <!-- 4. Firmas Táctiles -->
-      <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200 space-y-4">
-        <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase tracking-wide">4. Validación Técnica y Recepción Conforme</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
-            <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-800 uppercase">Firma Técnico Encargado *</span><button type="button" id="btnClearSigTech" onclick="window.app.clearSignature('tech')" class="px-2 py-0.5 bg-slate-200 text-[11px] font-bold rounded-lg">Limpiar</button></div>
+      <div class="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-sm border border-slate-200 space-y-3">
+        <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase">4. Validación Técnica y Recepción Conforme</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- Firma Técnico -->
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-black text-slate-800 uppercase">Firma Técnico *</span>
+              <button type="button" id="btnClearSigTech" onclick="window.app.clearSignature('tech')" class="px-2 py-0.5 bg-slate-200 text-[10px] font-bold rounded-lg active:scale-95">Limpiar</button>
+            </div>
             <div class="relative bg-white border-2 border-dashed border-slate-300 rounded-xl p-1 flex flex-col items-center">
-              <canvas id="sigCanvasTech" class="canvas-sig w-full h-32 bg-white rounded-lg" width="400" height="150"></canvas>
-              <span id="sigStatusLabelTech" class="text-[11px] text-slate-400 mt-1 font-semibold">Sin firma técnica</span>
+              <canvas id="sigCanvasTech" class="canvas-sig w-full h-28 bg-white rounded-lg" width="400" height="140"></canvas>
+              <span id="sigStatusLabelTech" class="text-[10px] text-slate-400 mt-1 font-semibold">Sin firma técnica</span>
             </div>
           </div>
-          <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
-            <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-800 uppercase">Recepción Clínica Conforme</span><button type="button" id="btnClearSigReceiver" onclick="window.app.clearSignature('receiver')" class="px-2 py-0.5 bg-slate-200 text-[11px] font-bold rounded-lg">Limpiar</button></div>
+
+          <!-- Firma Recepción -->
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-black text-slate-800 uppercase">Recepción Clínica</span>
+              <button type="button" id="btnClearSigReceiver" onclick="window.app.clearSignature('receiver')" class="px-2 py-0.5 bg-slate-200 text-[10px] font-bold rounded-lg active:scale-95">Limpiar</button>
+            </div>
             <input type="text" id="opReceiverName" placeholder="Nombre y Cargo de quien recibe..." class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold disabled:bg-slate-100" />
             <div class="relative bg-white border-2 border-dashed border-slate-300 rounded-xl p-1 flex flex-col items-center">
-              <canvas id="sigCanvasReceiver" class="canvas-sig w-full h-28 bg-white rounded-lg" width="400" height="120"></canvas>
-              <span id="sigStatusLabelReceiver" class="text-[11px] text-slate-400 mt-1 font-semibold">Sin firma recepción</span>
+              <canvas id="sigCanvasReceiver" class="canvas-sig w-full h-24 bg-white rounded-lg" width="400" height="110"></canvas>
+              <span id="sigStatusLabelReceiver" class="text-[10px] text-slate-400 mt-1 font-semibold">Sin firma de recepción</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Barra de Acciones Flotante -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 sticky bottom-16 sm:bottom-4 z-30 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200">
-        <button type="button" onclick="window.app.navigateHomeByRole()" class="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold">Volver al Panel</button>
+      <!-- Barra de Acciones Flotante Inferior -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 sticky bottom-16 sm:bottom-4 z-30 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-slate-200">
+        <button type="button" onclick="window.app.navigateHomeByRole()" class="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold active:scale-95">Volver al Panel</button>
         <div id="opActionButtonsContainer" class="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2">
-          <button type="button" id="btnSaveProgress" onclick="window.app.saveOperativeProgress(false)" class="w-full sm:w-auto px-5 py-2.5 bg-sky-700 hover:bg-sky-600 text-white rounded-xl text-xs font-bold shadow">💾 Guardar en Nube</button>
-          <button type="button" id="btnRequestClosure" onclick="window.app.requestClosureAndFinalize()" class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl text-xs font-black shadow-lg">🔒 Solicitar Cierre</button>
+          <button type="button" id="btnSaveProgress" onclick="window.app.saveOperativeProgress(false)" class="w-full sm:w-auto px-4 py-2.5 bg-sky-700 hover:bg-sky-600 text-white rounded-xl text-xs font-bold shadow active:scale-95">💾 Guardar Avance</button>
+          <button type="button" id="btnRequestClosure" onclick="window.app.requestClosureAndFinalize()" class="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl text-xs font-black shadow-lg active:scale-95">🔒 Solicitar Cierre</button>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- MODAL DE CONFIGURACIÓN DEL SISTEMA (HOSPITAL, FOLIOS, PINS, NUBE) -->
-  <div id="settingsModal" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 modal-backdrop">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-7 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto modal-content">
-      <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+  <!-- ========================================================================= -->
+  <!-- MODAL: CONFIGURACIÓN DEL SISTEMA                                          -->
+  <!-- ========================================================================= -->
+  <div id="settingsModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3">
+    <div class="bg-white rounded-3xl max-w-md w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-3.5 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-start border-b border-slate-100 pb-2.5">
         <div class="flex items-center space-x-2">
           <span class="text-2xl">⚙️</span>
           <div>
-            <h3 class="text-lg font-black text-slate-800">Configuración del Sistema</h3>
-            <p class="text-[11px] text-slate-500">Parámetros operativos y seguridad en la nube</p>
+            <h3 class="text-base font-black text-slate-800">Configuración</h3>
+            <p class="text-[10px] text-slate-500">Parámetros del Hospital y Seguridad</p>
           </div>
         </div>
-        <button onclick="window.app.closeSettingsModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-black p-1">✕</button>
+        <button onclick="window.app.closeSettingsModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold p-1">✕</button>
       </div>
 
-      <!-- Sección 1: Parámetros del Establecimiento y Folios -->
-      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
-        <h4 class="text-xs font-black text-sky-900 uppercase">🏥 Identificación & Nomenclatura</h4>
+      <!-- Nombre y Folio -->
+      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2 text-xs">
         <div>
-          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Nombre Hospital / Servicio de Salud:</label>
-          <input type="text" id="cfgHospitalName" placeholder="Hospital Público / Servicio de Salud" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold" />
+          <label class="block font-bold text-slate-700 uppercase text-[10px] mb-1">Nombre Establecimiento:</label>
+          <input type="text" id="cfgHospitalName" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-xs" />
         </div>
         <div>
-          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Prefijo de Folio Único:</label>
-          <input type="text" id="cfgFolioPrefix" placeholder="OT-INFRA" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-mono font-black uppercase" />
-          <p class="text-[10px] text-slate-400 mt-1">Formato resultante: <code class="font-bold text-sky-700" id="cfgFolioSample">OT-INFRA-001-2026</code></p>
+          <label class="block font-bold text-slate-700 uppercase text-[10px] mb-1">Prefijo de Folio Único:</label>
+          <input type="text" id="cfgFolioPrefix" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-mono font-black uppercase text-xs" />
+          <p class="text-[10px] text-slate-400 mt-0.5">Ejemplo: <code class="font-bold text-sky-700" id="cfgFolioSample">OT-INFRA-001-2026</code></p>
         </div>
       </div>
 
-      <!-- Sección 2: Gestión de PINs de Acceso -->
-      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
-        <div class="flex items-center justify-between">
-          <h4 class="text-xs font-black text-sky-900 uppercase">🔐 Modificación de Claves (PIN)</h4>
-          <span class="text-[10px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded-full">4 Dígitos</span>
+      <!-- PINs -->
+      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2 text-xs">
+        <h4 class="font-black text-sky-900 uppercase text-[11px]">🔐 Modificar PIN de Acceso</h4>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Rol a Modificar:</label>
+          <select id="cfgPinRoleSelect" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-bold">
+            <option value="supervisor">👨‍💼 Supervisor</option>
+            <option value="tecnico">👷 Técnico / Cuadrilla</option>
+          </select>
         </div>
-        <div class="space-y-2 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-0.5">PIN Actual Supervisor (Autorización):</label>
+          <input type="password" id="cfgCurrentSupervisorPin" maxlength="4" placeholder="••••" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-mono text-center tracking-widest font-black" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block font-bold text-slate-700 mb-1">Rol a Modificar:</label>
-            <select id="cfgPinRoleSelect" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-slate-800">
-              <option value="supervisor">👨‍💼 Supervisor</option>
-              <option value="tecnico">👷 Técnico / Cuadrilla</option>
-            </select>
+            <label class="block font-bold text-slate-700 mb-0.5">Nuevo PIN:</label>
+            <input type="password" id="cfgNewPin" maxlength="4" placeholder="••••" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-mono text-center tracking-widest font-black" />
           </div>
           <div>
-            <label class="block font-bold text-slate-700 mb-1">PIN Actual de Supervisor (Autorización):</label>
-            <input type="password" id="cfgCurrentSupervisorPin" maxlength="4" placeholder="••••" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-center tracking-widest text-sm font-black" />
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Nuevo PIN:</label>
-              <input type="password" id="cfgNewPin" maxlength="4" placeholder="••••" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-center tracking-widest text-sm font-black" />
-            </div>
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Confirmar PIN:</label>
-              <input type="password" id="cfgConfirmPin" maxlength="4" placeholder="••••" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-center tracking-widest text-sm font-black" />
-            </div>
+            <label class="block font-bold text-slate-700 mb-0.5">Confirmar:</label>
+            <input type="password" id="cfgConfirmPin" maxlength="4" placeholder="••••" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-mono text-center tracking-widest font-black" />
           </div>
         </div>
-      </div>
-
-      <!-- Sección 3: Estado de Sincronización en Nube -->
-      <div class="bg-emerald-50/70 border border-emerald-200 p-3 rounded-2xl flex items-center justify-between text-xs">
-        <div class="flex items-center space-x-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="font-black text-emerald-950">Supabase Cloud Realtime</span>
-        </div>
-        <span class="text-[11px] font-bold text-emerald-800">Conectado y Sincronizado</span>
       </div>
 
       <div class="flex justify-end space-x-2 pt-2 border-t border-slate-100">
-        <button type="button" onclick="window.app.closeSettingsModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold">Cancelar</button>
-        <button type="button" onclick="window.app.saveSystemSettings()" class="px-5 py-2 bg-sky-700 hover:bg-sky-600 text-white font-black text-xs rounded-xl shadow">Guardar Cambios</button>
+        <button type="button" onclick="window.app.closeSettingsModal()" class="px-3.5 py-1.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold">Cancelar</button>
+        <button type="button" onclick="window.app.saveSystemSettings()" class="px-4 py-1.5 bg-sky-700 hover:bg-sky-600 text-white font-black text-xs rounded-xl shadow active:scale-95">Guardar</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL SUPERVISOR MGMT -->
-  <div id="supervisorMgmtModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-3xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
-      <div class="flex justify-between items-start border-b border-slate-100 pb-3">
-        <div><span class="text-[10px] sm:text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full">Despacho de Supervisión</span><h3 id="mgmtModalOtTitle" class="text-lg sm:text-xl font-black text-slate-800 mt-1">OT-INFRA-...</h3><p id="mgmtModalRecinto" class="text-xs text-slate-500 font-semibold"></p></div>
-        <button onclick="window.app.closeSupervisorMgmtModal()" class="text-slate-400 text-2xl font-black p-1">✕</button>
-      </div>
-      <div class="space-y-2"><h4 class="text-xs font-black text-slate-700 uppercase">Requerimientos de Cuadrilla:</h4><div id="mgmtModalRequestsList" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div></div>
-      <div class="bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-200 space-y-3">
-        <h4 class="text-xs font-black text-sky-900 uppercase">Instrucciones y Gestión Técnica:</h4>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-          <div><label class="block font-bold text-slate-700 mb-1">Estado de Solicitud:</label><input type="text" id="mgmtMaterialStatus" placeholder="Ej: Material autorizado / IAAS validado" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold" /></div>
-          <div><label class="block font-bold text-slate-700 mb-1">Actualizar Etapa:</label><select id="mgmtStageSelect" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-black"><option value="Pendiente">Pendiente</option><option value="Inspección">Inspección</option><option value="Espera de Materiales">Espera de Materiales</option><option value="En Ejecución">En Ejecución</option><option value="Con Problemas">Con Problemas</option></select></div>
+  <!-- ========================================================================= -->
+  <!-- MODAL: GESTIÓN DE SUPERVISOR (DESPACHO)                                   -->
+  <!-- ========================================================================= -->
+  <div id="supervisorMgmtModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-3.5 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-start border-b border-slate-100 pb-2.5">
+        <div>
+          <span class="text-[10px] font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full">Despacho</span>
+          <h3 id="mgmtModalOtTitle" class="text-base font-black text-slate-800 mt-0.5">OT-INFRA-...</h3>
+          <p id="mgmtModalRecinto" class="text-xs text-slate-500 font-semibold"></p>
         </div>
-        <div><label class="block font-bold text-slate-700 text-xs mb-1">Instrucción para Cuadrilla:</label><textarea id="mgmtSupervisorNotes" rows="3" placeholder="Instrucciones directas para la cuadrilla..." class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold"></textarea></div>
-        <div class="flex justify-end space-x-2 pt-1"><button type="button" onclick="window.app.saveSupervisorManagement()" class="px-5 py-2.5 bg-sky-700 hover:bg-sky-600 text-white font-black text-xs rounded-xl shadow">Guardar y Sincronizar</button></div>
+        <button onclick="window.app.closeSupervisorMgmtModal()" class="text-slate-400 text-xl font-bold p-1">✕</button>
+      </div>
+
+      <div class="space-y-1.5">
+        <h4 class="text-xs font-black text-slate-700 uppercase">Requerimientos de Cuadrilla:</h4>
+        <div id="mgmtModalRequestsList" class="space-y-1.5 max-h-40 overflow-y-auto pr-1"></div>
+      </div>
+
+      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2.5 text-xs">
+        <h4 class="font-black text-sky-900 uppercase">Instrucciones de Jefatura:</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5">Estado Materiales / IAAS:</label>
+            <input type="text" id="mgmtMaterialStatus" placeholder="Ej: Material autorizado / Pañol" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-bold" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5">Actualizar Etapa:</label>
+            <select id="mgmtStageSelect" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-bold">
+              <option value="Pendiente">Pendiente</option>
+              <option value="Inspección">Inspección</option>
+              <option value="Espera de Materiales">Espera de Materiales</option>
+              <option value="En Ejecución">En Ejecución</option>
+              <option value="Con Problemas">Con Problemas</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-0.5">Instrucción para la Cuadrilla:</label>
+          <textarea id="mgmtSupervisorNotes" rows="2" placeholder="Instrucción técnica directa..." class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-semibold"></textarea>
+        </div>
+        <div class="flex justify-end pt-1">
+          <button type="button" onclick="window.app.saveSupervisorManagement()" class="px-4 py-2 bg-sky-700 hover:bg-sky-600 text-white font-black text-xs rounded-xl shadow active:scale-95">Guardar y Sincronizar</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL LOGIN CON TECLADO NUMÉRICO TÁCTIL (KEYPAD) -->
-  <div id="loginModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-5 sm:p-7 shadow-2xl border border-slate-100 space-y-4">
-      <div class="text-center space-y-1">
-        <div class="w-12 h-12 bg-gradient-to-tr from-sky-600 to-teal-500 text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">☁️</div>
-        <h3 class="text-lg sm:text-xl font-black text-slate-800">SGM-Hospital Cloud</h3>
+  <!-- ========================================================================= -->
+  <!-- MODAL: LOGIN CON KEYPAD NUMÉRICO TÁCTIL (DISEÑO APP)                      -->
+  <!-- ========================================================================= -->
+  <div id="loginModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3">
+    <div class="bg-white rounded-3xl max-w-xs w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-3.5 text-center">
+      
+      <!-- Icono y Título -->
+      <div class="space-y-1">
+        <div class="w-11 h-11 bg-gradient-to-tr from-sky-600 to-teal-500 text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">
+          🏥
+        </div>
+        <h3 class="text-base font-black text-slate-800">SGM-Hospital Cloud</h3>
         <p class="text-[11px] text-slate-500">Seleccione su rol e ingrese su PIN</p>
       </div>
       
-      <div class="grid grid-cols-2 gap-2">
-        <button type="button" id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="p-2.5 rounded-2xl border-2 border-sky-600 bg-sky-50 text-sky-800 font-black text-xs flex flex-col items-center space-y-0.5 shadow-sm"><span class="text-xl">👨‍💼</span><span>Supervisor</span></button>
-        <button type="button" id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="p-2.5 rounded-2xl border-2 border-slate-200 bg-slate-50 text-slate-600 font-bold text-xs flex flex-col items-center space-y-0.5"><span class="text-xl">👷</span><span>Técnico</span></button>
+      <!-- Selector de Rol Segmentado -->
+      <div class="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-2xl">
+        <button type="button" id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="py-2 rounded-xl text-xs font-extrabold transition shadow-sm bg-sky-700 text-white">👨‍💼 Supervisor</button>
+        <button type="button" id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="py-2 rounded-xl text-xs font-bold transition text-slate-600">👷 Técnico</button>
       </div>
 
-      <div class="space-y-1">
-        <label id="pinInputLabel" class="block text-[10px] font-black text-slate-700 uppercase tracking-wider text-center">PIN de Supervisor</label>
-        <input type="password" id="pinInput" readonly maxlength="4" placeholder="••••" class="w-full text-center tracking-[0.8em] text-2xl font-black py-2 bg-slate-100 border-2 border-slate-200 rounded-xl text-slate-800 font-mono shadow-inner select-none" />
+      <!-- Indicador Visual de PIN (Puntos) -->
+      <div class="space-y-1.5 py-1">
+        <input type="password" id="pinInput" readonly maxlength="4" class="hidden" />
+        <div class="flex items-center justify-center space-x-3" id="pinDotsContainer">
+          <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-300 transition-all bg-slate-100"></div>
+          <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-300 transition-all bg-slate-100"></div>
+          <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-300 transition-all bg-slate-100"></div>
+          <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-300 transition-all bg-slate-100"></div>
+        </div>
       </div>
 
-      <!-- TECLADO NUMÉRICO TÁCTIL -->
-      <div class="grid grid-cols-3 gap-1.5 pt-1">
-        <button type="button" onclick="window.app.keypadPress('1')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">1</button>
-        <button type="button" onclick="window.app.keypadPress('2')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">2</button>
-        <button type="button" onclick="window.app.keypadPress('3')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">3</button>
-        <button type="button" onclick="window.app.keypadPress('4')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">4</button>
-        <button type="button" onclick="window.app.keypadPress('5')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">5</button>
-        <button type="button" onclick="window.app.keypadPress('6')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">6</button>
-        <button type="button" onclick="window.app.keypadPress('7')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">7</button>
-        <button type="button" onclick="window.app.keypadPress('8')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">8</button>
-        <button type="button" onclick="window.app.keypadPress('9')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">9</button>
-        <button type="button" onclick="window.app.keypadClear()" class="py-2.5 bg-rose-50 hover:bg-rose-100 active:bg-rose-200 border border-rose-200 rounded-xl text-xs font-black text-rose-700 shadow-sm transition">C</button>
-        <button type="button" onclick="window.app.keypadPress('0')" class="py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition">0</button>
-        <button type="button" onclick="window.app.keypadDelete()" class="py-2.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 border border-slate-200 rounded-xl text-sm font-black text-slate-700 shadow-sm transition">⌫</button>
+      <!-- TECLADO NUMÉRICO TÁCTIL (KEYPAD) -->
+      <div class="grid grid-cols-3 gap-1.5 pt-0.5">
+        <button type="button" onclick="window.app.keypadPress('1')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">1</button>
+        <button type="button" onclick="window.app.keypadPress('2')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">2</button>
+        <button type="button" onclick="window.app.keypadPress('3')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">3</button>
+        <button type="button" onclick="window.app.keypadPress('4')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">4</button>
+        <button type="button" onclick="window.app.keypadPress('5')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">5</button>
+        <button type="button" onclick="window.app.keypadPress('6')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">6</button>
+        <button type="button" onclick="window.app.keypadPress('7')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">7</button>
+        <button type="button" onclick="window.app.keypadPress('8')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">8</button>
+        <button type="button" onclick="window.app.keypadPress('9')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">9</button>
+        <button type="button" onclick="window.app.keypadClear()" class="py-3 bg-rose-50 hover:bg-rose-100 active:bg-rose-200 border border-rose-200 rounded-xl text-xs font-black text-rose-700 shadow-sm transition active:scale-95">C</button>
+        <button type="button" onclick="window.app.keypadPress('0')" class="py-3 bg-slate-50 hover:bg-slate-100 active:bg-sky-100 border border-slate-200 rounded-xl text-lg font-black text-slate-800 shadow-sm transition active:scale-95">0</button>
+        <button type="button" onclick="window.app.keypadDelete()" class="py-3 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 border border-slate-200 rounded-xl text-sm font-black text-slate-700 shadow-sm transition active:scale-95">⌫</button>
       </div>
 
-      <button type="button" onclick="window.app.verifyAndLogin()" class="w-full py-3 bg-gradient-to-r from-sky-700 to-teal-700 hover:from-sky-600 hover:to-teal-600 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition active:scale-95">Ingresar al Sistema</button>
+      <button type="button" onclick="window.app.verifyAndLogin()" class="w-full py-2.5 bg-gradient-to-r from-sky-700 to-teal-700 hover:from-sky-600 hover:to-teal-600 text-white font-extrabold text-xs rounded-xl shadow-md transition active:scale-95">Ingresar al Sistema</button>
     </div>
   </div>
 
-  <!-- MODAL CUSTOM DE DIALOGO -->
-  <div id="customDialog" class="hidden fixed inset-0 z-[100] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 modal-backdrop">
-    <div class="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl space-y-3.5 border border-slate-100 modal-content">
+  <!-- ========================================================================= -->
+  <!-- MODAL CUSTOM DE DIÁLOGOS Y ALERTAS                                        -->
+  <!-- ========================================================================= -->
+  <div id="customDialog" class="hidden fixed inset-0 z-[100] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl space-y-3.5 border border-slate-100">
       <div class="flex items-center space-x-3">
         <span id="dialogIcon" class="text-3xl"></span>
-        <h3 id="dialogTitle" class="font-black text-base sm:text-lg text-slate-800"></h3>
+        <h3 id="dialogTitle" class="font-black text-base text-slate-800"></h3>
       </div>
       <p id="dialogMessage" class="text-xs sm:text-sm text-slate-600 font-semibold"></p>
       <input type="text" id="dialogInput" class="hidden w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold focus:ring-2 focus:ring-sky-500" />
@@ -569,12 +711,14 @@
     </div>
   </div>
 
-  <!-- LOGICA SUPABASE Y APLICACIÓN -->
+  <!-- LÓGICA DE CONTROLADORES & SUPABASE -->
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
+    // Función de escape para prevenir XSS
     const esc = (s) => (s || '').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m]));
 
+    // Diálogos modales interactivos
     const showModal = ({title, message, type = 'alert', inputPlaceholder = '', icon = '💬'}) => {
       return new Promise(resolve => {
         const modal = document.getElementById('customDialog');
@@ -621,12 +765,13 @@
     const SYSTEM_CONFIG_DOC_ID = 'system_settings_config';
 
     const getSlaHours = (prio) => {
-      if (prio === 'Urgente') return 'SLA: 2 Horas (Crítico)';
-      if (prio === 'Alta') return 'SLA: 6 Horas';
-      if (prio === 'Media') return 'SLA: 24 Horas';
-      return 'SLA: 72 Horas';
+      if (prio === 'Urgente') return 'SLA: 2h (Crítico)';
+      if (prio === 'Alta') return 'SLA: 6h';
+      if (prio === 'Media') return 'SLA: 24h';
+      return 'SLA: 72h';
     };
 
+    // CREDENCIALES SUPABASE
     const SUPABASE_URL = "https://xtrzyioxbanyjvjeqedw.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable__rmY-7gpN8Ijh7Bn5e9HtA_Bu6Z4Yqy";
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -660,12 +805,24 @@
         return `${this.folioPrefix}-${numStr}-${year}`;
       }
 
+      updatePinDots(len) {
+        const dots = document.querySelectorAll('#pinDotsContainer div');
+        dots.forEach((dot, index) => {
+          if (index < len) {
+            dot.className = "w-3.5 h-3.5 rounded-full bg-sky-600 border-2 border-sky-700 shadow-sm scale-110 transition-all";
+          } else {
+            dot.className = "w-3.5 h-3.5 rounded-full bg-slate-100 border-2 border-slate-300 transition-all";
+          }
+        });
+      }
+
       keypadPress(num) {
         const input = document.getElementById('pinInput');
         if (input.value.length < 4) {
           input.value += num;
+          this.updatePinDots(input.value.length);
           if (input.value.length === 4) {
-            setTimeout(() => this.verifyAndLogin(), 150);
+            setTimeout(() => this.verifyAndLogin(), 180);
           }
         }
       }
@@ -673,10 +830,12 @@
       keypadDelete() {
         const input = document.getElementById('pinInput');
         input.value = input.value.slice(0, -1);
+        this.updatePinDots(input.value.length);
       }
 
       keypadClear() {
         document.getElementById('pinInput').value = '';
+        this.updatePinDots(0);
       }
 
       async listenToOrders() {
@@ -761,13 +920,12 @@
         const newPin = document.getElementById('cfgNewPin').value.trim();
         const confirmPin = document.getElementById('cfgConfirmPin').value.trim();
 
-        // Si intentó cambiar clave, validar
         if (newPin || confirmPin || currentSupPin) {
           if (currentSupPin !== this.supervisorPin) {
             return showModal({ title: 'Autorización Denegada', message: 'El PIN actual de Supervisor es incorrecto.', type: 'error', icon: '❌' });
           }
           if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
-            return showModal({ title: 'Formato Inválido', message: 'El nuevo PIN debe contener exactamente 4 dígitos numéricos.', type: 'error', icon: '⚠️' });
+            return showModal({ title: 'Formato Inválido', message: 'El nuevo PIN debe contener exactamente 4 dígitos.', type: 'error', icon: '⚠️' });
           }
           if (newPin !== confirmPin) {
             return showModal({ title: 'PIN no coincide', message: 'La confirmación del nuevo PIN no coincide.', type: 'error', icon: '⚠️' });
@@ -799,7 +957,7 @@
           this.closeSettingsModal();
           showModal({
             title: 'Configuración Guardada',
-            message: 'Los parámetros y seguridad han sido actualizados en la nube.',
+            message: 'Los parámetros y claves han sido actualizados.',
             type: 'success',
             icon: '✅'
           });
@@ -817,7 +975,7 @@
           if (error) throw error;
         } catch(e) {
           console.error("Error guardando documento en Supabase", e);
-          showModal({title: 'Error', message: 'Error al sincronizar con la base de datos en la nube.', type: 'error', icon: '❌'});
+          showModal({title: 'Error', message: 'Error al sincronizar con la nube.', type: 'error', icon: '❌'});
         }
       }
 
@@ -832,16 +990,13 @@
         this.keypadClear();
         const btnSup = document.getElementById('roleBtnSupervisor');
         const btnTec = document.getElementById('roleBtnTecnico');
-        const label = document.getElementById('pinInputLabel');
 
         if (role === 'supervisor') {
-          btnSup.className = 'p-2.5 rounded-2xl border-2 border-sky-600 bg-sky-50 text-sky-800 font-black text-xs flex flex-col items-center space-y-0.5 shadow-sm';
-          btnTec.className = 'p-2.5 rounded-2xl border-2 border-slate-200 bg-slate-50 text-slate-600 font-bold text-xs flex flex-col items-center space-y-0.5';
-          label.innerText = 'PIN de Supervisor';
+          btnSup.className = 'py-2 rounded-xl text-xs font-extrabold transition shadow-sm bg-sky-700 text-white';
+          btnTec.className = 'py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900';
         } else {
-          btnTec.className = 'p-2.5 rounded-2xl border-2 border-amber-600 bg-amber-50 text-amber-800 font-black text-xs flex flex-col items-center space-y-0.5 shadow-sm';
-          btnSup.className = 'p-2.5 rounded-2xl border-2 border-slate-200 bg-slate-50 text-slate-600 font-bold text-xs flex flex-col items-center space-y-0.5';
-          label.innerText = 'PIN de Técnico';
+          btnTec.className = 'py-2 rounded-xl text-xs font-extrabold transition shadow-sm bg-amber-600 text-white';
+          btnSup.className = 'py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900';
         }
       }
 
@@ -900,7 +1055,7 @@
 
         if (isSup) {
           badge.innerText = 'Supervisor';
-          badge.className = 'text-[10px] sm:text-xs font-black px-2 py-0.5 bg-sky-700 rounded-md text-white uppercase tracking-wider shadow-sm border border-sky-400/40';
+          badge.className = 'text-[9px] sm:text-[10px] font-black px-2 py-0.5 bg-sky-500/20 text-sky-300 rounded-full uppercase tracking-wider border border-sky-400/30';
           btnLabel.innerText = '👨‍💼 Supervisor';
           supNav?.classList.remove('hidden');
           tecNav?.classList.add('hidden');
@@ -908,7 +1063,7 @@
           mobTecNav?.classList.add('hidden');
         } else if (this.currentRole === 'tecnico') {
           badge.innerText = 'Técnico';
-          badge.className = 'text-[10px] sm:text-xs font-black px-2 py-0.5 bg-amber-600 rounded-md text-white uppercase tracking-wider shadow-sm border border-amber-300/40';
+          badge.className = 'text-[9px] sm:text-[10px] font-black px-2 py-0.5 bg-amber-500/20 text-amber-300 rounded-full uppercase tracking-wider border border-amber-400/30';
           btnLabel.innerText = '👷 Técnico';
           supNav?.classList.add('hidden');
           tecNav?.classList.remove('hidden');
@@ -945,6 +1100,14 @@
         document.getElementById('viewNewOT').classList.toggle('hidden', view !== 'new_ot');
         document.getElementById('viewOperativeOT').classList.toggle('hidden', view !== 'operative');
         
+        // Actualizar pestañas activas en bottom nav móvil
+        const btnPanel = document.getElementById('navBtnSupPanel');
+        const btnNew = document.getElementById('navBtnSupNew');
+        if (btnPanel && btnNew) {
+          btnPanel.className = view === 'dashboard_supervisor' ? 'flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-sky-400 font-extrabold active:scale-90 transition' : 'flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition';
+          btnNew.className = view === 'new_ot' ? 'flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-sky-400 font-extrabold active:scale-90 transition' : 'flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition';
+        }
+
         if (view === 'dashboard_supervisor') this.renderDashboardSupervisor();
         if (view === 'dashboard_tecnico') this.renderDashboardTecnico();
         if (view === 'new_ot') document.getElementById('nextOtNumberPreview').innerText = this.generateOtFolio(this.orders.length);
@@ -961,7 +1124,7 @@
           this.populateOperativeView(ot);
           this.navigate('operative');
         } else {
-          showModal({title: 'No encontrado', message: `No se encontró ninguna orden con el Folio: ${queryFolio}`, type: 'error', icon: '❓'});
+          showModal({title: 'No encontrado', message: `No se encontró la orden ${queryFolio}`, type: 'error', icon: '❓'});
         }
       }
 
@@ -985,29 +1148,29 @@
           const term = this.orders.filter(o => o.estado === 'Terminada').length;
 
           kpi.innerHTML = `
-            <div class="bg-white p-3 rounded-2xl border border-slate-200 cursor-pointer hover:border-amber-500 shadow-sm transition active:scale-95" onclick="window.app.setScopeFilter('ACTIVE')">
-              <span class="text-[10px] text-amber-700 block font-black uppercase tracking-tight">⏳ EN CURSO</span>
-              <span class="text-2xl sm:text-3xl font-black text-amber-700">${active}</span>
+            <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.setScopeFilter('ACTIVE')">
+              <span class="text-[9px] text-amber-700 block font-black uppercase tracking-tight truncate">⏳ En Curso</span>
+              <span class="text-xl sm:text-2xl font-black text-amber-700">${active}</span>
             </div>
-            <div class="bg-white p-3 rounded-2xl border border-slate-200 cursor-pointer hover:border-sky-500 shadow-sm transition active:scale-95" onclick="window.app.filterBy('En Ejecución')">
-              <span class="text-[10px] text-sky-700 block font-black uppercase tracking-tight">🛠️ EN EJECUCIÓN</span>
-              <span class="text-2xl sm:text-3xl font-black text-sky-700">${ejec}</span>
+            <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('En Ejecución')">
+              <span class="text-[9px] text-sky-700 block font-black uppercase tracking-tight truncate">🛠️ Ejecución</span>
+              <span class="text-xl sm:text-2xl font-black text-sky-700">${ejec}</span>
             </div>
-            <div class="bg-white p-3 rounded-2xl border border-slate-200 cursor-pointer hover:border-amber-500 shadow-sm transition active:scale-95" onclick="window.app.filterBy('Espera de Materiales')">
-              <span class="text-[10px] text-amber-700 block font-black uppercase tracking-tight">📦 ESP. MATERIAL</span>
-              <span class="text-2xl sm:text-3xl font-black text-amber-600">${espera}</span>
+            <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('Espera de Materiales')">
+              <span class="text-[9px] text-amber-700 block font-black uppercase tracking-tight truncate">📦 Esp. Mat.</span>
+              <span class="text-xl sm:text-2xl font-black text-amber-600">${espera}</span>
             </div>
-            <div class="bg-white p-3 rounded-2xl border border-slate-200 cursor-pointer hover:border-teal-500 shadow-sm transition active:scale-95" onclick="window.app.filterBy('Solicitud de Cierre')">
-              <span class="text-[10px] text-teal-700 block font-black uppercase tracking-tight">⚡ SOLIC. CIERRE</span>
-              <span class="text-2xl sm:text-3xl font-black text-teal-700">${solCierre}</span>
+            <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('Solicitud de Cierre')">
+              <span class="text-[9px] text-teal-700 block font-black uppercase tracking-tight truncate">⚡ Cierre</span>
+              <span class="text-xl sm:text-2xl font-black text-teal-700">${solCierre}</span>
             </div>
-            <div class="bg-white p-3 rounded-2xl border border-slate-200 cursor-pointer hover:border-emerald-500 shadow-sm transition active:scale-95" onclick="window.app.filterBy('Terminada')">
-              <span class="text-[10px] text-emerald-700 block font-black uppercase tracking-tight">✓ TERMINADAS</span>
-              <span class="text-2xl sm:text-3xl font-black text-emerald-600">${term}</span>
+            <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('Terminada')">
+              <span class="text-[9px] text-emerald-700 block font-black uppercase tracking-tight truncate">✓ Hechas</span>
+              <span class="text-xl sm:text-2xl font-black text-emerald-600">${term}</span>
             </div>
-            <div class="bg-white p-3 rounded-2xl border border-slate-200 cursor-pointer hover:border-slate-400 shadow-sm transition active:scale-95" onclick="window.app.filterBy('ALL')">
-              <span class="text-[10px] text-slate-500 block font-black uppercase tracking-tight">📁 TOTAL</span>
-              <span class="text-2xl sm:text-3xl font-black text-slate-800">${total}</span>
+            <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('ALL')">
+              <span class="text-[9px] text-slate-500 block font-black uppercase tracking-tight truncate">📁 Total</span>
+              <span class="text-xl sm:text-2xl font-black text-slate-800">${total}</span>
             </div>
           `;
         }
@@ -1018,8 +1181,8 @@
         if (pills) {
           const list = ['ALL', 'Pendiente', 'Inspección', 'Espera de Materiales', 'En Ejecución', 'Solicitud de Cierre', 'Terminada', 'Con Problemas'];
           pills.innerHTML = list.map(st => `
-            <button onclick="window.app.filterBy('${st}')" class="px-3 py-1.5 rounded-xl whitespace-nowrap text-xs font-black transition ${this.statusFilter === st ? 'bg-sky-700 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
-              ${st === 'ALL' ? 'Todos los Estados' : st}
+            <button onclick="window.app.filterBy('${st}')" class="px-3 py-1 rounded-xl whitespace-nowrap text-[11px] font-extrabold transition active:scale-95 ${this.statusFilter === st ? 'bg-sky-700 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
+              ${st === 'ALL' ? 'Todos' : st}
             </button>
           `).join('');
         }
@@ -1063,14 +1226,14 @@
           const pendingReqs = (ot.solicitudes_supervisor || []).filter(r => r.estado === 'Pendiente').length;
 
           return `
-            <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl shadow-sm border-2 ${pendingReqs > 0 ? 'border-amber-400 bg-amber-50/15' : isPendingApproval ? 'border-teal-400' : 'border-slate-200'} hover:shadow-md transition space-y-3 flex flex-col justify-between">
-              <div class="space-y-2">
+            <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border ${pendingReqs > 0 ? 'border-amber-400 bg-amber-50/20' : isPendingApproval ? 'border-teal-400 bg-teal-50/20' : 'border-slate-200'} flex flex-col justify-between space-y-2.5">
+              <div class="space-y-1.5">
                 <div class="flex justify-between items-center">
                   <div class="flex items-center space-x-1.5">
-                    <span class="font-mono font-black text-slate-900 text-base sm:text-lg">${esc(ot.numero_ot)}</span>
-                    ${pendingReqs > 0 ? `<span class="text-[10px] font-black bg-amber-500 text-white px-2 py-0.5 rounded-full animate-bounce">⚠️ ${pendingReqs} Req.</span>` : ''}
+                    <span class="font-mono font-black text-slate-900 text-sm sm:text-base">${esc(ot.numero_ot)}</span>
+                    ${pendingReqs > 0 ? `<span class="text-[9px] font-black bg-amber-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">⚠️ ${pendingReqs} Req.</span>` : ''}
                   </div>
-                  <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${
+                  <span class="text-[10px] px-2 py-0.5 rounded-full font-black ${
                     ot.estado === 'Terminada' ? 'bg-emerald-100 text-emerald-800' :
                     ot.estado === 'Solicitud de Cierre' ? 'bg-teal-100 text-teal-800 border border-teal-300 animate-pulse' :
                     ot.estado === 'En Ejecución' ? 'bg-sky-100 text-sky-800' :
@@ -1078,43 +1241,44 @@
                     'bg-slate-100 text-slate-700'
                   }">${esc(ot.estado)}</span>
                 </div>
+                
                 <div>
-                  <span class="text-[10px] font-black uppercase tracking-wider text-sky-700 block">${esc(ot.especialidad) || 'Mantenimiento'}</span>
-                  <h4 class="font-black text-slate-800 text-sm sm:text-base leading-snug">📍 ${esc(ot.recinto_pma)}</h4>
+                  <span class="text-[9px] font-bold uppercase tracking-wider text-sky-700 block">${esc(ot.especialidad) || 'Mantenimiento'}</span>
+                  <h4 class="font-black text-slate-800 text-xs sm:text-sm leading-snug">📍 ${esc(ot.recinto_pma)}</h4>
                 </div>
-                <div class="text-xs text-slate-500 space-y-0.5">
-                  <div class="font-bold">👤 ${esc(ot.solicitante_nombre)}</div>
-                  <div class="flex items-center space-x-2 font-bold">
-                    <span>Prioridad: <strong class="${ot.prioridad==='Urgente'?'text-rose-600 font-black':'text-slate-700'}">${esc(ot.prioridad)}</strong></span>
-                    <span>•</span>
-                    <span class="font-mono text-slate-600">Ref: ${esc(ot.ticket_referencia)}</span>
-                  </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-500 font-bold">
+                  <span class="truncate max-w-[160px]">👤 ${esc(ot.solicitante_nombre)}</span>
+                  <span class="${ot.prioridad==='Urgente'?'text-rose-600 font-black':'text-slate-600'}">${esc(ot.prioridad)}</span>
                 </div>
-                <p class="text-xs text-slate-700 line-clamp-2 bg-slate-50 p-2 rounded-xl font-semibold">${esc(ot.descripcion_problema)}</p>
-                <div class="text-[11px] text-slate-600 font-bold space-y-0.5 pt-0.5">
-                  <div><strong>Encargado:</strong> ${esc(ot.encargado_cuadrilla) || 'Sin asignar'}</div>
-                  ${ot.notas_supervisor ? `<div class="text-sky-800 font-black bg-sky-50 p-1.5 rounded-lg truncate">👨‍💼 <strong>Gestión:</strong> ${esc(ot.notas_supervisor)}</div>` : ''}
+
+                <p class="text-xs text-slate-700 line-clamp-2 bg-slate-50 p-2 rounded-xl font-medium">${esc(ot.descripcion_problema)}</p>
+                
+                <div class="text-[11px] text-slate-600 font-semibold flex items-center justify-between pt-0.5">
+                  <span>👷 <strong>${esc(ot.encargado_cuadrilla) || 'Sin asignar'}</strong></span>
+                  <span class="font-mono text-[10px] text-slate-400">Ref: ${esc(ot.ticket_referencia)}</span>
                 </div>
               </div>
-              <div class="pt-2.5 border-t border-slate-100 space-y-2">
+
+              <div class="pt-2 border-t border-slate-100 space-y-2">
                 ${!isFinished ? `
-                  <button onclick="window.app.openSupervisorMgmtModal('${ot.id}')" class="w-full py-2.5 px-3 bg-sky-700 hover:bg-sky-600 text-white rounded-xl sm:rounded-2xl text-xs font-black shadow flex items-center justify-center space-x-1.5 transition active:scale-95">
-                    <span>⚙️ Gestionar Solicitudes / Despacho</span>
+                  <button onclick="window.app.openSupervisorMgmtModal('${ot.id}')" class="w-full py-2 px-3 bg-sky-700 hover:bg-sky-600 active:scale-95 text-white rounded-xl text-xs font-black shadow flex items-center justify-center space-x-1 transition">
+                    <span>⚙️ Gestionar Despacho / Solicitudes</span>
                   </button>
                 ` : ''}
                 ${isPendingApproval ? `
-                  <div class="bg-teal-50 border-2 border-teal-300 p-2.5 rounded-2xl space-y-2 shadow-sm">
-                    <span class="text-xs font-black text-teal-900 block">⚡ Autorización de Cierre Formal:</span>
-                    <div class="flex space-x-2">
-                      <button onclick="window.app.approveOrderClosure('${ot.id}')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black py-2 px-2 rounded-xl shadow transition active:scale-95">✓ Aprobar</button>
-                      <button onclick="window.app.reopenOrder('${ot.id}')" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white text-xs font-black py-2 px-2 rounded-xl transition active:scale-95">↩ Reabrir</button>
+                  <div class="bg-teal-50 border border-teal-300 p-2 rounded-xl space-y-1.5">
+                    <span class="text-[11px] font-black text-teal-900 block">⚡ Autorizar Cierre Formal:</span>
+                    <div class="flex space-x-1.5">
+                      <button onclick="window.app.approveOrderClosure('${ot.id}')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-black py-1.5 rounded-lg shadow active:scale-95 transition">✓ Aprobar</button>
+                      <button onclick="window.app.reopenOrder('${ot.id}')" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white text-[11px] font-black py-1.5 rounded-lg active:scale-95 transition">↩ Reabrir</button>
                     </div>
                   </div>
                 ` : ''}
-                <div class="flex justify-between items-center pt-0.5 px-1 font-bold">
-                  <button onclick="window.app.shareOTWhatsApp('${ot.id}')" class="text-xs text-emerald-600 hover:text-emerald-700">💬 WhatsApp</button>
-                  <button onclick="window.app.downloadPDF('${ot.id}')" class="text-xs text-rose-600 hover:text-rose-700">📄 PDF</button>
-                  <button onclick="window.app.openOrderById('${ot.id}')" class="text-xs text-slate-700 hover:underline font-black">Ver Ficha</button>
+                <div class="flex justify-between items-center px-1 font-bold text-xs">
+                  <button onclick="window.app.shareOTWhatsApp('${ot.id}')" class="text-emerald-600 hover:text-emerald-700 active:scale-95">💬 WhatsApp</button>
+                  <button onclick="window.app.downloadPDF('${ot.id}')" class="text-rose-600 hover:text-rose-700 active:scale-95">📄 PDF</button>
+                  <button onclick="window.app.openOrderById('${ot.id}')" class="text-sky-800 hover:underline font-black active:scale-95">Ver Ficha</button>
                 </div>
               </div>
             </div>
@@ -1154,22 +1318,21 @@
         if (mobBadge) mobBadge.classList.toggle('hidden', totalPending === 0);
 
         if (pendingItems.length === 0) {
-          container.innerHTML = `<div class="text-xs text-slate-500 bg-white/80 p-2.5 rounded-xl border border-slate-200 text-center font-bold">✓ No existen requerimientos de terreno pendientes.</div>`;
+          container.innerHTML = `<div class="text-[11px] text-amber-900 bg-white/70 p-2 rounded-xl border border-amber-200 text-center font-bold">✓ No existen solicitudes de terreno pendientes.</div>`;
           return;
         }
 
         container.innerHTML = pendingItems.map(({ ot, req }) => `
-          <div class="bg-white p-3 rounded-xl border-2 border-amber-400 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-            <div class="text-xs space-y-1">
+          <div class="bg-white p-2.5 rounded-xl border border-amber-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+            <div class="space-y-0.5">
               <div class="flex items-center space-x-1.5 flex-wrap">
-                <span class="font-mono font-black text-slate-900 text-xs sm:text-sm">${esc(ot.numero_ot)}</span>
-                <span class="font-bold text-slate-700 truncate max-w-[140px]">(${esc(ot.recinto_pma)})</span>
-                <span class="px-2 py-0.5 rounded-full font-black text-[10px] bg-amber-100 text-amber-900 border border-amber-300">${esc(req.tipo)}</span>
+                <span class="font-mono font-black text-slate-900 text-xs">${esc(ot.numero_ot)}</span>
+                <span class="font-bold text-slate-700">(${esc(ot.recinto_pma)})</span>
+                <span class="px-1.5 py-0.2 rounded-full font-black text-[9px] bg-amber-100 text-amber-900 border border-amber-300">${esc(req.tipo)}</span>
               </div>
               <p class="text-slate-800 font-bold text-xs">${esc(req.mensaje)}</p>
-              <span class="text-[10px] text-slate-400 block font-semibold">Enviado: ${esc(req.fecha) || 'Reciente'}</span>
             </div>
-            <button onclick="window.app.openSupervisorMgmtModal('${ot.id}')" class="px-3.5 py-1.5 bg-sky-700 hover:bg-sky-600 text-white rounded-xl text-xs font-black shadow whitespace-nowrap transition active:scale-95">Atender</button>
+            <button onclick="window.app.openSupervisorMgmtModal('${ot.id}')" class="px-3 py-1 bg-sky-700 hover:bg-sky-600 text-white rounded-lg text-xs font-black shadow whitespace-nowrap active:scale-95 transition">Atender</button>
           </div>
         `).join('');
       }
@@ -1190,17 +1353,17 @@
         const reqs = ot.solicitudes_supervisor || [];
 
         if (reqs.length === 0) {
-          reqList.innerHTML = `<div class="text-xs text-slate-400 bg-slate-100 p-3 rounded-2xl text-center font-bold">La cuadrilla no ha emitido solicitudes.</div>`;
+          reqList.innerHTML = `<div class="text-xs text-slate-400 bg-slate-100 p-2.5 rounded-xl text-center font-bold">La cuadrilla no ha emitido solicitudes.</div>`;
         } else {
           reqList.innerHTML = reqs.map((r, i) => `
-            <div class="bg-white p-3 rounded-xl border text-xs space-y-1 ${r.estado === 'Pendiente' ? 'border-amber-400 bg-amber-50/40' : 'border-slate-200'}">
+            <div class="bg-white p-2.5 rounded-xl border text-xs space-y-1 ${r.estado === 'Pendiente' ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200'}">
               <div class="flex justify-between items-center">
                 <span class="font-black text-slate-800">${esc(r.tipo)}</span>
-                <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${r.estado === 'Pendiente' ? 'bg-amber-500 text-white' : 'bg-emerald-100 text-emerald-800'}">${esc(r.estado)}</span>
+                <span class="text-[9px] font-black px-2 py-0.5 rounded-full ${r.estado === 'Pendiente' ? 'bg-amber-500 text-white' : 'bg-emerald-100 text-emerald-800'}">${esc(r.estado)}</span>
               </div>
               <p class="text-slate-700 font-semibold">${esc(r.mensaje)}</p>
-              ${r.respuesta_supervisor ? `<div class="text-[11px] text-sky-900 bg-sky-50 p-2 rounded-xl border border-sky-200 font-bold">👨‍💼 <strong>Respuesta:</strong> ${esc(r.respuesta_supervisor)}</div>` : ''}
-              ${r.estado === 'Pendiente' ? `<div class="pt-1"><button onclick="window.app.markRequestAttended('${id}', ${i})" class="px-3 py-1 bg-emerald-600 text-white text-xs font-black rounded-lg shadow">✓ Responder</button></div>` : ''}
+              ${r.respuesta_supervisor ? `<div class="text-[11px] text-sky-900 bg-sky-50 p-1.5 rounded-lg border border-sky-200 font-bold">👨‍💼 <strong>Respuesta:</strong> ${esc(r.respuesta_supervisor)}</div>` : ''}
+              ${r.estado === 'Pendiente' ? `<div class="pt-0.5"><button onclick="window.app.markRequestAttended('${id}', ${i})" class="px-2.5 py-1 bg-emerald-600 text-white text-[11px] font-black rounded-lg shadow active:scale-95">✓ Responder</button></div>` : ''}
             </div>
           `).join('');
         }
@@ -1217,10 +1380,10 @@
         if (!ot || !ot.solicitudes_supervisor || !ot.solicitudes_supervisor[reqIndex]) return;
 
         const resp = await showModal({
-          title: 'Respuesta a la Cuadrilla', 
-          message: 'Ingrese la respuesta formal para la cuadrilla:', 
+          title: 'Respuesta a Cuadrilla', 
+          message: 'Ingrese resolución o instrucción para la cuadrilla:', 
           type: 'prompt', 
-          inputPlaceholder: 'Solicitud atendida / Material gestionado...',
+          inputPlaceholder: 'Material gestionado / Autorizado...',
           icon: '✍️'
         });
 
@@ -1268,13 +1431,13 @@
         const ot = this.orders.find(o => o.id === id);
         if (!ot) return;
 
-        const motivo = await showModal({title: 'Reabrir OT', message: `Motivo de devolución para ${ot.numero_ot}:`, type: 'prompt', inputPlaceholder: 'Falta validación técnica...', icon: '↩'});
+        const motivo = await showModal({title: 'Reabrir OT', message: `Motivo de devolución para ${ot.numero_ot}:`, type: 'prompt', inputPlaceholder: 'Falta ajuste técnico...', icon: '↩'});
         
         if (motivo !== null) {
           ot.estado = "En Ejecución";
           ot.contratiempos = ot.contratiempos ? ot.contratiempos + "\n[Supervisor]: " + motivo : "[Supervisor]: " + motivo;
           await this.saveOrderToCloud(ot);
-          showModal({title: 'Reabierta', message: `Orden reabierta para la cuadrilla.`, type: 'success', icon: '✅'});
+          showModal({title: 'Reabierta', message: `Orden devuelta a cuadrilla.`, type: 'success', icon: '✅'});
         }
       }
 
@@ -1287,10 +1450,22 @@
           const all = this.orders.length;
 
           kpi.innerHTML = `
-            <div class="bg-white p-3 rounded-2xl border-2 ${this.techStatusFilter==='ALL_ACTIVE'?'border-amber-500 bg-amber-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('ALL_ACTIVE')"><span class="text-[10px] text-amber-700 font-black uppercase block tracking-tight">🛠️ Activas</span><span class="text-2xl font-black text-slate-800">${actives}</span></div>
-            <div class="bg-white p-3 rounded-2xl border-2 ${this.techStatusFilter==='PENDING_APPROVAL'?'border-teal-500 bg-teal-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('PENDING_APPROVAL')"><span class="text-[10px] text-teal-700 font-black uppercase block tracking-tight">⏳ En Cierre</span><span class="text-2xl font-black text-slate-800">${pendingApproval}</span></div>
-            <div class="bg-white p-3 rounded-2xl border-2 ${this.techStatusFilter==='TERMINATED'?'border-emerald-500 bg-emerald-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('TERMINATED')"><span class="text-[10px] text-emerald-700 font-black uppercase block tracking-tight">📜 Terminadas</span><span class="text-2xl font-black text-slate-800">${history}</span></div>
-            <div class="bg-white p-3 rounded-2xl border-2 ${this.techStatusFilter==='ALL'?'border-sky-500 bg-sky-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('ALL')"><span class="text-[10px] text-slate-500 font-black uppercase block tracking-tight">📁 Total</span><span class="text-2xl font-black text-slate-800">${all}</span></div>
+            <div class="bg-white p-2.5 rounded-xl border-2 ${this.techStatusFilter==='ALL_ACTIVE'?'border-amber-500 bg-amber-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('ALL_ACTIVE')">
+              <span class="text-[9px] text-amber-700 font-black uppercase block tracking-tight">🛠️ Activas</span>
+              <span class="text-xl font-black text-slate-800">${actives}</span>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border-2 ${this.techStatusFilter==='PENDING_APPROVAL'?'border-teal-500 bg-teal-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('PENDING_APPROVAL')">
+              <span class="text-[9px] text-teal-700 font-black uppercase block tracking-tight">⏳ En Cierre</span>
+              <span class="text-xl font-black text-slate-800">${pendingApproval}</span>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border-2 ${this.techStatusFilter==='TERMINATED'?'border-emerald-500 bg-emerald-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('TERMINATED')">
+              <span class="text-[9px] text-emerald-700 font-black uppercase block tracking-tight">📜 Hechas</span>
+              <span class="text-xl font-black text-slate-800">${history}</span>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border-2 ${this.techStatusFilter==='ALL'?'border-sky-500 bg-sky-50/20':'border-slate-200'} cursor-pointer shadow-sm active:scale-95" onclick="window.app.setTechStatusFilter('ALL')">
+              <span class="text-[9px] text-slate-500 font-black uppercase block tracking-tight">📁 Total</span>
+              <span class="text-xl font-black text-slate-800">${all}</span>
+            </div>
           `;
         }
 
@@ -1325,26 +1500,26 @@
           const slaText = getSlaHours(ot.prioridad);
 
           return `
-            <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 hover:shadow-md transition space-y-3 flex flex-col justify-between">
-              <div class="space-y-2">
+            <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between space-y-2.5">
+              <div class="space-y-1.5">
                 <div class="flex justify-between items-center">
-                  <span class="font-mono font-black text-slate-900 text-base sm:text-lg">${esc(ot.numero_ot)}</span>
-                  <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${ot.estado === 'Terminada' ? 'bg-emerald-100 text-emerald-800' : ot.estado === 'Solicitud de Cierre' ? 'bg-teal-100 text-teal-800 border border-teal-300' : ot.estado === 'En Ejecución' ? 'bg-sky-100 text-sky-800' : 'bg-slate-100 text-slate-700'}">${esc(ot.estado)}</span>
+                  <span class="font-mono font-black text-slate-900 text-sm sm:text-base">${esc(ot.numero_ot)}</span>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full font-black ${ot.estado === 'Terminada' ? 'bg-emerald-100 text-emerald-800' : ot.estado === 'Solicitud de Cierre' ? 'bg-teal-100 text-teal-800 border border-teal-300' : ot.estado === 'En Ejecución' ? 'bg-sky-100 text-sky-800' : 'bg-slate-100 text-slate-700'}">${esc(ot.estado)}</span>
                 </div>
                 <div>
-                  <span class="text-[10px] font-black text-amber-700 uppercase tracking-wider block">${esc(ot.especialidad) || 'Mantenimiento'}</span>
-                  <h4 class="font-black text-slate-800 text-sm sm:text-base">📍 ${esc(ot.recinto_pma)}</h4>
+                  <span class="text-[9px] font-black text-amber-700 uppercase tracking-wider block">${esc(ot.especialidad) || 'Mantenimiento'}</span>
+                  <h4 class="font-black text-slate-800 text-xs sm:text-sm">📍 ${esc(ot.recinto_pma)}</h4>
                 </div>
-                <div class="flex items-center justify-between text-xs text-slate-600 bg-slate-50 p-2 rounded-xl font-bold">
+                <div class="flex items-center justify-between text-[11px] text-slate-600 bg-slate-50 p-1.5 rounded-xl font-bold">
                   <div>Prioridad: <strong class="${ot.prioridad==='Urgente'?'text-rose-600 font-black':'text-slate-800'}">${esc(ot.prioridad)}</strong></div>
                   <div class="text-sky-900">${slaText}</div>
                 </div>
                 <p class="text-xs text-slate-700 line-clamp-2 bg-slate-50/70 p-2 rounded-xl font-semibold">${esc(ot.descripcion_problema)}</p>
                 ${hasSupervisorNotes ? `<div class="bg-sky-50 border border-sky-200 p-2 rounded-xl text-[11px] text-sky-950 font-bold"><strong>👨‍💼 Instrucción:</strong> ${esc(ot.notas_supervisor)}</div>` : ''}
               </div>
-              <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
-                <button onclick="window.app.downloadPDF('${ot.id}')" class="px-3 py-2 bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 rounded-xl text-xs font-bold">📄 PDF</button>
-                <button onclick="window.app.openOrderById('${ot.id}')" class="flex-1 py-2.5 px-3 ${isLocked ? 'bg-slate-800 text-white' : 'bg-amber-600 hover:bg-amber-500 text-white'} rounded-xl text-xs font-black shadow transition text-center active:scale-95">${isLocked ? '👁️ Ver Ficha' : '🛠️ Abrir Intervención'}</button>
+              <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                <button onclick="window.app.downloadPDF('${ot.id}')" class="px-2.5 py-2 bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 rounded-xl text-xs font-bold active:scale-95">📄 PDF</button>
+                <button onclick="window.app.openOrderById('${ot.id}')" class="flex-1 py-2 px-3 ${isLocked ? 'bg-slate-800 text-white' : 'bg-amber-600 hover:bg-amber-500 text-white'} rounded-xl text-xs font-black shadow transition text-center active:scale-95">${isLocked ? '👁️ Ver Ficha' : '🛠️ Abrir Tarea'}</button>
               </div>
             </div>
           `;
@@ -1361,7 +1536,7 @@
         const ini = document.getElementById('opFechaInicio')?.value;
         const ter = document.getElementById('opFechaTermino')?.value;
 
-        document.getElementById('opHeaderEncargado').innerText = enc || 'Por definir en terreno';
+        document.getElementById('opHeaderEncargado').innerText = enc || 'Por definir';
         document.getElementById('opHeaderInicio').innerText = ini ? ini.replace('T', ' ') : 'No iniciado';
         document.getElementById('opHeaderTermino').innerText = ter ? ter.replace('T', ' ') : 'Pendiente';
       }
@@ -1396,12 +1571,12 @@
         document.getElementById('opActivo').innerText = ot.activo_fijo || 'N/A';
         document.getElementById('opDescripcion').innerText = ot.descripcion_problema;
         
-        document.getElementById('opSpecialtyHeader').innerText = ot.especialidad || 'Infraestructura y Mantenimiento';
+        document.getElementById('opSpecialtyHeader').innerText = ot.especialidad || 'Infraestructura';
         document.getElementById('opSlaHeader').innerText = getSlaHours(ot.prioridad);
 
         const statusBadge = document.getElementById('opStatusHeaderBadge');
         statusBadge.innerText = ot.estado;
-        statusBadge.className = 'px-3 py-0.5 rounded-full text-xs font-black shadow ' + (
+        statusBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-black shadow ' + (
           ot.estado === 'Terminada' ? 'bg-emerald-600 text-white' :
           ot.estado === 'Solicitud de Cierre' ? 'bg-teal-600 text-white' :
           ot.estado === 'Espera de Materiales' ? 'bg-amber-600 text-white' : 'bg-sky-600 text-white'
@@ -1417,7 +1592,7 @@
 
         const pb = document.getElementById('opPriorityBadge');
         pb.innerText = ot.prioridad;
-        pb.className = 'px-2.5 py-0.5 rounded-full text-xs font-black ' + (ot.prioridad === 'Urgente' ? 'bg-rose-500 text-white shadow' : 'bg-sky-500 text-white shadow');
+        pb.className = 'px-2 py-0.5 rounded-full text-[11px] font-black ' + (ot.prioridad === 'Urgente' ? 'bg-rose-500 text-white shadow' : 'bg-sky-500 text-white shadow');
 
         const supBanner = document.getElementById('opSupervisorNotesBanner');
         const supText = document.getElementById('opSupervisorNotesText');
@@ -1444,20 +1619,20 @@
         if (isLocked) {
           lockBanner.classList.remove('hidden');
           if (estado === 'Solicitud de Cierre') {
-            lockBanner.className = 'rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border-2 bg-amber-50 border-amber-300 text-amber-950 flex items-center space-x-3 shadow-sm';
+            lockBanner.className = 'rounded-2xl p-3 border-2 bg-amber-50 border-amber-300 text-amber-950 flex items-center space-x-3 shadow-sm';
             lockIcon.innerText = '⏳';
             lockTitle.innerText = 'ORDEN BLOQUEADA: Cierre en Revisión';
-            lockMsg.innerText = 'Se han registrado firmas y solicitado el cierre formal a jefatura.';
+            lockMsg.innerText = 'Firmas registradas. En revisión por jefatura.';
           } else if (estado === 'Terminada') {
-            lockBanner.className = 'rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border-2 bg-emerald-50 border-emerald-300 text-emerald-950 flex items-center space-x-3 shadow-sm';
+            lockBanner.className = 'rounded-2xl p-3 border-2 bg-emerald-50 border-emerald-300 text-emerald-950 flex items-center space-x-3 shadow-sm';
             lockIcon.innerText = '🔒';
             lockTitle.innerText = 'ORDEN TERMINADA Y ARCHIVADA';
-            lockMsg.innerText = 'Esta Orden de Trabajo ha sido aprobada y cerrada formalmente.';
+            lockMsg.innerText = 'Esta Orden ha sido aprobada y cerrada formalmente.';
           } else if (this.currentRole === 'supervisor') {
-            lockBanner.className = 'rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border-2 bg-sky-50 border-sky-300 text-sky-950 flex items-center space-x-3 shadow-sm';
+            lockBanner.className = 'rounded-2xl p-3 border-2 bg-sky-50 border-sky-300 text-sky-950 flex items-center space-x-3 shadow-sm';
             lockIcon.innerText = '👨‍💼';
             lockTitle.innerText = 'MODO SUPERVISOR: Visualización';
-            lockMsg.innerText = 'Utilice el botón de despacho en el panel para modificar estados o emitir notas.';
+            lockMsg.innerText = 'Use la opción de despacho en el panel para notas o cambios.';
           }
         } else {
           lockBanner.classList.add('hidden');
@@ -1538,7 +1713,7 @@
         };
 
         await this.saveOrderToCloud(newOT);
-        showModal({title: 'OT Creada en Nube', message: `Orden ${folio} generada exitosamente.`, type: 'success', icon: '✅'});
+        showModal({title: 'OT Creada', message: `Orden ${folio} generada exitosamente.`, type: 'success', icon: '✅'});
         this.navigate('dashboard_supervisor');
       }
 
@@ -1664,7 +1839,7 @@
 
         this.syncHeaderTeam();
         await this.saveOrderToCloud(this.currentOrder);
-        if (!silent) showModal({title: 'Guardado', message: 'Avance sincronizado con la nube exitosamente.', type: 'success', icon: '💾'});
+        if (!silent) showModal({title: 'Guardado', message: 'Avance guardado con éxito.', type: 'success', icon: '💾'});
       }
 
       async requestClosureAndFinalize() {
@@ -1672,7 +1847,7 @@
         if (this.currentRole !== 'tecnico') return showModal({title: 'Denegado', message: 'Solo el Técnico solicita cierre.', type:'error'});
 
         if (!this.hasSigTech && !this.currentOrder.firma_digital_tecnico) {
-          return showModal({title: 'Firma Requerida', message: 'Es OBLIGATORIO registrar la firma digital del Técnico Encargado antes del cierre.', type: 'error', icon: '✍️'});
+          return showModal({title: 'Firma Requerida', message: 'Es OBLIGATORIO registrar la firma digital del Técnico antes de solicitar cierre.', type: 'error', icon: '✍️'});
         }
 
         const confirmClosure = await showModal({title: 'Solicitar Cierre', message: '¿Desea enviar la SOLICITUD DE CIERRE FORMAL? La orden se bloqueará para revisión.', type: 'confirm', icon: '🔒'});
@@ -1683,7 +1858,7 @@
         this.currentOrder.estado = "Solicitud de Cierre";
         await this.saveOperativeProgress(true);
 
-        showModal({title: 'Protegida', message: 'Solicitud de cierre enviada. La orden ha quedado en revisión de jefatura.', type: 'success', icon: '🔒'});
+        showModal({title: 'Protegida', message: 'Solicitud de cierre enviada. En espera de revisión por supervisión.', type: 'success', icon: '🔒'});
         this.populateOperativeView(this.currentOrder);
       }
 
