@@ -137,7 +137,7 @@
         
         <!-- Buscador -->
         <div class="relative flex-1">
-          <input type="text" id="searchInput" oninput="window.app.renderOrdersList()" placeholder="Buscar folio, recinto, solicitante..." 
+          <input type="text" id="searchInput" oninput="window.app.renderOrdersList()" placeholder="Buscar folio, recinto, solicitante, PMA..." 
                  class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white">
           <span class="absolute left-3 top-2.5 text-slate-400 text-sm">🔍</span>
         </div>
@@ -249,12 +249,11 @@
           <div>
             <label class="block text-xs font-bold text-slate-600 mb-1">Especialidad</label>
             <select id="newOtEspecialidad" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+              <option value="Infraestructura" selected>Infraestructura</option>
               <option value="Climatización">Climatización</option>
               <option value="Electricidad">Electricidad</option>
-              <option value="Gases Clínicos">Gases Clínicos</option>
-              <option value="Agua / Sanitario">Agua / Sanitario</option>
-              <option value="Infraestructura / Cerrajería">Infraestructura / Cerrajería</option>
-              <option value="Equipos Médicos">Equipos Médicos</option>
+              <option value="Equipos Industriales">Equipos Industriales</option>
+              <option value="Equipos Clinicos">Equipos Clinicos</option>
             </select>
           </div>
           <div>
@@ -274,8 +273,8 @@
             <input type="text" id="newOtRecinto" required placeholder="Ej: Pabellón 3, UCI Camas" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Ticket / Ref</label>
-            <input type="text" id="newOtTicket" placeholder="Ej: T-8941" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+            <label class="block text-xs font-bold text-slate-600 mb-1">PMA</label>
+            <input type="text" id="newOtTicket" placeholder="Ej: PMA-8941" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
         </div>
 
@@ -285,8 +284,13 @@
             <input type="text" id="newOtSolicitante" required placeholder="Nombre o cargo" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Técnico / Cuadrilla</label>
-            <input type="text" id="newOtEncargado" placeholder="Asignar técnico" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+            <div class="flex justify-between items-center mb-1">
+              <label class="text-xs font-bold text-slate-600">Técnico Asignado:</label>
+              <button type="button" onclick="window.app.quickAddTechnician()" class="text-[10px] text-blue-600 font-bold hover:underline">+ Agregar</button>
+            </div>
+            <select id="newOtEncargado" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+              <!-- Inyectado dinámicamente -->
+            </select>
           </div>
         </div>
 
@@ -297,7 +301,7 @@
 
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">Instrucciones de Jefatura (Opcional)</label>
-          <textarea id="newOtInstrucciones" rows="2" placeholder="Instrucción inicial para terreno..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
+          <textarea id="newOtInstrucciones" rows="2" placeholder="Directriz inicial para la cuadrilla..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
         </div>
 
         <div class="pt-2 flex justify-end space-x-2">
@@ -341,12 +345,11 @@
           <div>
             <label class="block text-xs font-bold text-slate-600 mb-1">Especialidad</label>
             <select id="manageOtEspecialidad" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+              <option value="Infraestructura">Infraestructura</option>
               <option value="Climatización">Climatización</option>
               <option value="Electricidad">Electricidad</option>
-              <option value="Gases Clínicos">Gases Clínicos</option>
-              <option value="Agua / Sanitario">Agua / Sanitario</option>
-              <option value="Infraestructura / Cerrajería">Infraestructura / Cerrajería</option>
-              <option value="Equipos Médicos">Equipos Médicos</option>
+              <option value="Equipos Industriales">Equipos Industriales</option>
+              <option value="Equipos Clinicos">Equipos Clinicos</option>
             </select>
           </div>
           <div>
@@ -366,7 +369,7 @@
             <input type="text" id="manageOtRecinto" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Ticket / Ref</label>
+            <label class="block text-xs font-bold text-slate-600 mb-1">PMA</label>
             <input type="text" id="manageOtTicket" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
         </div>
@@ -377,8 +380,13 @@
             <input type="text" id="manageOtSolicitante" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Técnico Asignado</label>
-            <input type="text" id="manageOtEncargado" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+            <div class="flex justify-between items-center mb-1">
+              <label class="text-xs font-bold text-slate-600">Técnico Asignado:</label>
+              <button type="button" onclick="window.app.quickAddTechnician()" class="text-[10px] text-blue-600 font-bold hover:underline">+ Agregar</button>
+            </div>
+            <select id="manageOtEncargado" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+              <!-- Inyectado dinámicamente -->
+            </select>
           </div>
         </div>
 
@@ -387,21 +395,19 @@
           <textarea id="manageOtDescripcion" rows="2" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
         </div>
 
-        <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 space-y-2">
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Estado / Etapa</label>
-              <select id="manageOtEstado" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-blue-700">
-                <option value="Pendiente">Pendiente</option>
-                <option value="En Ejecución">En Ejecución</option>
-                <option value="Solicitud Cierre">Solicitud Cierre</option>
-                <option value="Terminada">Terminada</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Respuesta / Instrucción</label>
-              <input type="text" id="manageSupervisorResponseInput" placeholder="Instrucción directa a cuadrilla" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-medium">
-            </div>
+        <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Actualizar Estado / Etapa</label>
+            <select id="manageOtEstado" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-blue-700">
+              <option value="Pendiente">Pendiente</option>
+              <option value="En Ejecución">En Ejecución</option>
+              <option value="Solicitud Cierre">Solicitud Cierre</option>
+              <option value="Terminada">Terminada</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Instrucciones de Jefatura (Opcional):</label>
+            <textarea id="manageOtInstrucciones" rows="2" placeholder="Directriz inicial o complementaria para la cuadrilla..." class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-medium"></textarea>
           </div>
         </div>
 
@@ -423,32 +429,43 @@
     <div class="max-w-2xl mx-auto px-3 py-4 space-y-3 pb-20">
       
       <!-- Top Bar Ficha -->
-      <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
-        <button onclick="window.app.closeOperativeView()" class="px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center space-x-1">
+      <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-sm gap-2">
+        <button onclick="window.app.closeOperativeView()" class="px-3 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center space-x-1">
           <span>←</span> <span>Volver</span>
         </button>
-        <span id="opFolioBadge" class="text-xs font-black px-2.5 py-1 rounded-md bg-blue-100 text-blue-800">OT-000</span>
-        <div class="flex items-center space-x-1.5">
-          <button id="opShareWhatsAppBtn" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md text-xs font-bold flex items-center space-x-1 shadow-sm">
-            <span>💬</span> <span class="hidden sm:inline">WhatsApp</span>
-          </button>
-          <span id="opStatusBadge" class="text-xs font-bold px-2 py-1 rounded-md bg-amber-100 text-amber-800">En Ejecución</span>
-        </div>
+        
+        <!-- Botón WhatsApp Destacado y Agrandado -->
+        <button id="opShareWhatsAppBtn" class="flex-1 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-xs sm:text-sm font-black flex items-center justify-center space-x-2 shadow-md transition">
+          <span class="text-base sm:text-lg">💬</span> <span>Compartir por WhatsApp</span>
+        </button>
+
+        <span id="opStatusBadge" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-amber-100 text-amber-800 shrink-0">En Ejecución</span>
       </div>
 
       <!-- Resumen Falla -->
       <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
         <div class="flex justify-between items-start">
           <div>
-            <h3 id="opRecinto" class="text-base font-black text-slate-900">Recinto</h3>
-            <p id="opEspecialidadPrioridad" class="text-xs text-slate-500 font-semibold">Climatización • Alta</p>
+            <div class="flex items-center space-x-2">
+              <span id="opFolioTitle" class="font-black text-xs text-blue-800">OT-000</span>
+              <span class="text-slate-300">•</span>
+              <h3 id="opRecinto" class="text-base font-black text-slate-900 inline">Recinto</h3>
+            </div>
+            <p id="opEspecialidadPrioridad" class="text-xs text-slate-500 font-semibold mt-0.5">Climatización • Alta</p>
           </div>
           <span id="opSlaBadge" class="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded">SLA: 6h</span>
         </div>
         <p id="opDescripcion" class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-100 leading-relaxed font-medium">Descripción...</p>
-        <div class="text-[11px] text-slate-500 flex justify-between pt-1">
-          <span>Solicitante: <b id="opSolicitante" class="text-slate-800">-</b></span>
-          <span>Ticket: <b id="opTicket" class="text-slate-800">-</b></span>
+        
+        <div id="opInstruccionesContainer" class="hidden text-xs text-blue-900 bg-blue-50/70 p-2.5 rounded-lg border border-blue-100 leading-relaxed">
+          <span class="font-bold block mb-0.5">📋 Instrucciones de Jefatura:</span>
+          <p id="opInstruccionesTexto" class="font-medium">-</p>
+        </div>
+
+        <div class="text-[11px] text-slate-500 grid grid-cols-2 gap-2 pt-1 border-t border-slate-100">
+          <span>Solicitante: <b id="opSolicitante" class="text-slate-800 block truncate">-</b></span>
+          <span>PMA recinto: <b id="opTicket" class="text-slate-800 block truncate">-</b></span>
+          <span class="col-span-2">Técnico Asignado: <b id="opEncargadoLabel" class="text-blue-700">-</b></span>
         </div>
       </div>
 
@@ -489,9 +506,11 @@
           <!-- Inyectado dinámicamente con marcas de tiempo -->
         </div>
 
-        <!-- Enviar Nuevo Requerimiento -->
-        <div class="pt-2 border-t border-slate-100 space-y-2">
-          <label class="block text-xs font-bold text-slate-700">Emitir Consulta o Contingencia a Jefatura:</label>
+        <!-- Enviar Nuevo Requerimiento (Solo Técnico Asignado o Supervisor) -->
+        <div id="opNewRequestContainer" class="pt-2 border-t border-slate-100 space-y-2">
+          <label class="block text-xs font-bold text-slate-700">
+            Emitir Consulta o Contingencia a Jefatura (<span id="opQueryTechName" class="text-blue-600">Técnico Asignado</span>):
+          </label>
           <select id="opNewRequestType" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
             <option value="Bloqueo o Contingencia en Terreno">Bloqueo o Contingencia en Terreno</option>
             <option value="Permisos / IAAS / Acceso Restringido">Permisos / IAAS / Acceso Restringido</option>
@@ -505,7 +524,7 @@
         </div>
       </div>
 
-      <!-- Diagnóstico y Cierre con Firmas -->
+      <!-- Diagnóstico y Cierre -->
       <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
         <h4 class="text-xs font-black text-slate-800 uppercase tracking-wide">Informe de Trabajo y Cierre</h4>
         
@@ -561,6 +580,17 @@
         <div>
           <label class="block font-bold text-slate-700 mb-1">Prefijo de Folio Único</label>
           <input type="text" id="cfgFolioPrefix" required placeholder="Ej: OT-INFRA" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg font-medium">
+        </div>
+
+        <!-- Lista de Técnicos Asignados -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="block font-bold text-slate-800">Técnicos del Sistema</span>
+            <button type="button" onclick="window.app.quickAddTechnician()" class="text-[10px] font-bold text-blue-600 hover:underline">+ Añadir Técnico</button>
+          </div>
+          <div id="settingsTechList" class="space-y-1 max-h-32 overflow-y-auto custom-scroll">
+            <!-- Inyectado dinámicamente -->
+          </div>
         </div>
 
         <!-- Claves PIN -->
@@ -663,7 +693,8 @@
       defaultHospital: "SDO Hospital Regional",
       defaultPrefix: "OT-INFRA",
       defaultPins: { supervisor: "1234", tecnico: "5678" },
-      slaHours: { Urgente: 2, Alta: 6, Media: 24, Baja: 72 }
+      slaHours: { Urgente: 2, Alta: 6, Media: 24, Baja: 72 },
+      defaultTechnicians: ["Pablo Loira", "Mantenimiento General", "Cuadrilla Turno"]
     };
 
     class HospitalApp {
@@ -672,6 +703,7 @@
         this.enteredPin = '';
         this.selectedAuthRole = 'supervisor';
         this.orders = [];
+        this.technicians = [...SGM_CONFIG.defaultTechnicians];
         this.viewMode = 'cards'; // 'cards' | 'table'
         this.filterStatus = 'TODOS';
         this.activeOperativeOt = null;
@@ -683,9 +715,10 @@
         this.supabase = null;
         this.initSupabase();
         this.loadSettings();
+        this.populateTechnicianSelects();
         this.loadInitialData();
 
-        // Actualización de tiempos y SLA cada 60s (evita sobrecarga del CPU en móvil)
+        // Actualización de tiempos y SLA cada 60s
         setInterval(() => this.updateTimeElapsedElements(), 60000);
       }
 
@@ -737,9 +770,9 @@
               especialidad: 'Climatización',
               prioridad: 'Alta',
               recinto: 'Pabellón 3 Quirúrgico',
-              ticket: 'T-1029',
+              ticket: 'PMA-1029',
               solicitante: 'Dra. Morales (Jefa Pabellones)',
-              encargado: 'Cuadrilla Frío',
+              encargado: 'Pablo Loira',
               descripcion: 'Falla en flujo de aire laminar y sensor de presión positiva descalibrado.',
               instrucciones: 'Revisar filtros HEPA y calibrar presostato.',
               estado: 'En Ejecución',
@@ -778,9 +811,6 @@
 
       saveCache() {
         localStorage.setItem('sdo_orders_cache', JSON.stringify(this.orders));
-        if (this.supabase) {
-          // Sincronizar en lote o individual
-        }
       }
 
       async syncOrderToCloud(order) {
@@ -796,6 +826,65 @@
             console.error("Error sincronizando OT con nube:", e);
           }
         }
+      }
+
+      // ================= GESTIÓN DE TÉCNICOS =================
+      populateTechnicianSelects(selectedForManage = null) {
+        const createSel = document.getElementById('newOtEncargado');
+        const manageSel = document.getElementById('manageOtEncargado');
+        
+        const optionsHtml = this.technicians.map(t => `<option value="${t}">${t}</option>`).join('');
+
+        if (createSel) {
+          createSel.innerHTML = optionsHtml;
+          if (this.technicians.includes("Pablo Loira")) {
+            createSel.value = "Pablo Loira";
+          }
+        }
+
+        if (manageSel) {
+          manageSel.innerHTML = optionsHtml;
+          if (selectedForManage && this.technicians.includes(selectedForManage)) {
+            manageSel.value = selectedForManage;
+          }
+        }
+
+        this.renderSettingsTechList();
+      }
+
+      quickAddTechnician() {
+        const name = prompt("Ingrese el nombre y apellido del nuevo técnico:");
+        if (name && name.trim()) {
+          const cleanName = name.trim();
+          if (!this.technicians.includes(cleanName)) {
+            this.technicians.push(cleanName);
+            this.saveSettingsToStorage();
+            this.populateTechnicianSelects();
+          }
+        }
+      }
+
+      removeTechnician(index) {
+        if (this.technicians.length <= 1) {
+          alert("Debe existir al menos un técnico en el sistema.");
+          return;
+        }
+        if (confirm(`¿Eliminar a ${this.technicians[index]} de la lista?`)) {
+          this.technicians.splice(index, 1);
+          this.saveSettingsToStorage();
+          this.populateTechnicianSelects();
+        }
+      }
+
+      renderSettingsTechList() {
+        const container = document.getElementById('settingsTechList');
+        if (!container) return;
+        container.innerHTML = this.technicians.map((t, idx) => `
+          <div class="flex items-center justify-between bg-white px-2.5 py-1.5 rounded-lg border border-slate-200">
+            <span class="font-medium text-slate-800 text-xs">${t}</span>
+            <button type="button" onclick="window.app.removeTechnician(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold">✕</button>
+          </div>
+        `).join('');
       }
 
       // ================= AUTENTICACIÓN Y PIN =================
@@ -985,7 +1074,7 @@
         alertsList.innerHTML = pendingReqs.map(item => `
           <div class="bg-white p-2.5 rounded-lg border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <span class="font-bold text-amber-900 text-xs">${item.ot.folio} (${item.ot.recinto}):</span>
+              <span class="font-bold text-amber-900 text-xs">${item.ot.folio} (${item.ot.recinto}) - ${item.ot.encargado}:</span>
               <span class="text-xs text-slate-700 block">${item.req.tipo} - "${item.req.detalle}"</span>
               <span class="text-[10px] text-slate-400 font-medium">${new Date(item.req.fecha).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} hrs</span>
             </div>
@@ -1006,6 +1095,7 @@
           const matchQuery = !query || 
             o.folio.toLowerCase().includes(query) ||
             o.recinto.toLowerCase().includes(query) ||
+            (o.ticket && o.ticket.toLowerCase().includes(query)) ||
             (o.solicitante && o.solicitante.toLowerCase().includes(query)) ||
             (o.encargado && o.encargado.toLowerCase().includes(query));
 
@@ -1039,6 +1129,7 @@
                       <th class="p-3">Folio</th>
                       <th class="p-3">Recinto / Servicio</th>
                       <th class="p-3">Especialidad</th>
+                      <th class="p-3">Técnico Asignado</th>
                       <th class="p-3">Estado</th>
                       <th class="p-3 min-w-[160px]">Tiempo Transcurrido (SLA)</th>
                       <th class="p-3 text-right">Acciones</th>
@@ -1072,9 +1163,13 @@
               </div>
               <h4 class="font-bold text-sm text-slate-800 mt-1">${o.recinto}</h4>
               <p class="text-xs text-slate-500 font-medium">${o.especialidad} • Prioridad ${o.prioridad}</p>
+              <div class="text-[11px] text-slate-600 mt-1 flex items-center justify-between">
+                <span>Técnico: <b class="text-slate-800">${o.encargado || 'Pablo Loira'}</b></span>
+                <span>PMA: <b class="text-slate-800">${o.ticket || 'N/A'}</b></span>
+              </div>
               
               <!-- Barra de Tiempo Transcurrido -->
-              <div class="mt-2.5 bg-slate-50 p-2 rounded-lg border border-slate-100">
+              <div class="mt-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
                 <div class="flex justify-between text-[11px] font-semibold mb-1">
                   <span class="text-slate-600">Transcurrido:</span>
                   <span class="${sla.textClass}">${sla.elapsedString} (${sla.percent}%)</span>
@@ -1120,9 +1215,10 @@
             <td class="p-3 font-bold text-slate-900">${o.folio}</td>
             <td class="p-3">
               <span class="font-bold text-slate-800 block">${o.recinto}</span>
-              <span class="text-[10px] text-slate-400 font-medium">${o.solicitante || 'Sin solicitante'}</span>
+              <span class="text-[10px] text-slate-400 font-medium">PMA: ${o.ticket || 'N/A'} • ${o.solicitante || ''}</span>
             </td>
             <td class="p-3 font-medium text-slate-600">${o.especialidad}</td>
+            <td class="p-3 font-bold text-slate-800">${o.encargado || 'Pablo Loira'}</td>
             <td class="p-3">
               <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${statusColors[o.estado]}">${o.estado}</span>
             </td>
@@ -1147,6 +1243,7 @@
       // ================= CREAR NUEVA OT =================
       openCreateModal() {
         document.getElementById('createOtForm').reset();
+        this.populateTechnicianSelects();
         document.getElementById('createModal').classList.remove('hidden');
       }
 
@@ -1169,7 +1266,7 @@
           recinto: document.getElementById('newOtRecinto').value.trim(),
           ticket: document.getElementById('newOtTicket').value.trim() || 'N/A',
           solicitante: document.getElementById('newOtSolicitante').value.trim(),
-          encargado: document.getElementById('newOtEncargado').value.trim() || 'Sin asignar',
+          encargado: document.getElementById('newOtEncargado').value.trim() || 'Pablo Loira',
           descripcion: document.getElementById('newOtDescripcion').value.trim(),
           instrucciones: document.getElementById('newOtInstrucciones').value.trim(),
           estado: 'Pendiente',
@@ -1201,10 +1298,10 @@
         document.getElementById('manageOtRecinto').value = o.recinto;
         document.getElementById('manageOtTicket').value = o.ticket || '';
         document.getElementById('manageOtSolicitante').value = o.solicitante;
-        document.getElementById('manageOtEncargado').value = o.encargado || '';
+        this.populateTechnicianSelects(o.encargado || 'Pablo Loira');
         document.getElementById('manageOtDescripcion').value = o.descripcion;
         document.getElementById('manageOtEstado').value = o.estado;
-        document.getElementById('manageSupervisorResponseInput').value = '';
+        document.getElementById('manageOtInstrucciones').value = o.instrucciones || '';
 
         // Historial de solicitudes de cuadrilla
         const reqList = document.getElementById('manageRequestsList');
@@ -1212,7 +1309,7 @@
           reqList.innerHTML = o.solicitudes_terreno.map((r, i) => `
             <div class="bg-white p-2 rounded border border-amber-200">
               <div class="flex justify-between items-center text-[10px] text-slate-500 mb-1">
-                <span class="font-bold text-amber-800">${r.tipo}</span>
+                <span class="font-bold text-amber-800">${r.tipo} (${o.encargado || 'Técnico'})</span>
                 <span>${new Date(r.fecha).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</span>
               </div>
               <p class="text-slate-800 font-medium">"${r.detalle}"</p>
@@ -1264,14 +1361,10 @@
         o.recinto = document.getElementById('manageOtRecinto').value.trim();
         o.ticket = document.getElementById('manageOtTicket').value.trim();
         o.solicitante = document.getElementById('manageOtSolicitante').value.trim();
-        o.encargado = document.getElementById('manageOtEncargado').value.trim();
+        o.encargado = document.getElementById('manageOtEncargado').value.trim() || 'Pablo Loira';
         o.descripcion = document.getElementById('manageOtDescripcion').value.trim();
         o.estado = document.getElementById('manageOtEstado').value;
-
-        const directInst = document.getElementById('manageSupervisorResponseInput').value.trim();
-        if (directInst) {
-          o.instrucciones = directInst;
-        }
+        o.instrucciones = document.getElementById('manageOtInstrucciones').value.trim();
 
         if (o.estado === 'Terminada' && !o.fechaTermino) {
           o.fechaTermino = new Date().toISOString();
@@ -1304,7 +1397,7 @@
         if (!o) return;
 
         this.activeOperativeOt = o;
-        document.getElementById('opFolioBadge').textContent = o.folio;
+        document.getElementById('opFolioTitle').textContent = o.folio;
         document.getElementById('opStatusBadge').textContent = o.estado;
         document.getElementById('opRecinto').textContent = o.recinto;
         document.getElementById('opEspecialidadPrioridad').textContent = `${o.especialidad} • Prioridad ${o.prioridad}`;
@@ -1312,7 +1405,19 @@
         document.getElementById('opDescripcion').textContent = o.descripcion;
         document.getElementById('opSolicitante').textContent = o.solicitante;
         document.getElementById('opTicket').textContent = o.ticket || 'N/A';
+        document.getElementById('opEncargadoLabel').textContent = o.encargado || 'Pablo Loira';
+        document.getElementById('opQueryTechName').textContent = o.encargado || 'Pablo Loira';
         document.getElementById('opDiagnosticoSolucion').value = o.diagnostico || '';
+
+        // Instrucciones de Jefatura
+        const instContainer = document.getElementById('opInstruccionesContainer');
+        const instText = document.getElementById('opInstruccionesTexto');
+        if (o.instrucciones && o.instrucciones.trim()) {
+          instText.textContent = o.instrucciones;
+          instContainer.classList.remove('hidden');
+        } else {
+          instContainer.classList.add('hidden');
+        }
 
         // Botón WhatsApp en la Ficha
         const wsBtn = document.getElementById('opShareWhatsAppBtn');
@@ -1379,7 +1484,7 @@
           container.innerHTML = o.solicitudes_terreno.map(r => `
             <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
               <div class="flex justify-between items-center text-[10px] text-slate-500 mb-1">
-                <span class="font-bold text-slate-700">${r.tipo}</span>
+                <span class="font-bold text-slate-700">${r.tipo} • <span class="text-blue-700">${o.encargado || 'Técnico'}</span></span>
                 <span>${new Date(r.fecha).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</span>
               </div>
               <p class="text-slate-800 font-medium">"${r.detalle}"</p>
@@ -1407,6 +1512,7 @@
         const newReq = {
           tipo: type,
           detalle: details,
+          tecnico: this.activeOperativeOt.encargado || 'Pablo Loira',
           fecha: new Date().toISOString(),
           respuesta: null,
           fecha_respuesta: null
@@ -1446,6 +1552,7 @@
         document.getElementById('cfgFolioPrefix').value = this.folioPrefix;
         document.getElementById('cfgPinSupervisor').value = this.pins.supervisor;
         document.getElementById('cfgPinTecnico').value = this.pins.tecnico;
+        this.renderSettingsTechList();
         document.getElementById('settingsModal').classList.remove('hidden');
       }
 
@@ -1493,10 +1600,24 @@
             this.folioPrefix = parsed.folioPrefix || SGM_CONFIG.defaultPrefix;
             this.pins = parsed.pins || { ...SGM_CONFIG.defaultPins };
             this.customLogo = parsed.customLogo || null;
+            if (parsed.technicians && Array.isArray(parsed.technicians) && parsed.technicians.length) {
+              this.technicians = parsed.technicians;
+            }
             document.getElementById('headerHospitalName').textContent = this.hospitalName;
             this.updateLogoDisplays();
           } catch (e) {}
         }
+      }
+
+      saveSettingsToStorage() {
+        const config = {
+          hospitalName: this.hospitalName,
+          folioPrefix: this.folioPrefix,
+          pins: this.pins,
+          customLogo: this.customLogo,
+          technicians: this.technicians
+        };
+        localStorage.setItem('sdo_settings_config', JSON.stringify(config));
       }
 
       saveSystemSettings(event) {
@@ -1506,15 +1627,9 @@
         this.pins.supervisor = document.getElementById('cfgPinSupervisor').value.trim();
         this.pins.tecnico = document.getElementById('cfgPinTecnico').value.trim();
 
-        const config = {
-          hospitalName: this.hospitalName,
-          folioPrefix: this.folioPrefix,
-          pins: this.pins,
-          customLogo: this.customLogo
-        };
-
-        localStorage.setItem('sdo_settings_config', JSON.stringify(config));
+        this.saveSettingsToStorage();
         document.getElementById('headerHospitalName').textContent = this.hospitalName;
+        this.populateTechnicianSelects();
         this.closeSettingsModal();
       }
 
@@ -1586,11 +1701,12 @@
         doc.setFontSize(9);
         doc.text(`Rango: ${document.getElementById('repDateFrom').value} al ${document.getElementById('repDateTo').value}`, 14, 22);
 
-        const headers = [["Folio", "Recinto", "Especialidad", "Estado", "SLA Cumplido"]];
+        const headers = [["Folio", "Recinto", "Especialidad", "Técnico", "Estado", "SLA Cumplido"]];
         const data = this.orders.map(o => [
           o.folio,
           o.recinto,
           o.especialidad,
+          o.encargado || 'Pablo Loira',
           o.estado,
           this.calculateSlaInfo(o).percent <= 100 ? 'SÍ' : 'NO'
         ]);
@@ -1612,7 +1728,7 @@
         if (!o) return;
 
         const priorityEmojis = { Urgente: '🚨', Alta: '🟠', Media: '🟡', Baja: '🟢' };
-        const cleanBaseUrl = window.location.href.split('?')[0];
+        const cleanBaseUrl = window.location.origin + window.location.pathname;
         const directLink = `${cleanBaseUrl}?ot=${encodeURIComponent(o.id)}`;
 
         const message = 
@@ -1622,8 +1738,9 @@
 ${priorityEmojis[o.prioridad] || '📌'} *Prioridad:* ${o.prioridad} (SLA ${SGM_CONFIG.slaHours[o.prioridad] || 24}h)
 📍 *Recinto:* ${o.recinto}
 🛠️ *Especialidad:* ${o.especialidad}
+👷 *Técnico Asignado:* ${o.encargado || 'Pablo Loira'}
 👤 *Solicitante:* ${o.solicitante}
-🎫 *Ticket:* ${o.ticket || 'N/A'}
+🎫 *PMA:* ${o.ticket || 'N/A'}
 ----------------------------------------
 📝 *Problema:*
 ${o.descripcion}
@@ -1635,7 +1752,6 @@ ${directLink}`;
         const encodedMsg = encodeURIComponent(message);
         const waUrl = `https://api.whatsapp.com/send?text=${encodedMsg}`;
 
-        // Mecanismo compatible para abrir WhatsApp evitando bloqueos de popups en navegadores móviles
         const link = document.createElement('a');
         link.href = waUrl;
         link.target = '_blank';
@@ -1664,8 +1780,8 @@ ${directLink}`;
           body: [
             ["Recinto:", o.recinto, "Especialidad:", o.especialidad],
             ["Prioridad:", o.prioridad, "Estado:", o.estado],
-            ["Solicitante:", o.solicitante, "Ticket Ref:", o.ticket || 'N/A'],
-            ["Fecha Ingreso:", new Date(o.fechaCreacion).toLocaleString(), "Técnico:", o.encargado || 'N/A']
+            ["Solicitante:", o.solicitante, "PMA recinto:", o.ticket || 'N/A'],
+            ["Fecha Ingreso:", new Date(o.fechaCreacion).toLocaleString(), "Técnico Asignado:", o.encargado || 'Pablo Loira']
           ]
         });
 
@@ -1676,6 +1792,16 @@ ${directLink}`;
           head: [["Descripción de la Falla"]],
           body: [[o.descripcion]]
         });
+
+        if (o.instrucciones && o.instrucciones.trim()) {
+          doc.autoTable({
+            startY: doc.lastAutoTable.finalY + 4,
+            theme: 'grid',
+            styles: { fontSize: 8 },
+            head: [["Instrucciones de Jefatura"]],
+            body: [[o.instrucciones]]
+          });
+        }
 
         doc.autoTable({
           startY: doc.lastAutoTable.finalY + 4,
