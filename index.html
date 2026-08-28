@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>HBQP-Hospital Cloud | Sistema de Gestión de OTs</title>
+  <title>SDO Cloud | Sistema de Gestión de OTs</title>
   <meta name="theme-color" content="#0284c7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -53,7 +53,7 @@
           </div>
           <div class="min-w-0">
             <div class="flex items-center space-x-1.5">
-              <span class="font-black text-sm sm:text-base tracking-tight text-white">SGM<span class="text-sky-400">Hospital</span></span>
+              <span class="font-black text-sm sm:text-base tracking-tight text-white">SDO <span class="text-sky-400">Cloud</span></span>
               <span id="roleBadgeHeader" class="text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-400/30">Cargando...</span>
             </div>
             <p id="headerHospitalSubtitle" class="text-[10px] text-slate-400 font-semibold truncate max-w-[170px] sm:max-w-[320px]">Operaciones e Infraestructura</p>
@@ -633,7 +633,7 @@
         <div class="w-11 h-11 bg-gradient-to-tr from-sky-600 to-teal-500 text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">
           🏥
         </div>
-        <h3 class="text-base font-black text-slate-800">SGM-Hospital Cloud</h3>
+        <h3 class="text-base font-black text-slate-800">SDO Cloud</h3>
         <p class="text-[11px] text-slate-500">Seleccione su rol e ingrese su PIN</p>
       </div>
       
@@ -696,7 +696,7 @@
     const DEFAULT_TECNICO_PIN = "5678";
     const SYSTEM_CONFIG_DOC_ID = "system_settings_config";
     const DEFAULT_FOLIO_PREFIX = "OT-INFRA";
-    const DEFAULT_HOSPITAL_NAME = "Hospital Público / Infraestructura";
+    const DEFAULT_HOSPITAL_NAME = "SDO Cloud / Operaciones e Infraestructura";
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -776,6 +776,8 @@
         this.tecnicoPin = DEFAULT_TECNICO_PIN;
         this.folioPrefix = DEFAULT_FOLIO_PREFIX;
         this.hospitalName = DEFAULT_HOSPITAL_NAME;
+        this.logoUrl = null;
+        this.tempLogoUrl = null;
 
         this.initCanvas();
         this.listenToOrders();
@@ -853,9 +855,12 @@
               this.tecnicoPin = configDoc.data.tecnicoPin || DEFAULT_TECNICO_PIN;
               this.folioPrefix = configDoc.data.folioPrefix || DEFAULT_FOLIO_PREFIX;
               this.hospitalName = configDoc.data.hospitalName || DEFAULT_HOSPITAL_NAME;
+              this.logoUrl = configDoc.data.logoUrl || null;
               
               const sub = document.getElementById('headerHospitalSubtitle');
               if (sub) sub.innerText = this.hospitalName;
+
+              this.updateLogoUI(this.logoUrl);
             }
 
             this.orders = data.filter(r => r.id !== SYSTEM_CONFIG_DOC_ID).map(r => r.data);
@@ -887,6 +892,8 @@
         document.getElementById('cfgCurrentSupervisorPin').value = '';
         document.getElementById('cfgNewPin').value = '';
         document.getElementById('cfgConfirmPin').value = '';
+        this.tempLogoUrl = this.logoUrl;
+        this.renderSettingsLogoPreview(this.tempLogoUrl);
         
         document.getElementById('cfgFolioPrefix').oninput = (e) => {
           const v = (e.target.value || DEFAULT_FOLIO_PREFIX).toUpperCase();
@@ -898,6 +905,83 @@
 
       closeSettingsModal() {
         document.getElementById('settingsModal').classList.add('hidden');
+        this.tempLogoUrl = null;
+      }
+
+      handleLogoUpload(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+
+        if (file.size > 2 * 1024 * 1024) {
+          return showModal({ title: 'Archivo muy grande', message: 'Seleccione una imagen menor a 2MB.', type: 'error', icon: '⚠️' });
+        }
+
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxDim = 180;
+            let w = img.width;
+            let h = img.height;
+
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            this.tempLogoUrl = canvas.toDataURL('image/png', 0.85);
+            this.renderSettingsLogoPreview(this.tempLogoUrl);
+          };
+          img.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      resetLogoToDefault() {
+        this.tempLogoUrl = '';
+        this.renderSettingsLogoPreview(null);
+      }
+
+      renderSettingsLogoPreview(logoSrc) {
+        const icon = document.getElementById('cfgLogoPreviewIcon');
+        const img = document.getElementById('cfgLogoPreviewImg');
+        if (logoSrc) {
+          img.src = logoSrc;
+          img.classList.remove('hidden');
+          icon.classList.add('hidden');
+        } else {
+          img.classList.add('hidden');
+          icon.classList.remove('hidden');
+        }
+      }
+
+      updateLogoUI(logoSrc) {
+        const headerIcon = document.getElementById('headerLogoIcon');
+        const headerImg = document.getElementById('headerLogoImg');
+        const loginIcon = document.getElementById('loginLogoIcon');
+        const loginImg = document.getElementById('loginLogoImg');
+
+        if (logoSrc) {
+          if (headerImg) { headerImg.src = logoSrc; headerImg.classList.remove('hidden'); }
+          if (headerIcon) headerIcon.classList.add('hidden');
+          if (loginImg) { loginImg.src = logoSrc; loginImg.classList.remove('hidden'); }
+          if (loginIcon) loginIcon.classList.add('hidden');
+        } else {
+          if (headerImg) headerImg.classList.add('hidden');
+          if (headerIcon) headerIcon.classList.remove('hidden');
+          if (loginImg) loginImg.classList.add('hidden');
+          if (loginIcon) loginIcon.classList.remove('hidden');
+        }
       }
 
       async saveSystemSettings() {
@@ -926,6 +1010,9 @@
 
         this.hospitalName = hospitalName;
         this.folioPrefix = folioPrefix;
+        if (this.tempLogoUrl !== null) {
+          this.logoUrl = this.tempLogoUrl || null;
+        }
 
         try {
           const { error } = await supabase.from('orders').upsert({
@@ -935,6 +1022,7 @@
               tecnicoPin: this.tecnicoPin,
               hospitalName: this.hospitalName,
               folioPrefix: this.folioPrefix,
+              logoUrl: this.logoUrl,
               updatedAt: new Date().toISOString()
             }
           });
@@ -942,9 +1030,10 @@
 
           const sub = document.getElementById('headerHospitalSubtitle');
           if (sub) sub.innerText = this.hospitalName;
+          this.updateLogoUI(this.logoUrl);
 
           this.closeSettingsModal();
-          showModal({ title: 'Configuración Guardada', message: 'Los parámetros han sido actualizados en la nube.', type: 'success', icon: '✅' });
+          showModal({ title: 'Configuración Guardada', message: 'Los parámetros y el logo han sido actualizados en la nube.', type: 'success', icon: '✅' });
         } catch (e) {
           console.error("Error guardando configuración:", e);
           showModal({ title: 'Error', message: 'No se pudo sincronizar la configuración.', type: 'error', icon: '❌' });
@@ -990,7 +1079,7 @@
         if (this.selectedAuthRole === 'supervisor') {
           if (pin === this.supervisorPin) {
             this.currentRole = 'supervisor';
-            sessionStorage.setItem('sgm_role', 'supervisor');
+            sessionStorage.setItem('sdo_role', 'supervisor');
             document.getElementById('loginModal').classList.add('hidden');
             this.updateUIPermissions();
             this.navigate('dashboard_supervisor');
@@ -1001,7 +1090,7 @@
         } else if (this.selectedAuthRole === 'tecnico') {
           if (pin === this.tecnicoPin) {
             this.currentRole = 'tecnico';
-            sessionStorage.setItem('sgm_role', 'tecnico');
+            sessionStorage.setItem('sdo_role', 'tecnico');
             document.getElementById('loginModal').classList.add('hidden');
             this.updateUIPermissions();
             this.navigate('dashboard_tecnico');
@@ -1013,7 +1102,7 @@
       }
 
       checkAuthAndRoute() {
-        const savedRole = sessionStorage.getItem('sgm_role');
+        const savedRole = sessionStorage.getItem('sdo_role');
         if (savedRole === 'supervisor') {
           this.currentRole = 'supervisor';
           this.updateUIPermissions();
@@ -1943,14 +2032,38 @@
 
         doc.setFillColor(7, 89, 133);
         doc.rect(12, 10, 186, 24, 'F');
-        doc.setTextColor(255, 255, 255);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(13);
-        doc.text(this.hospitalName.toUpperCase(), 18, 18);
-        doc.setFontSize(9.5);
-        doc.setFont('helvetica', 'normal');
-        doc.text('SUBDIRECCIÓN DE OPERACIONES E INFRAESTRUCTURA', 18, 24);
-        doc.text(`CERTIFICADO DE ORDEN DE TRABAJO: ${ot.numero_ot}`, 18, 30);
+
+        if (this.logoUrl) {
+          try {
+            doc.addImage(this.logoUrl, 'PNG', 15, 12, 18, 18);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.text(this.hospitalName.toUpperCase(), 36, 18);
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.text('SUBDIRECCIÓN DE OPERACIONES E INFRAESTRUCTURA', 36, 24);
+            doc.text(`CERTIFICADO DE ORDEN DE TRABAJO: ${ot.numero_ot}`, 36, 29);
+          } catch(err) {
+            doc.setTextColor(255, 255, 255);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(13);
+            doc.text(this.hospitalName.toUpperCase(), 18, 18);
+            doc.setFontSize(9.5);
+            doc.setFont('helvetica', 'normal');
+            doc.text('SUBDIRECCIÓN DE OPERACIONES E INFRAESTRUCTURA', 18, 24);
+            doc.text(`CERTIFICADO DE ORDEN DE TRABAJO: ${ot.numero_ot}`, 18, 30);
+          }
+        } else {
+          doc.setTextColor(255, 255, 255);
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(13);
+          doc.text(this.hospitalName.toUpperCase(), 18, 18);
+          doc.setFontSize(9.5);
+          doc.setFont('helvetica', 'normal');
+          doc.text('SUBDIRECCIÓN DE OPERACIONES E INFRAESTRUCTURA', 18, 24);
+          doc.text(`CERTIFICADO DE ORDEN DE TRABAJO: ${ot.numero_ot}`, 18, 30);
+        }
 
         doc.setTextColor(30, 41, 59);
         doc.setFontSize(8.5);
