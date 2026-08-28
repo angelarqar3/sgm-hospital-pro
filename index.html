@@ -738,11 +738,7 @@
         if (!this.supabase) return;
         this.supabase.channel('orders_realtime')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
-            // Solo sincronizamos masivo si no estamos editando algo activamente
-            if (document.getElementById('manageModal').classList.contains('hidden') && 
-                document.getElementById('operativeView').classList.contains('hidden')) {
-              this.fetchOrdersFromSupabase();
-            }
+            this.fetchOrdersFromSupabase();
           })
           .on('postgres_changes', { event: '*', schema: 'public', table: 'system_settings' }, () => {
             this.fetchConfigFromSupabase();
@@ -756,11 +752,24 @@
           const { data, error } = await this.supabase.from('orders').select('*');
           if (!error && data) {
             this.orders = data.map(row => row.data);
-            this.orders.sort((a,b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
             this.updateKpis();
             this.renderOrdersList();
             this.renderAlerts();
             localStorage.setItem('sdo_orders_cache', JSON.stringify(this.orders));
+
+            // Actualización Quirúrgica en Tiempo Real para Modales Abiertos
+            if (!document.getElementById('manageModal').classList.contains('hidden')) {
+              const currentId = document.getElementById('manageOtId').value;
+              const currentOt = this.orders.find(o => o.id === currentId);
+              if (currentOt) this.refreshManageRequestsUI(currentOt);
+            }
+            if (!document.getElementById('operativeView').classList.contains('hidden') && this.activeOperativeOt) {
+              const currentOpOt = this.orders.find(o => o.id === this.activeOperativeOt.id);
+              if (currentOpOt) {
+                this.activeOperativeOt = currentOpOt;
+                this.refreshOperativeHistoryUI(currentOpOt);
+              }
+            }
           }
         } catch (e) {}
       }
@@ -1238,7 +1247,25 @@
         document.getElementById('manageOtInstrucciones').value = o.instrucciones || '';
         document.getElementById('manageOtEstado').value = o.estado;
 
+        this.refreshManageRequestsUI(o);
+        
+        document.getElementById('manageModal').classList.remove('hidden');
+      }
+      closeManageModal() { document.getElementById('manageModal').classList.add('hidden'); }
+
+      refreshManageRequestsUI(o) {
+        const isLocked = o.estado === 'Solicitud Cierre' || o.estado === 'Terminada';
         const reqList = document.getElementById('manageRequestsList');
+        
+        // Guardar input activo para no interrumpir la escritura del supervisor
+        const activeEl = document.activeElement;
+        let focusedId = null;
+        let focusedVal = '';
+        if (activeEl && activeEl.tagName === 'INPUT' && activeEl.id.startsWith('respInput_')) {
+            focusedId = activeEl.id;
+            focusedVal = activeEl.value;
+        }
+
         if (o.solicitudes_terreno && o.solicitudes_terreno.length) {
           reqList.innerHTML = o.solicitudes_terreno.map((r, i) => `
             <div class="bg-white p-2 rounded border border-amber-200">
@@ -1252,9 +1279,12 @@
         } else {
           reqList.innerHTML = `<p class="text-slate-400 italic">No hay consultas registradas.</p>`;
         }
-        document.getElementById('manageModal').classList.remove('hidden');
+
+        if (focusedId) {
+            const el = document.getElementById(focusedId);
+            if (el) { el.focus(); el.value = focusedVal; }
+        }
       }
-      closeManageModal() { document.getElementById('manageModal').classList.add('hidden'); }
 
       answerRequest(otId, reqIndex) {
         const input = document.getElementById(`respInput_${reqIndex}`);
@@ -1264,7 +1294,7 @@
           o.solicitudes_terreno[reqIndex].respuesta = input.value.trim();
           o.solicitudes_terreno[reqIndex].fecha_respuesta = new Date().toISOString();
           this.syncOrderToCloud(o);
-          this.openManageModal(otId);
+          this.refreshManageRequestsUI(o);
           this.renderAlerts();
         }
       }
@@ -1342,6 +1372,17 @@
         const endLabel = document.getElementById('opEndTimeLabel');
         endLabel.textContent = o.fechaTermino ? new Date(o.fechaTermino).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : "En proceso";
 
+        this.refreshOperativeHistoryUI(o);
+
+        document.getElementById('opRequestForm').style.display = isLocked ? 'none' : 'block';
+        document.getElementById('opCloseForm').style.display = isLocked ? 'none' : 'block';
+        document.getElementById('opDiagnosticoSolucion').value = o.diagnostico || '';
+
+        document.getElementById('operativeView').classList.remove('hidden');
+      }
+      closeOperativeView() { document.getElementById('operativeView').classList.add('hidden'); this.activeOperativeOt = null; }
+
+      refreshOperativeHistoryUI(o) {
         const hist = document.getElementById('opConsultationHistory');
         if (o.solicitudes_terreno && o.solicitudes_terreno.length) {
           hist.innerHTML = o.solicitudes_terreno.map(r => `
@@ -1354,15 +1395,7 @@
         } else {
           hist.innerHTML = `<p class="text-slate-400 italic">No hay requerimientos emitidos.</p>`;
         }
-
-        document.getElementById('opRequestForm').style.display = isLocked ? 'none' : 'block';
-        document.getElementById('opCloseForm').style.display = isLocked ? 'none' : 'block';
-        document.getElementById('opDiagnosticoSolucion').value = o.diagnostico || '';
-        document.getElementById('opDiagnosticoSolucion').disabled = isLocked;
-
-        document.getElementById('operativeView').classList.remove('hidden');
       }
-      closeOperativeView() { document.getElementById('operativeView').classList.add('hidden'); this.activeOperativeOt = null; }
 
       startFaena() {
         if (!this.activeOperativeOt || this.activeOperativeOt.faena_iniciada || this.activeOperativeOt.estado === 'Solicitud Cierre' || this.activeOperativeOt.estado === 'Terminada') return;
@@ -1388,7 +1421,7 @@
 
         this.syncOrderToCloud(this.activeOperativeOt);
         document.getElementById('opNewRequestDetails').value = '';
-        this.openOperativeView(this.activeOperativeOt.id);
+        this.refreshOperativeHistoryUI(this.activeOperativeOt);
       }
 
       saveOperativeProgress(requestClose = false) {
