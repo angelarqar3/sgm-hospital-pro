@@ -78,15 +78,20 @@
           <button onclick="window.app.renderDashboard(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2">
             <span>📊</span> <span>Panel General</span>
           </button>
-          <button onclick="window.app.openCreateModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2 text-blue-600">
-            <span>➕</span> <span>Nueva OT</span>
-          </button>
-          <button onclick="window.app.openAdvanceReportModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2">
-            <span>📈</span> <span>Reporte de Avance</span>
-          </button>
-          <button onclick="window.app.openSettingsModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2">
-            <span>⚙️</span> <span>Configuración</span>
-          </button>
+          
+          <!-- Elementos Exclusivos del Supervisor -->
+          <div id="supervisorOnlyMenuItems" class="space-y-1">
+            <button onclick="window.app.openCreateModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2 text-blue-600">
+              <span>➕</span> <span>Nueva OT</span>
+            </button>
+            <button onclick="window.app.openAdvanceReportModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2">
+              <span>📈</span> <span>Reporte de Avance</span>
+            </button>
+            <button onclick="window.app.openSettingsModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2">
+              <span>⚙️</span> <span>Configuración</span>
+            </button>
+          </div>
+
           <hr class="my-1 border-slate-100">
           <button onclick="window.app.openAuthModal(); window.app.toggleMenu();" class="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-slate-50 flex items-center space-x-2 text-amber-700">
             <span>🔄</span> <span>Cambiar Rol / PIN</span>
@@ -95,6 +100,12 @@
       </div>
     </div>
   </header>
+
+  <!-- ==================== TOAST NOTIFICATION CONTAINER ==================== -->
+  <div id="toastNotification" class="fixed bottom-4 right-4 z-50 transform transition-all duration-300 translate-y-20 opacity-0 pointer-events-none bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2 text-xs font-bold border border-slate-700">
+    <span id="toastIcon">✅</span>
+    <span id="toastMessage">Operación realizada con éxito</span>
+  </div>
 
   <!-- ==================== MAIN CONTAINER ==================== -->
   <main class="max-w-7xl w-full mx-auto px-3 sm:px-4 py-4 flex-1">
@@ -429,17 +440,20 @@
     <div class="max-w-2xl mx-auto px-3 py-4 space-y-3 pb-20">
       
       <!-- Top Bar Ficha -->
-      <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-sm gap-2">
-        <button onclick="window.app.closeOperativeView()" class="px-3 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center space-x-1">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-sm gap-2">
+        <button onclick="window.app.closeOperativeView()" class="px-3 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center space-x-1">
           <span>←</span> <span>Volver</span>
         </button>
         
-        <!-- Botón WhatsApp Destacado y Agrandado -->
-        <button id="opShareWhatsAppBtn" class="flex-1 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-xs sm:text-sm font-black flex items-center justify-center space-x-2 shadow-md transition">
-          <span class="text-base sm:text-lg">💬</span> <span>Compartir por WhatsApp</span>
+        <!-- Botón WhatsApp Destacado y Agrandado con Logo Oficial SVG -->
+        <button id="opShareWhatsAppBtn" class="flex-1 py-3 px-5 bg-[#25D366] hover:bg-[#20bd5a] active:scale-98 text-white rounded-xl text-sm font-black flex items-center justify-center space-x-2.5 shadow-lg transition-all border border-emerald-600">
+          <svg class="w-6 h-6 fill-current shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.031 2C6.496 2 2 6.496 2 12.031c0 1.956.562 3.844 1.625 5.48L2 22l4.633-1.578a10.02 10.02 0 0 0 5.398 1.578c5.535 0 10.031-4.496 10.031-10.031C22.062 6.496 17.566 2 12.031 2zm0 18.375a8.31 8.31 0 0 1-4.437-1.273l-.317-.188-2.75.938.938-2.688-.207-.332a8.347 8.347 0 0 1-1.258-4.481c0-4.606 3.75-8.356 8.356-8.356 4.606 0 8.356 3.75 8.356 8.356 0 4.606-3.75 8.356-8.356 8.356zm4.582-6.262c-.25-.125-1.48-.73-1.71-.813-.23-.083-.398-.125-.565.125-.167.25-.646.813-.792.98-.146.166-.292.187-.542.062s-1.058-.39-2.016-1.244c-.744-.664-1.246-1.484-1.392-1.734-.146-.25-.016-.385.11-.51.114-.113.25-.292.375-.438.125-.146.167-.25.25-.417.083-.166.042-.312-.021-.437-.063-.125-.563-1.354-.77-1.854-.203-.488-.41-.422-.565-.43-.146-.008-.312-.01-.48-.01s-.437.062-.666.312c-.23.25-.875.854-.875 2.083s.896 2.417 1.02 2.583c.126.167 1.766 2.7 4.28 3.785.598.258 1.066.413 1.43.529.602.191 1.15.164 1.583.1.483-.072 1.48-.605 1.688-1.188.208-.583.208-1.083.146-1.188-.063-.104-.23-.166-.48-.291z"/>
+          </svg>
+          <span class="tracking-wide text-white">COMPARTIR POR WHATSAPP</span>
         </button>
 
-        <span id="opStatusBadge" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-amber-100 text-amber-800 shrink-0">En Ejecución</span>
+        <span id="opStatusBadge" class="text-xs font-bold px-3 py-2 rounded-lg bg-amber-100 text-amber-800 text-center shrink-0">En Ejecución</span>
       </div>
 
       <!-- Resumen Falla -->
@@ -530,15 +544,16 @@
         
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">Diagnóstico y Solución Aplicada</label>
-          <textarea id="opDiagnosticoSolucion" rows="3" placeholder="Detalle de trabajos ejecutados..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
+          <textarea id="opDiagnosticoSolucion" rows="3" placeholder="Detalle exhaustivo de trabajos y reparaciones ejecutadas..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
         </div>
 
-        <div class="pt-3 flex flex-col sm:flex-row gap-2">
-          <button onclick="window.app.saveOperativeProgress(false)" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-black rounded-lg">
+        <div class="pt-3 flex flex-col sm:flex-row gap-2.5">
+          <button type="button" onclick="window.app.saveOperativeProgress(false)" class="flex-1 py-3 bg-slate-800 hover:bg-slate-900 active:scale-98 text-white text-xs font-black rounded-xl shadow transition">
             💾 Guardar Progreso
           </button>
-          <button onclick="window.app.saveOperativeProgress(true)" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black rounded-lg shadow-md">
-            ⚡ Solicitar Cierre a Supervisión
+          <button type="button" onclick="window.app.saveOperativeProgress(true)" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white text-xs font-black rounded-xl shadow-lg transition flex items-center justify-center space-x-1">
+            <span>⚡</span>
+            <span>Solicitar Cierre a Supervisión</span>
           </button>
         </div>
       </div>
@@ -717,9 +732,38 @@
         this.loadSettings();
         this.populateTechnicianSelects();
         this.loadInitialData();
+        this.applyRoleRestrictions();
 
         // Actualización de tiempos y SLA cada 60s
         setInterval(() => this.updateTimeElapsedElements(), 60000);
+      }
+
+      showToast(message, icon = '✅') {
+        const toast = document.getElementById('toastNotification');
+        const msgEl = document.getElementById('toastMessage');
+        const iconEl = document.getElementById('toastIcon');
+        if (!toast) return;
+
+        msgEl.textContent = message;
+        iconEl.textContent = icon;
+        toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        toast.classList.add('translate-y-0', 'opacity-100');
+
+        setTimeout(() => {
+          toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+          toast.classList.remove('translate-y-0', 'opacity-100');
+        }, 3500);
+      }
+
+      applyRoleRestrictions() {
+        const supervisorMenu = document.getElementById('supervisorOnlyMenuItems');
+        if (supervisorMenu) {
+          if (this.currentRole === 'supervisor') {
+            supervisorMenu.classList.remove('hidden');
+          } else {
+            supervisorMenu.classList.add('hidden');
+          }
+        }
       }
 
       initSupabase() {
@@ -853,6 +897,10 @@
       }
 
       quickAddTechnician() {
+        if (this.currentRole !== 'supervisor') {
+          this.showToast("Solo el Supervisor puede modificar la lista de técnicos.", "🔒");
+          return;
+        }
         const name = prompt("Ingrese el nombre y apellido del nuevo técnico:");
         if (name && name.trim()) {
           const cleanName = name.trim();
@@ -860,19 +908,25 @@
             this.technicians.push(cleanName);
             this.saveSettingsToStorage();
             this.populateTechnicianSelects();
+            this.showToast(`Técnico ${cleanName} añadido correctamente.`);
           }
         }
       }
 
       removeTechnician(index) {
+        if (this.currentRole !== 'supervisor') {
+          this.showToast("Solo el Supervisor puede modificar la lista de técnicos.", "🔒");
+          return;
+        }
         if (this.technicians.length <= 1) {
-          alert("Debe existir al menos un técnico en el sistema.");
+          this.showToast("Debe existir al menos un técnico en el sistema.", "⚠️");
           return;
         }
         if (confirm(`¿Eliminar a ${this.technicians[index]} de la lista?`)) {
           this.technicians.splice(index, 1);
           this.saveSettingsToStorage();
           this.populateTechnicianSelects();
+          this.showToast("Técnico eliminado.");
         }
       }
 
@@ -951,9 +1005,12 @@
           document.getElementById('roleBadge').className = this.currentRole === 'supervisor' 
             ? 'text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-600 text-white'
             : 'text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-600 text-white';
+          
+          this.applyRoleRestrictions();
           this.closeAuthModal();
           this.renderOrdersList();
           this.renderAlerts();
+          this.showToast(`Sesión iniciada como ${this.currentRole.toUpperCase()}`);
         } else {
           document.getElementById('authErrorMsg').classList.remove('hidden');
           this.clearPin();
@@ -1005,7 +1062,7 @@
         const created = new Date(order.fechaCreacion || Date.now());
         const maxHours = SGM_CONFIG.slaHours[order.prioridad] || 24;
         const maxMs = maxHours * 3600000;
-        const endRef = order.estado === 'Terminada' && order.fechaTermino ? new Date(order.fechaTermino) : new Date();
+        const endRef = (order.estado === 'Terminada' || order.estado === 'Solicitud Cierre') && order.faena_terminada ? new Date(order.faena_terminada) : new Date();
         const elapsedMs = Math.max(0, endRef - created);
         const elapsedHours = elapsedMs / 3600000;
         const elapsedDays = Math.floor(elapsedHours / 24);
@@ -1190,8 +1247,9 @@
                   ⚙️ Gestionar OT
                 </button>
               ` : ''}
-              <button onclick="window.app.shareWhatsApp('${o.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-bold rounded-lg border border-emerald-200" title="Compartir">
-                💬
+              <button onclick="window.app.shareWhatsApp('${o.id}')" class="px-3 py-2 bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-bold rounded-lg border border-[#25D366]/30 flex items-center justify-center space-x-1" title="Compartir por WhatsApp">
+                <svg class="w-4 h-4 fill-[#25D366]" viewBox="0 0 24 24"><path d="M12.031 2C6.496 2 2 6.496 2 12.031c0 1.956.562 3.844 1.625 5.48L2 22l4.633-1.578a10.02 10.02 0 0 0 5.398 1.578c5.535 0 10.031-4.496 10.031-10.031C22.062 6.496 17.566 2 12.031 2zm0 18.375a8.31 8.31 0 0 1-4.437-1.273l-.317-.188-2.75.938.938-2.688-.207-.332a8.347 8.347 0 0 1-1.258-4.481c0-4.606 3.75-8.356 8.356-8.356 4.606 0 8.356 3.75 8.356 8.356 0 4.606-3.75 8.356-8.356 8.356zm4.582-6.262c-.25-.125-1.48-.73-1.71-.813-.23-.083-.398-.125-.565.125-.167.25-.646.813-.792.98-.146.166-.292.187-.542.062s-1.058-.39-2.016-1.244c-.744-.664-1.246-1.484-1.392-1.734-.146-.25-.016-.385.11-.51.114-.113.25-.292.375-.438.125-.146.167-.25.25-.417.083-.166.042-.312-.021-.437-.063-.125-.563-1.354-.77-1.854-.203-.488-.41-.422-.565-.43-.146-.008-.312-.01-.48-.01s-.437.062-.666.312c-.23.25-.875.854-.875 2.083s.896 2.417 1.02 2.583c.126.167 1.766 2.7 4.28 3.785.598.258 1.066.413 1.43.529.602.191 1.15.164 1.583.1.483-.072 1.48-.605 1.688-1.188.208-.583.208-1.083.146-1.188-.063-.104-.23-.166-.48-.291z"/></svg>
+                <span>WhatsApp</span>
               </button>
               <button onclick="window.app.generatePDF('${o.id}')" class="px-2.5 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold rounded-lg border border-slate-200" title="PDF">
                 📄
@@ -1233,15 +1291,22 @@
               ${this.currentRole === 'supervisor' ? `
                 <button onclick="window.app.openManageModal('${o.id}')" class="px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded text-xs font-bold">⚙️ Gestionar</button>
               ` : ''}
-              <button onclick="window.app.shareWhatsApp('${o.id}')" class="px-2 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded text-xs font-bold">💬</button>
+              <button onclick="window.app.shareWhatsApp('${o.id}')" class="px-2 py-1 bg-[#25D366]/10 text-[#128C7E] border border-[#25D366]/30 rounded text-xs font-bold inline-flex items-center space-x-1">
+                <svg class="w-3.5 h-3.5 fill-[#25D366]" viewBox="0 0 24 24"><path d="M12.031 2C6.496 2 2 6.496 2 12.031c0 1.956.562 3.844 1.625 5.48L2 22l4.633-1.578a10.02 10.02 0 0 0 5.398 1.578c5.535 0 10.031-4.496 10.031-10.031C22.062 6.496 17.566 2 12.031 2zm0 18.375a8.31 8.31 0 0 1-4.437-1.273l-.317-.188-2.75.938.938-2.688-.207-.332a8.347 8.347 0 0 1-1.258-4.481c0-4.606 3.75-8.356 8.356-8.356 4.606 0 8.356 3.75 8.356 8.356 0 4.606-3.75 8.356-8.356 8.356zm4.582-6.262c-.25-.125-1.48-.73-1.71-.813-.23-.083-.398-.125-.565.125-.167.25-.646.813-.792.98-.146.166-.292.187-.542.062s-1.058-.39-2.016-1.244c-.744-.664-1.246-1.484-1.392-1.734-.146-.25-.016-.385.11-.51.114-.113.25-.292.375-.438.125-.146.167-.25.25-.417.083-.166.042-.312-.021-.437-.063-.125-.563-1.354-.77-1.854-.203-.488-.41-.422-.565-.43-.146-.008-.312-.01-.48-.01s-.437.062-.666.312c-.23.25-.875.854-.875 2.083s.896 2.417 1.02 2.583c.126.167 1.766 2.7 4.28 3.785.598.258 1.066.413 1.43.529.602.191 1.15.164 1.583.1.483-.072 1.48-.605 1.688-1.188.208-.583.208-1.083.146-1.188-.063-.104-.23-.166-.48-.291z"/></svg>
+                <span>WhatsApp</span>
+              </button>
               <button onclick="window.app.generatePDF('${o.id}')" class="px-2 py-1 bg-slate-100 text-slate-700 border border-slate-200 rounded text-xs font-bold">📄</button>
             </td>
           </tr>
         `;
       }
 
-      // ================= CREAR NUEVA OT =================
+      // ================= CREAR NUEVA OT (SUPERVISOR ONLY) =================
       openCreateModal() {
+        if (this.currentRole !== 'supervisor') {
+          this.showToast("Acceso denegado: Solo el Supervisor puede crear una OT.", "🔒");
+          return;
+        }
         document.getElementById('createOtForm').reset();
         this.populateTechnicianSelects();
         document.getElementById('createModal').classList.remove('hidden');
@@ -1253,6 +1318,11 @@
 
       handleCreateOT(event) {
         event.preventDefault();
+        if (this.currentRole !== 'supervisor') {
+          this.showToast("Solo el Supervisor puede registrar y despachar OTs.", "🔒");
+          return;
+        }
+
         const year = new Date().getFullYear();
         const count = this.orders.length + 1;
         const countStr = String(count).padStart(3, '0');
@@ -1281,10 +1351,16 @@
         this.closeCreateModal();
         this.updateKpis();
         this.renderOrdersList();
+        this.showToast(`OT ${newOrder.folio} creada y despachada con éxito.`);
       }
 
       // ================= GESTIONAR OT (SUPERVISOR) =================
       openManageModal(id) {
+        if (this.currentRole !== 'supervisor') {
+          this.showToast("Acceso denegado: Solo el Supervisor puede gestionar la OT.", "🔒");
+          return;
+        }
+
         const o = this.orders.find(item => item.id === id);
         if (!o) return;
 
@@ -1347,6 +1423,7 @@
           this.syncOrderToCloud(o);
           this.openManageModal(otId);
           this.renderAlerts();
+          this.showToast("Respuesta enviada a la cuadrilla.");
         }
       }
 
@@ -1368,12 +1445,14 @@
 
         if (o.estado === 'Terminada' && !o.fechaTermino) {
           o.fechaTermino = new Date().toISOString();
+          if (!o.faena_terminada) o.faena_terminada = o.fechaTermino;
         }
 
         this.syncOrderToCloud(o);
         this.closeManageModal();
         this.updateKpis();
         this.renderOrdersList();
+        this.showToast(`OT ${o.folio} actualizada exitosamente.`);
       }
 
       deleteOrderFromModal() {
@@ -1388,6 +1467,7 @@
           this.updateKpis();
           this.renderOrdersList();
           this.renderAlerts();
+          this.showToast("Orden de Trabajo eliminada.");
         }
       }
 
@@ -1469,6 +1549,7 @@
         this.syncOrderToCloud(this.activeOperativeOt);
         this.openOperativeView(this.activeOperativeOt.id);
         this.updateKpis();
+        this.showToast("Inicio de faena registrado correctamente.");
       }
 
       endFaena() {
@@ -1476,6 +1557,7 @@
         this.activeOperativeOt.faena_terminada = new Date().toISOString();
         this.syncOrderToCloud(this.activeOperativeOt);
         document.getElementById('opEndTimeLabel').textContent = new Date(this.activeOperativeOt.faena_terminada).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+        this.showToast("Término de faena registrado.");
       }
 
       renderOperativeHistory(o) {
@@ -1506,7 +1588,10 @@
       submitTechnicianRequest() {
         if (!this.activeOperativeOt) return;
         const details = document.getElementById('opNewRequestDetails').value.trim();
-        if (!details) return;
+        if (!details) {
+          this.showToast("Por favor escriba el detalle de la consulta.", "⚠️");
+          return;
+        }
 
         const type = document.getElementById('opNewRequestType').value;
         const newReq = {
@@ -1527,27 +1612,47 @@
         document.getElementById('opNewRequestDetails').value = '';
         this.renderOperativeHistory(this.activeOperativeOt);
         this.renderAlerts();
+        this.showToast("Consulta enviada a supervisión.");
       }
 
       saveOperativeProgress(requestClose = false) {
-        if (!this.activeOperativeOt) return;
-        this.activeOperativeOt.diagnostico = document.getElementById('opDiagnosticoSolucion').value.trim();
+        if (!this.activeOperativeOt) {
+          this.showToast("Error: No hay orden activa seleccionada.", "⚠️");
+          return;
+        }
+        
+        const diagVal = document.getElementById('opDiagnosticoSolucion').value.trim();
+        this.activeOperativeOt.diagnostico = diagVal;
 
         if (requestClose) {
           this.activeOperativeOt.estado = 'Solicitud Cierre';
           if (!this.activeOperativeOt.faena_terminada) {
             this.activeOperativeOt.faena_terminada = new Date().toISOString();
           }
+          this.showToast("⚡ Solicitud de cierre enviada a Supervisión");
+        } else {
+          this.showToast("💾 Progreso guardado correctamente");
+        }
+
+        // Actualizar en memoria y sincronizar
+        const index = this.orders.findIndex(item => item.id === this.activeOperativeOt.id);
+        if (index !== -1) {
+          this.orders[index] = { ...this.activeOperativeOt };
         }
 
         this.syncOrderToCloud(this.activeOperativeOt);
         this.closeOperativeView();
         this.updateKpis();
         this.renderOrdersList();
+        this.renderAlerts();
       }
 
-      // ================= CONFIGURACIÓN DEL SISTEMA =================
+      // ================= CONFIGURACIÓN DEL SISTEMA (SUPERVISOR ONLY) =================
       openSettingsModal() {
+        if (this.currentRole !== 'supervisor') {
+          this.showToast("Acceso denegado: Solo el Supervisor puede acceder a Configuración.", "🔒");
+          return;
+        }
         document.getElementById('cfgHospitalName').value = this.hospitalName;
         document.getElementById('cfgFolioPrefix').value = this.folioPrefix;
         document.getElementById('cfgPinSupervisor').value = this.pins.supervisor;
@@ -1622,6 +1727,11 @@
 
       saveSystemSettings(event) {
         event.preventDefault();
+        if (this.currentRole !== 'supervisor') {
+          this.showToast("Solo el Supervisor puede guardar configuraciones.", "🔒");
+          return;
+        }
+
         this.hospitalName = document.getElementById('cfgHospitalName').value.trim();
         this.folioPrefix = document.getElementById('cfgFolioPrefix').value.trim();
         this.pins.supervisor = document.getElementById('cfgPinSupervisor').value.trim();
@@ -1631,10 +1741,15 @@
         document.getElementById('headerHospitalName').textContent = this.hospitalName;
         this.populateTechnicianSelects();
         this.closeSettingsModal();
+        this.showToast("Configuración guardada correctamente.");
       }
 
-      // ================= REPORTE DE AVANCE =================
+      // ================= REPORTE DE AVANCE (SUPERVISOR ONLY) =================
       openAdvanceReportModal() {
+        if (this.currentRole !== 'supervisor') {
+          this.showToast("Acceso denegado: Solo el Supervisor puede generar Reportes de Avance.", "🔒");
+          return;
+        }
         const today = new Date().toISOString().split('T')[0];
         const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0];
         document.getElementById('repDateFrom').value = thirtyDaysAgo;
@@ -1648,6 +1763,7 @@
       }
 
       generateAdvanceStats() {
+        if (this.currentRole !== 'supervisor') return;
         const from = new Date(document.getElementById('repDateFrom').value);
         const to = new Date(document.getElementById('repDateTo').value);
         to.setHours(23, 59, 59);
@@ -1692,6 +1808,7 @@
       }
 
       exportReportPDF() {
+        if (this.currentRole !== 'supervisor') return;
         if (!window.jspdf) return;
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
