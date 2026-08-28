@@ -10,7 +10,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -38,126 +38,104 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    /* Estilos globales y optimización táctil */
     * { -webkit-tap-highlight-color: transparent; }
     .touch-none { touch-action: none; }
     .scrollbar-none::-webkit-scrollbar { display: none; }
     .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     .canvas-sig { cursor: crosshair; touch-action: none; }
     
-    @keyframes pulse-subtle { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-    .animate-pulse-subtle { animation: pulse-subtle 2s infinite ease-in-out; }
-    
     .safe-top { padding-top: env(safe-area-inset-top, 0px); }
-    .safe-bottom { padding-bottom: calc(5.2rem + env(safe-area-inset-bottom, 0px)); }
-    
-    .glass-nav {
-      background: rgba(15, 23, 42, 0.88);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
+    .safe-bottom { padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px)); }
   </style>
 </head>
 <body class="h-full flex flex-col font-sans text-slate-800 bg-slate-100 antialiased safe-bottom select-none sm:select-auto">
 
-  <!-- HEADER MODERNO Y LIMPIO (MOBILE-FIRST) -->
+  <!-- HEADER MODERNO Y LIMPIO (TODO AGRUPADO EN UN SOLO MENÚ DESPLEGABLE) -->
   <header class="sticky top-0 z-40 bg-slate-900 text-white border-b border-slate-800 shadow-md">
     <div class="max-w-7xl mx-auto px-3 sm:px-6">
-      <div class="flex items-center justify-between h-14 sm:h-16">
+      <div class="flex items-center justify-between h-14 sm:h-16 relative">
         
         <!-- Logotipo e Identificación del Hospital -->
         <div class="flex items-center space-x-2.5 cursor-pointer active:opacity-80 transition" onclick="window.app && window.app.navigateHomeByRole()">
-          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-teal-400 flex items-center justify-center text-lg sm:text-xl shadow-md font-bold">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-teal-400 flex items-center justify-center text-lg sm:text-xl shadow-md font-bold shrink-0">
             🏥
           </div>
-          <div>
+          <div class="min-w-0">
             <div class="flex items-center space-x-1.5">
-              <span class="font-extrabold text-sm sm:text-base tracking-tight text-white">SGM<span class="text-sky-400">Hospital</span></span>
+              <span class="font-black text-sm sm:text-base tracking-tight text-white">SGM<span class="text-sky-400">Hospital</span></span>
               <span id="roleBadgeHeader" class="text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-400/30">Cargando...</span>
             </div>
-            <p id="headerHospitalSubtitle" class="text-[10px] text-slate-400 font-medium truncate max-w-[170px] sm:max-w-[280px]">Operaciones e Infraestructura</p>
+            <p id="headerHospitalSubtitle" class="text-[10px] text-slate-400 font-semibold truncate max-w-[170px] sm:max-w-[320px]">Operaciones e Infraestructura</p>
           </div>
         </div>
 
-        <!-- Acciones Rápidas Superior -->
-        <div class="flex items-center space-x-1.5 sm:space-x-2">
-          <!-- Botón Escritorio: Supervisor -->
-          <div id="supervisorNavControls" class="hidden sm:flex items-center space-x-1.5">
-            <button onclick="window.app.navigate('dashboard_supervisor')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">📊 Panel</button>
-            <button onclick="window.app.navigate('new_ot')" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-sky-600 hover:bg-sky-500 text-white shadow-md transition">+ Nueva OT</button>
-          </div>
-
-          <!-- Botón Escritorio: Técnico -->
-          <div id="technicianNavControls" class="hidden sm:flex items-center space-x-1.5">
-            <button onclick="window.app.navigate('dashboard_tecnico')" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-amber-600 hover:bg-amber-500 text-white shadow transition">👷 Mis Trabajos</button>
-          </div>
-
-          <!-- Botón Ajustes -->
-          <button onclick="window.app.openSettingsModal()" title="Configuración" class="w-9 h-9 sm:w-auto sm:px-3 sm:py-1.5 rounded-xl flex items-center justify-center space-x-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 active:scale-95 transition">
-            <span class="text-sm">⚙️</span>
-            <span class="hidden md:inline text-xs font-bold">Ajustes</span>
+        <!-- UN SOLO BOTÓN DE ACCIÓN / MENÚ DESPLEGABLE -->
+        <div class="relative">
+          <button id="mainMenuBtn" onclick="window.app.toggleMainMenu()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-extrabold text-xs sm:text-sm border border-slate-700 active:scale-95 transition flex items-center space-x-1.5 shadow">
+            <span class="text-base">☰</span>
+            <span class="hidden sm:inline">Menú</span>
+            <span id="headerAlertBadge" class="hidden w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
           </button>
 
-          <!-- Botón Cambiar Rol / PIN -->
-          <button onclick="window.app.promptLoginModal()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-sky-950/80 hover:bg-sky-900 text-sky-200 border border-sky-700/50 active:scale-95 transition flex items-center space-x-1">
-            <span id="userRoleBtnLabel">🔐 Rol</span>
-          </button>
+          <!-- DROPDOWN FLOTANTE COMPACTO Y COMPLETO -->
+          <div id="mainDropdownMenu" class="hidden absolute right-0 mt-2 w-56 sm:w-64 bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl py-1.5 z-50 backdrop-blur-xl divide-y divide-slate-800 text-xs">
+            
+            <!-- Acciones Supervisor -->
+            <div id="dropdownSupervisorSection" class="py-1">
+              <button onclick="window.app.navigate('dashboard_supervisor'); window.app.closeMainMenu();" class="w-full px-3.5 py-2 text-left text-slate-200 hover:bg-slate-800 hover:text-white flex items-center space-x-2.5 font-bold transition">
+                <span class="text-base">📊</span>
+                <span>Panel de Control</span>
+              </button>
+              <button onclick="window.app.navigate('new_ot'); window.app.closeMainMenu();" class="w-full px-3.5 py-2 text-left text-sky-400 hover:bg-slate-800 hover:text-sky-300 flex items-center space-x-2.5 font-black transition">
+                <span class="text-base">➕</span>
+                <span>Crear Nueva OT</span>
+              </button>
+              <button onclick="window.app.scrollToAlerts(); window.app.closeMainMenu();" class="w-full px-3.5 py-2 text-left text-amber-400 hover:bg-slate-800 hover:text-amber-300 flex items-center justify-between font-bold transition">
+                <div class="flex items-center space-x-2.5">
+                  <span class="text-base">📢</span>
+                  <span>Bandeja Terreno</span>
+                </div>
+                <span id="menuPendingBadge" class="hidden text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500 text-slate-950">0</span>
+              </button>
+            </div>
+
+            <!-- Acciones Técnico -->
+            <div id="dropdownTechnicianSection" class="py-1 hidden">
+              <button onclick="window.app.navigate('dashboard_tecnico'); window.app.closeMainMenu();" class="w-full px-3.5 py-2 text-left text-amber-400 hover:bg-slate-800 hover:text-amber-300 flex items-center space-x-2.5 font-black transition">
+                <span class="text-base">👷</span>
+                <span>Mis Trabajos Asignados</span>
+              </button>
+            </div>
+
+            <!-- Ajustes y Cambio de Rol -->
+            <div class="py-1">
+              <button onclick="window.app.openSettingsModal(); window.app.closeMainMenu();" class="w-full px-3.5 py-2 text-left text-slate-300 hover:bg-slate-800 hover:text-white flex items-center space-x-2.5 font-bold transition">
+                <span class="text-base">⚙️</span>
+                <span>Configuración Sistema</span>
+              </button>
+              <button onclick="window.app.promptLoginModal(); window.app.closeMainMenu();" class="w-full px-3.5 py-2 text-left text-rose-300 hover:bg-slate-800 hover:text-rose-200 flex items-center space-x-2.5 font-bold transition">
+                <span class="text-base">🔐</span>
+                <span id="menuChangeRoleLabel">Cambiar Rol / PIN</span>
+              </button>
+            </div>
+
+          </div>
         </div>
 
       </div>
     </div>
   </header>
 
-  <!-- BARRA DE NAVEGACIÓN TÁCTIL INFERIOR (ESTILO NATIVO MÓVIL) -->
-  <nav id="mobileBottomNav" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 glass-nav border-t border-slate-800/80 px-2 py-1 shadow-2xl flex items-center justify-around">
-    <!-- Navegación Supervisor -->
-    <div id="mobileSupervisorNav" class="flex items-center justify-around w-full">
-      <button onclick="window.app.navigate('dashboard_supervisor')" id="navBtnSupPanel" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-sky-400 font-extrabold active:scale-90 transition">
-        <span class="text-lg">📊</span>
-        <span class="text-[10px] uppercase tracking-tight mt-0.5">Panel</span>
-      </button>
-      <button onclick="window.app.navigate('new_ot')" id="navBtnSupNew" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition">
-        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-600 to-teal-500 text-white flex items-center justify-center text-lg font-black shadow-md -mt-2">+</div>
-        <span class="text-[10px] uppercase tracking-tight mt-0.5">Crear</span>
-      </button>
-      <button onclick="window.app.scrollToAlerts()" id="navBtnSupAlerts" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition relative">
-        <span class="text-lg">📢</span>
-        <span id="mobilePendingBadge" class="hidden absolute top-1 right-2.5 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
-        <span class="text-[10px] uppercase tracking-tight mt-0.5">Bandeja</span>
-      </button>
-      <button onclick="window.app.openSettingsModal()" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition">
-        <span class="text-lg">⚙️</span>
-        <span class="text-[10px] uppercase tracking-tight mt-0.5">Ajustes</span>
-      </button>
-    </div>
-
-    <!-- Navegación Técnico -->
-    <div id="mobileTechnicianNav" class="hidden flex items-center justify-around w-full">
-      <button onclick="window.app.navigate('dashboard_tecnico')" id="navBtnTecTasks" class="flex flex-col items-center justify-center py-1.5 px-4 rounded-2xl text-amber-400 font-extrabold active:scale-90 transition">
-        <span class="text-lg">📋</span>
-        <span class="text-[10px] uppercase tracking-tight mt-0.5">Mis OTs</span>
-      </button>
-      <button onclick="window.app.focusTechSearch()" class="flex flex-col items-center justify-center py-1.5 px-4 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition">
-        <span class="text-lg">🔍</span>
-        <span class="text-[10px] uppercase tracking-tight mt-0.5">Buscar</span>
-      </button>
-      <button onclick="window.app.openSettingsModal()" class="flex flex-col items-center justify-center py-1.5 px-4 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition">
-        <span class="text-lg">⚙️</span>
-        <span class="text-[10px] uppercase tracking-tight mt-0.5">Ajustes</span>
-      </button>
-    </div>
-  </nav>
-
   <!-- CONTENIDO PRINCIPAL -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 space-y-4">
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 space-y-4" onclick="window.app && window.app.closeMainMenu()">
     
     <!-- ========================================================================= -->
     <!-- VISTA 1: DASHBOARD SUPERVISOR                                            -->
     <!-- ========================================================================= -->
     <section id="viewDashboardSupervisor" class="space-y-3.5 sm:space-y-5">
       
-      <!-- KPIs CARRUSEL RÁPIDO PARA MÓVIL (HORIZONTAL SCROLL) -->
-      <div class="flex sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 overflow-x-auto pb-1 scrollbar-none" id="kpiStatsContainer">
+      <!-- KPIs CARRUSEL (SIN ESPERA DE MATERIALES) -->
+      <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-3 overflow-x-auto pb-1 scrollbar-none" id="kpiStatsContainer">
         <!-- Renderizado dinámico -->
       </div>
       
@@ -207,7 +185,7 @@
           </select>
         </div>
 
-        <!-- Píldoras de Estado Rápido -->
+        <!-- Píldoras de Estado (Sin Espera de Materiales) -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-xs scrollbar-none" id="statusFilterPills"></div>
       </div>
 
@@ -221,7 +199,7 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- VISTA 2: DASHBOARD TÉCNICO (MODO TERRENO ULTRA-SIMPLE)                   -->
+    <!-- VISTA 2: DASHBOARD TÉCNICO (MODO TERRENO SIMPLE)                        -->
     <!-- ========================================================================= -->
     <section id="viewDashboardTecnico" class="hidden space-y-3.5 sm:space-y-5">
       <!-- Banner Técnico con Buscador de Folio Rápido -->
@@ -350,7 +328,7 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- VISTA 4: FICHA OPERATIVA DE TERRENO (TERRENO INTERACTION)                -->
+    <!-- VISTA 4: FICHA OPERATIVA DE TERRENO                                      -->
     <!-- ========================================================================= -->
     <section id="viewOperativeOT" class="hidden max-w-4xl mx-auto space-y-3.5 sm:space-y-5">
       
@@ -429,7 +407,7 @@
         </div>
       </div>
 
-      <!-- 2. Registro de Tiempos y Cuadrilla (Botones Táctiles Gigantes) -->
+      <!-- 2. Registro de Tiempos y Cuadrilla -->
       <div class="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-sm border border-slate-200 space-y-3">
         <div class="flex items-center justify-between border-b border-slate-100 pb-2">
           <h3 class="text-xs sm:text-sm font-black text-sky-900 uppercase">2. Ejecución y Tiempos de Terreno</h3>
@@ -521,7 +499,7 @@
       </div>
 
       <!-- Barra de Acciones Flotante Inferior -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 sticky bottom-16 sm:bottom-4 z-30 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-slate-200">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 sticky bottom-4 z-30 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-slate-200">
         <button type="button" onclick="window.app.navigateHomeByRole()" class="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold active:scale-95">Volver al Panel</button>
         <div id="opActionButtonsContainer" class="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2">
           <button type="button" id="btnSaveProgress" onclick="window.app.saveOperativeProgress(false)" class="w-full sm:w-auto px-4 py-2.5 bg-sky-700 hover:bg-sky-600 text-white rounded-xl text-xs font-bold shadow active:scale-95">💾 Guardar Avance</button>
@@ -531,9 +509,7 @@
     </section>
   </main>
 
-  <!-- ========================================================================= -->
-  <!-- MODAL: CONFIGURACIÓN DEL SISTEMA                                          -->
-  <!-- ========================================================================= -->
+  <!-- MODAL: CONFIGURACIÓN DEL SISTEMA -->
   <div id="settingsModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3">
     <div class="bg-white rounded-3xl max-w-md w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-3.5 max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-start border-b border-slate-100 pb-2.5">
@@ -593,9 +569,7 @@
     </div>
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- MODAL: GESTIÓN DE SUPERVISOR (DESPACHO)                                   -->
-  <!-- ========================================================================= -->
+  <!-- MODAL: GESTIÓN DE SUPERVISOR (DESPACHO) -->
   <div id="supervisorMgmtModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3">
     <div class="bg-white rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-3.5 max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-start border-b border-slate-100 pb-2.5">
@@ -624,7 +598,6 @@
             <select id="mgmtStageSelect" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl font-bold">
               <option value="Pendiente">Pendiente</option>
               <option value="Inspección">Inspección</option>
-              <option value="Espera de Materiales">Espera de Materiales</option>
               <option value="En Ejecución">En Ejecución</option>
               <option value="Con Problemas">Con Problemas</option>
             </select>
@@ -641,9 +614,7 @@
     </div>
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- MODAL: LOGIN CON KEYPAD NUMÉRICO TÁCTIL (DISEÑO APP)                      -->
-  <!-- ========================================================================= -->
+  <!-- MODAL: LOGIN CON KEYPAD NUMÉRICO TÁCTIL -->
   <div id="loginModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3">
     <div class="bg-white rounded-3xl max-w-xs w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-3.5 text-center">
       
@@ -693,9 +664,7 @@
     </div>
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- MODAL CUSTOM DE DIÁLOGOS Y ALERTAS                                        -->
-  <!-- ========================================================================= -->
+  <!-- MODAL CUSTOM DE DIÁLOGOS Y ALERTAS -->
   <div id="customDialog" class="hidden fixed inset-0 z-[100] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl space-y-3.5 border border-slate-100">
       <div class="flex items-center space-x-3">
@@ -787,6 +756,7 @@
         this.hasSigTech = false;
         this.hasSigReceiver = false;
         this.managingOrderId = null;
+        this.menuOpen = false;
         
         // Configuraciones de Sistema
         this.supervisorPin = DEFAULT_SUPERVISOR_PIN;
@@ -797,6 +767,16 @@
         this.initCanvas();
         this.listenToOrders();
         this.checkAuthAndRoute();
+      }
+
+      toggleMainMenu() {
+        this.menuOpen = !this.menuOpen;
+        document.getElementById('mainDropdownMenu').classList.toggle('hidden', !this.menuOpen);
+      }
+
+      closeMainMenu() {
+        this.menuOpen = false;
+        document.getElementById('mainDropdownMenu')?.classList.add('hidden');
       }
 
       generateOtFolio(count) {
@@ -1046,29 +1026,22 @@
       updateUIPermissions() {
         const isSup = this.currentRole === 'supervisor';
         const badge = document.getElementById('roleBadgeHeader');
-        const btnLabel = document.getElementById('userRoleBtnLabel');
-        const supNav = document.getElementById('supervisorNavControls');
-        const tecNav = document.getElementById('technicianNavControls');
-        
-        const mobSupNav = document.getElementById('mobileSupervisorNav');
-        const mobTecNav = document.getElementById('mobileTechnicianNav');
+        const supSec = document.getElementById('dropdownSupervisorSection');
+        const tecSec = document.getElementById('dropdownTechnicianSection');
+        const menuRoleLabel = document.getElementById('menuChangeRoleLabel');
 
         if (isSup) {
           badge.innerText = 'Supervisor';
           badge.className = 'text-[9px] sm:text-[10px] font-black px-2 py-0.5 bg-sky-500/20 text-sky-300 rounded-full uppercase tracking-wider border border-sky-400/30';
-          btnLabel.innerText = '👨‍💼 Supervisor';
-          supNav?.classList.remove('hidden');
-          tecNav?.classList.add('hidden');
-          mobSupNav?.classList.remove('hidden');
-          mobTecNav?.classList.add('hidden');
+          menuRoleLabel.innerText = 'Cambiar Rol (Técnico)';
+          supSec?.classList.remove('hidden');
+          tecSec?.classList.add('hidden');
         } else if (this.currentRole === 'tecnico') {
           badge.innerText = 'Técnico';
           badge.className = 'text-[9px] sm:text-[10px] font-black px-2 py-0.5 bg-amber-500/20 text-amber-300 rounded-full uppercase tracking-wider border border-amber-400/30';
-          btnLabel.innerText = '👷 Técnico';
-          supNav?.classList.add('hidden');
-          tecNav?.classList.remove('hidden');
-          mobSupNav?.classList.add('hidden');
-          mobTecNav?.classList.remove('hidden');
+          menuRoleLabel.innerText = 'Cambiar Rol (Supervisor)';
+          supSec?.classList.add('hidden');
+          tecSec?.classList.remove('hidden');
         }
       }
 
@@ -1083,11 +1056,6 @@
         document.getElementById('supervisorAlertsInbox')?.scrollIntoView({ behavior: 'smooth' });
       }
 
-      focusTechSearch() {
-        this.navigate('dashboard_tecnico');
-        document.getElementById('techSearchInput')?.focus();
-      }
-
       navigate(view) {
         if (this.currentRole === 'tecnico' && (view === 'dashboard_supervisor' || view === 'new_ot')) {
           showModal({title: 'Restringido', message: 'El perfil Técnico no tiene permisos para el Panel de Supervisión.', type: 'error', icon: '⛔'});
@@ -1099,14 +1067,6 @@
         document.getElementById('viewDashboardTecnico').classList.toggle('hidden', view !== 'dashboard_tecnico');
         document.getElementById('viewNewOT').classList.toggle('hidden', view !== 'new_ot');
         document.getElementById('viewOperativeOT').classList.toggle('hidden', view !== 'operative');
-        
-        // Actualizar pestañas activas en bottom nav móvil
-        const btnPanel = document.getElementById('navBtnSupPanel');
-        const btnNew = document.getElementById('navBtnSupNew');
-        if (btnPanel && btnNew) {
-          btnPanel.className = view === 'dashboard_supervisor' ? 'flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-sky-400 font-extrabold active:scale-90 transition' : 'flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition';
-          btnNew.className = view === 'new_ot' ? 'flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-sky-400 font-extrabold active:scale-90 transition' : 'flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl text-slate-400 font-extrabold active:scale-90 transition';
-        }
 
         if (view === 'dashboard_supervisor') this.renderDashboardSupervisor();
         if (view === 'dashboard_tecnico') this.renderDashboardTecnico();
@@ -1143,7 +1103,6 @@
           const total = this.orders.length;
           const active = this.orders.filter(o => o.estado !== 'Terminada').length;
           const ejec = this.orders.filter(o => o.estado === 'En Ejecución').length;
-          const espera = this.orders.filter(o => o.estado === 'Espera de Materiales').length;
           const solCierre = this.orders.filter(o => o.estado === 'Solicitud de Cierre').length;
           const term = this.orders.filter(o => o.estado === 'Terminada').length;
 
@@ -1155,10 +1114,6 @@
             <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('En Ejecución')">
               <span class="text-[9px] text-sky-700 block font-black uppercase tracking-tight truncate">🛠️ Ejecución</span>
               <span class="text-xl sm:text-2xl font-black text-sky-700">${ejec}</span>
-            </div>
-            <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('Espera de Materiales')">
-              <span class="text-[9px] text-amber-700 block font-black uppercase tracking-tight truncate">📦 Esp. Mat.</span>
-              <span class="text-xl sm:text-2xl font-black text-amber-600">${espera}</span>
             </div>
             <div class="min-w-[100px] flex-1 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 cursor-pointer shadow-sm active:scale-95 transition" onclick="window.app.filterBy('Solicitud de Cierre')">
               <span class="text-[9px] text-teal-700 block font-black uppercase tracking-tight truncate">⚡ Cierre</span>
@@ -1179,7 +1134,7 @@
 
         const pills = document.getElementById('statusFilterPills');
         if (pills) {
-          const list = ['ALL', 'Pendiente', 'Inspección', 'Espera de Materiales', 'En Ejecución', 'Solicitud de Cierre', 'Terminada', 'Con Problemas'];
+          const list = ['ALL', 'Pendiente', 'Inspección', 'En Ejecución', 'Solicitud de Cierre', 'Terminada', 'Con Problemas'];
           pills.innerHTML = list.map(st => `
             <button onclick="window.app.filterBy('${st}')" class="px-3 py-1 rounded-xl whitespace-nowrap text-[11px] font-extrabold transition active:scale-95 ${this.statusFilter === st ? 'bg-sky-700 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
               ${st === 'ALL' ? 'Todos' : st}
@@ -1237,7 +1192,6 @@
                     ot.estado === 'Terminada' ? 'bg-emerald-100 text-emerald-800' :
                     ot.estado === 'Solicitud de Cierre' ? 'bg-teal-100 text-teal-800 border border-teal-300 animate-pulse' :
                     ot.estado === 'En Ejecución' ? 'bg-sky-100 text-sky-800' :
-                    ot.estado === 'Espera de Materiales' ? 'bg-amber-100 text-amber-800' :
                     'bg-slate-100 text-slate-700'
                   }">${esc(ot.estado)}</span>
                 </div>
@@ -1299,7 +1253,8 @@
       renderSupervisorAlertsInbox() {
         const container = document.getElementById('pendingRequestsListContainer');
         const badge = document.getElementById('pendingRequestsCountBadge');
-        const mobBadge = document.getElementById('mobilePendingBadge');
+        const menuBadge = document.getElementById('menuPendingBadge');
+        const headerAlert = document.getElementById('headerAlertBadge');
         if (!container || !badge) return;
 
         let totalPending = 0;
@@ -1315,7 +1270,13 @@
         });
 
         badge.innerText = `${totalPending} req.`;
-        if (mobBadge) mobBadge.classList.toggle('hidden', totalPending === 0);
+        if (menuBadge) {
+          menuBadge.innerText = totalPending;
+          menuBadge.classList.toggle('hidden', totalPending === 0);
+        }
+        if (headerAlert) {
+          headerAlert.classList.toggle('hidden', totalPending === 0);
+        }
 
         if (pendingItems.length === 0) {
           container.innerHTML = `<div class="text-[11px] text-amber-900 bg-white/70 p-2 rounded-xl border border-amber-200 text-center font-bold">✓ No existen solicitudes de terreno pendientes.</div>`;
@@ -1422,6 +1383,7 @@
           ot.estado = "Terminada";
           ot.fecha_cierre = new Date().toISOString();
           await this.saveOrderToCloud(ot);
+          this.renderDashboardSupervisor();
           showModal({title: 'Cerrada', message: `La orden ${ot.numero_ot} ha sido cerrada formalmente.`, type: 'success', icon: '✅'});
         }
       }
@@ -1437,6 +1399,7 @@
           ot.estado = "En Ejecución";
           ot.contratiempos = ot.contratiempos ? ot.contratiempos + "\n[Supervisor]: " + motivo : "[Supervisor]: " + motivo;
           await this.saveOrderToCloud(ot);
+          this.renderDashboardSupervisor();
           showModal({title: 'Reabierta', message: `Orden devuelta a cuadrilla.`, type: 'success', icon: '✅'});
         }
       }
@@ -1578,8 +1541,7 @@
         statusBadge.innerText = ot.estado;
         statusBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-black shadow ' + (
           ot.estado === 'Terminada' ? 'bg-emerald-600 text-white' :
-          ot.estado === 'Solicitud de Cierre' ? 'bg-teal-600 text-white' :
-          ot.estado === 'Espera de Materiales' ? 'bg-amber-600 text-white' : 'bg-sky-600 text-white'
+          ot.estado === 'Solicitud de Cierre' ? 'bg-teal-600 text-white' : 'bg-sky-600 text-white'
         );
 
         document.getElementById('opEncargado').value = ot.encargado_cuadrilla || '';
@@ -1672,8 +1634,7 @@
           respuesta_supervisor: ''
         });
 
-        if (type.includes('Materiales')) this.currentOrder.estado = 'Espera de Materiales';
-        else if (type.includes('Bloqueo')) this.currentOrder.estado = 'Con Problemas';
+        if (type.includes('Bloqueo')) this.currentOrder.estado = 'Con Problemas';
 
         await this.saveOrderToCloud(this.currentOrder);
         document.getElementById('techReqMsg').value = '';
@@ -1819,10 +1780,10 @@
         img.src = dataUrl;
       }
 
-      async saveOperativeProgress(silent = false) {
+      async saveOperativeProgress(silent = false, allowLocked = false) {
         if (!this.currentOrder) return;
         if (this.currentRole !== 'tecnico') return;
-        if (this.currentOrder.estado === 'Solicitud de Cierre' || this.currentOrder.estado === 'Terminada') return;
+        if (!allowLocked && (this.currentOrder.estado === 'Solicitud de Cierre' || this.currentOrder.estado === 'Terminada')) return;
 
         this.currentOrder.encargado_cuadrilla = document.getElementById('opEncargado').value;
         this.currentOrder.fecha_inicio = document.getElementById('opFechaInicio').value;
@@ -1855,10 +1816,11 @@
 
         if (!document.getElementById('opFechaTermino').value) this.markCurrentTime('end');
         
+        // Actualizar estado formalmente
         this.currentOrder.estado = "Solicitud de Cierre";
-        await this.saveOperativeProgress(true);
+        await this.saveOperativeProgress(true, true);
 
-        showModal({title: 'Protegida', message: 'Solicitud de cierre enviada. En espera de revisión por supervisión.', type: 'success', icon: '🔒'});
+        showModal({title: 'Protegida', message: 'Solicitud de cierre enviada exitosamente. En espera de revisión por supervisión.', type: 'success', icon: '🔒'});
         this.populateOperativeView(this.currentOrder);
       }
 
