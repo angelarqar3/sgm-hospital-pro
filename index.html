@@ -365,11 +365,11 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <div class="sm:col-span-1">
               <select id="techReqType" class="w-full px-3 py-2 bg-white border border-amber-300 rounded-xl text-xs font-bold text-slate-800">
-                <option value="Compra o Solicitud de Materiales">🛒 Compra de Materiales</option>
                 <option value="Permiso o Autorización IAAS">🛡️ Permiso IAAS</option>
                 <option value="Bloqueo o Contingencia en Terreno">⚠️ Bloqueo en Terreno</option>
                 <option value="Asistencia Técnica Adicional">👷 Apoyo Técnico</option>
                 <option value="Consulta Operativa a Supervisión">💬 Consulta Operativa</option>
+                <option value="Requerimiento Especial">📌 Requerimiento Especial</option>
               </select>
             </div>
             <div class="sm:col-span-2">
@@ -1343,7 +1343,7 @@
           title: 'Respuesta a la Cuadrilla', 
           message: 'Ingrese la respuesta formal para la cuadrilla:', 
           type: 'prompt', 
-          inputPlaceholder: 'Solicitud atendida / Material gestionado...',
+          inputPlaceholder: 'Solicitud atendida / Instrucción técnica...',
           icon: '✍️'
         });
 
@@ -2498,6 +2498,7 @@
         const ot = this.orders.find(o => o.id === id) || this.currentOrder;
         if (!ot) return;
         
+        // Enlace directo web a la OT para apertura inmediata
         const directUrl = `${window.location.origin}${window.location.pathname}?ot=${encodeURIComponent(ot.id)}`;
         
         const prioIcon = ot.prioridad === 'Urgente' ? '🚨' :
@@ -2510,7 +2511,7 @@
         let msg = `🏥 *${hospitalHeader.toUpperCase()}*\n`;
         msg += `📋 *DESPACHO DE ORDEN DE TRABAJO*\n`;
         msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-        msg += `🔢 *Folio:* *${ot.numero_ot}*\n`;
+        msg += `🔢 *Folio OT:* *${ot.numero_ot}*\n`;
         msg += `${prioIcon} *Prioridad:* *${ot.prioridad}* (${slaText})\n`;
         msg += `📍 *Recinto / PMA:* *${ot.recinto_pma}*\n`;
         msg += `🛠️ *Especialidad:* ${ot.especialidad || 'Infraestructura'} (${ot.tipo_mantenimiento || 'Correctivo'})\n`;
@@ -2518,14 +2519,14 @@
         msg += `👷 *Cuadrilla Encargada:* ${ot.encargado_cuadrilla || 'Sin asignar'}\n`;
         msg += `📊 *Estado Actual:* *${ot.estado}*\n`;
         msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-        msg += `📝 *Falla Reportada:*\n_${ot.descripcion_problema || 'Sin detalle'划}_\n`;
+        msg += `📝 *Falla Reportada:*\n${ot.descripcion_problema || 'Sin detalle'}\n`;
 
         if (ot.notas_supervisor && ot.notas_supervisor.trim().length > 0) {
-          msg += `\n👨‍💼 *Instrucción de Jefatura:*\n_${ot.notas_supervisor}_\n`;
+          msg += `\n👨‍💼 *Instrucción de Jefatura:*\n${ot.notas_supervisor}\n`;
         }
 
         msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-        msg += `📲 *Abrir Ficha Operativa en Línea:*\n${directUrl}\n`;
+        msg += `📲 *Enlace directo a la OT:*\n${directUrl}\n`;
         msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
         msg += `_SDO Cloud • Gestión Hospitalaria en Terreno_`;
 
