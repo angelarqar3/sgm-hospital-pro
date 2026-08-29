@@ -49,6 +49,462 @@
     .badge-pulse {
       animation: pulse-ring 2s infinite;
     }
+
+    /* ==========================================================
+       SDO CLOUD — UI MINIMAL 2026
+       Capa exclusivamente visual. No modifica lógica ni eventos.
+       ========================================================== */
+    :root {
+      --sdo-bg: #f5f7fb;
+      --sdo-surface: #ffffff;
+      --sdo-surface-soft: #f8fafc;
+      --sdo-ink: #0f172a;
+      --sdo-muted: #64748b;
+      --sdo-line: #e2e8f0;
+      --sdo-line-soft: #edf1f6;
+      --sdo-navy: #111827;
+      --sdo-navy-2: #172033;
+      --sdo-accent: #4f46e5;
+      --sdo-accent-soft: #eef2ff;
+      --sdo-blue: #2563eb;
+      --sdo-green: #059669;
+      --sdo-amber: #d97706;
+      --sdo-rose: #e11d48;
+      --sdo-radius: 16px;
+      --sdo-radius-sm: 11px;
+      --sdo-shadow: 0 1px 2px rgba(15,23,42,.035), 0 8px 24px rgba(15,23,42,.045);
+      --sdo-shadow-hover: 0 2px 4px rgba(15,23,42,.04), 0 14px 34px rgba(15,23,42,.075);
+    }
+
+    html { background: var(--sdo-bg); }
+
+    body {
+      background:
+        radial-gradient(circle at 85% -10%, rgba(79,70,229,.055), transparent 28rem),
+        var(--sdo-bg) !important;
+      color: var(--sdo-ink) !important;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+      letter-spacing: -0.005em;
+    }
+
+    /* Header */
+    body > header {
+      background: rgba(15, 23, 42, .97) !important;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 4px 18px rgba(15,23,42,.12) !important;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    body > header > div {
+      max-width: 1180px !important;
+      min-height: 68px;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+
+    #headerLogoContainer {
+      width: 42px !important;
+      height: 42px !important;
+      border-radius: 12px !important;
+      background: linear-gradient(145deg, rgba(99,102,241,.22), rgba(30,41,59,.85)) !important;
+      border-color: rgba(148,163,184,.18) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    #roleBadge {
+      background: #4f46e5 !important;
+      border-radius: 999px !important;
+      padding: 3px 8px !important;
+      font-size: 9px !important;
+      letter-spacing: .07em !important;
+      box-shadow: none !important;
+    }
+
+    #headerHospitalName {
+      color: #94a3b8 !important;
+      margin-top: 1px;
+    }
+
+    body > header button[aria-label="Abrir Menú"] {
+      min-height: 38px;
+      border-radius: 11px !important;
+      background: rgba(255,255,255,.07) !important;
+      border-color: rgba(255,255,255,.12) !important;
+      color: #f8fafc !important;
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    body > header button[aria-label="Abrir Menú"]:hover {
+      background: rgba(255,255,255,.12) !important;
+    }
+
+    #appMenuDropdown {
+      border: 1px solid var(--sdo-line) !important;
+      border-radius: 14px !important;
+      box-shadow: 0 18px 45px rgba(15,23,42,.16) !important;
+      padding: 7px !important;
+      margin-top: 5px;
+    }
+
+    #appMenuDropdown button {
+      border-radius: 9px;
+      min-height: 39px;
+      transition: background .16s ease, color .16s ease;
+    }
+
+    /* Main */
+    body > main {
+      max-width: 1180px !important;
+      padding-top: 22px !important;
+      padding-bottom: 40px !important;
+    }
+
+    /* KPIs — compactos, con jerarquía y sin ruido */
+    body > main > section:first-of-type {
+      gap: 12px !important;
+      margin-bottom: 14px !important;
+    }
+
+    body > main > section:first-of-type > div {
+      position: relative;
+      min-height: 96px;
+      padding: 16px 17px !important;
+      border: 1px solid var(--sdo-line-soft) !important;
+      border-radius: var(--sdo-radius) !important;
+      background: rgba(255,255,255,.96) !important;
+      box-shadow: var(--sdo-shadow) !important;
+      overflow: hidden;
+      transform: translateZ(0);
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+
+    body > main > section:first-of-type > div:hover {
+      transform: translateY(-1px);
+      border-color: #d9dfeb !important;
+      box-shadow: var(--sdo-shadow-hover) !important;
+    }
+
+    body > main > section:first-of-type > div::after {
+      content: "";
+      position: absolute;
+      left: 17px;
+      bottom: 0;
+      width: 34px;
+      height: 3px;
+      border-radius: 3px 3px 0 0;
+      background: #cbd5e1;
+    }
+
+    body > main > section:first-of-type > div:nth-child(1)::after { background: var(--sdo-amber); }
+    body > main > section:first-of-type > div:nth-child(2)::after { background: var(--sdo-blue); }
+    body > main > section:first-of-type > div:nth-child(3)::after { background: var(--sdo-accent); }
+    body > main > section:first-of-type > div:nth-child(4)::after { background: var(--sdo-green); }
+
+    body > main > section:first-of-type span.uppercase {
+      font-size: 10px !important;
+      letter-spacing: .075em !important;
+      color: #64748b !important;
+    }
+
+    body > main > section:first-of-type p[id^="kpi"] {
+      margin-top: 8px !important;
+      font-size: 27px !important;
+      line-height: 1 !important;
+      font-weight: 800 !important;
+      letter-spacing: -.035em;
+    }
+
+    /* Barra de búsqueda y filtros */
+    body > main > section:nth-of-type(2) {
+      margin-bottom: 18px !important;
+      padding: 10px !important;
+      border: 1px solid var(--sdo-line-soft) !important;
+      border-radius: var(--sdo-radius) !important;
+      background: rgba(255,255,255,.93) !important;
+      box-shadow: var(--sdo-shadow) !important;
+    }
+
+    #searchInput {
+      height: 43px;
+      padding-left: 38px !important;
+      background: #f8fafc !important;
+      border: 1px solid #e5eaf1 !important;
+      border-radius: 11px !important;
+      color: var(--sdo-ink) !important;
+      font-size: 14px !important;
+      box-shadow: inset 0 1px 1px rgba(15,23,42,.015);
+      transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    #searchInput::placeholder { color: #94a3b8; }
+
+    #searchInput:focus {
+      background: #fff !important;
+      border-color: #a5b4fc !important;
+      box-shadow: 0 0 0 3px rgba(79,70,229,.10) !important;
+      outline: none !important;
+    }
+
+    #viewCardsBtn, #viewTableBtn {
+      min-height: 34px;
+      border-radius: 8px !important;
+      transition: all .16s ease !important;
+    }
+
+    #viewCardsBtn.bg-white, #viewTableBtn.bg-white {
+      color: var(--sdo-accent) !important;
+      box-shadow: 0 1px 3px rgba(15,23,42,.08) !important;
+    }
+
+    .status-filter-btn {
+      min-height: 30px;
+      padding: 6px 12px !important;
+      border-radius: 999px !important;
+      font-size: 11px !important;
+      font-weight: 650 !important;
+      border: 1px solid transparent;
+      transition: all .16s ease !important;
+    }
+
+    .status-filter-btn.bg-slate-800 {
+      background: var(--sdo-navy) !important;
+      color: white !important;
+      box-shadow: 0 3px 10px rgba(15,23,42,.11);
+    }
+
+    .status-filter-btn.bg-slate-100 {
+      background: #f6f8fb !important;
+      color: #64748b !important;
+      border-color: #edf1f5 !important;
+    }
+
+    .status-filter-btn.bg-slate-100:hover {
+      background: #eef2f7 !important;
+      color: #334155 !important;
+    }
+
+    /* Tarjetas OT */
+    #ordersContainer > .grid {
+      gap: 14px !important;
+    }
+
+    #ordersContainer > .grid > div {
+      position: relative;
+      min-height: 218px;
+      padding: 17px !important;
+      border: 1px solid var(--sdo-line-soft) !important;
+      border-radius: var(--sdo-radius) !important;
+      background: rgba(255,255,255,.98) !important;
+      box-shadow: var(--sdo-shadow) !important;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    #ordersContainer > .grid > div:hover {
+      transform: translateY(-2px);
+      border-color: #dbe1eb !important;
+      box-shadow: var(--sdo-shadow-hover) !important;
+    }
+
+    #ordersContainer h4 {
+      margin-top: 9px !important;
+      color: #0f172a !important;
+      font-size: 15px !important;
+      line-height: 1.25 !important;
+      letter-spacing: -.015em;
+    }
+
+    #ordersContainer .text-slate-500 {
+      color: #64748b !important;
+    }
+
+    #ordersContainer > .grid > div > div:first-child > div:nth-child(3) {
+      margin-top: 14px !important;
+      padding: 10px 11px !important;
+      border: 1px solid #edf1f5 !important;
+      border-radius: 10px !important;
+      background: #f8fafc !important;
+    }
+
+    #ordersContainer .h-1\.5 {
+      height: 5px !important;
+      background: #e8edf3 !important;
+    }
+
+    #ordersContainer .pt-2.border-t {
+      border-color: #edf1f5 !important;
+      padding-top: 11px !important;
+    }
+
+    #ordersContainer button {
+      min-height: 36px;
+      border-radius: 9px !important;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+    #ordersContainer button:active { transform: scale(.985); }
+
+    #ordersContainer button.bg-slate-800 {
+      background: var(--sdo-navy) !important;
+      box-shadow: 0 4px 10px rgba(15,23,42,.08);
+    }
+
+    #ordersContainer button.bg-slate-800:hover {
+      background: #1e293b !important;
+    }
+
+    #ordersContainer button.bg-blue-50 {
+      background: #f5f7ff !important;
+      border-color: #dfe4ff !important;
+      color: #4338ca !important;
+    }
+
+    #ordersContainer button.bg-blue-50:hover {
+      background: #eef2ff !important;
+      border-color: #c7d2fe !important;
+    }
+
+    /* Badges de estado, más sobrios */
+    #ordersContainer .bg-amber-100 { background: #fff7e8 !important; color: #a85b00 !important; }
+    #ordersContainer .bg-blue-100 { background: #eef5ff !important; color: #1d4ed8 !important; }
+    #ordersContainer .bg-indigo-100 { background: #f0efff !important; color: #4338ca !important; }
+    #ordersContainer .bg-emerald-100 { background: #ebf8f2 !important; color: #047857 !important; }
+
+    /* Tabla */
+    #ordersContainer > div.bg-white.rounded-xl {
+      border: 1px solid var(--sdo-line-soft) !important;
+      border-radius: var(--sdo-radius) !important;
+      box-shadow: var(--sdo-shadow) !important;
+    }
+
+    #ordersContainer table thead {
+      background: #f8fafc !important;
+      color: #475569 !important;
+      border-color: #edf1f5 !important;
+    }
+
+    #ordersContainer table th {
+      padding: 12px 14px !important;
+      font-size: 10px !important;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    #ordersContainer table td {
+      padding: 13px 14px !important;
+      border-color: #f0f3f7 !important;
+    }
+
+    #ordersContainer table tbody tr {
+      background: white;
+      transition: background .14s ease;
+    }
+
+    #ordersContainer table tbody tr:hover {
+      background: #fafbfe !important;
+    }
+
+    /* Formularios */
+    input:not(#searchInput), textarea, select {
+      border-color: #dfe5ed !important;
+      background: #f8fafc !important;
+      border-radius: 10px !important;
+      color: #0f172a !important;
+      box-shadow: inset 0 1px 1px rgba(15,23,42,.015);
+    }
+
+    input:not(#searchInput):focus, textarea:focus, select:focus {
+      outline: none !important;
+      border-color: #a5b4fc !important;
+      background: white !important;
+      box-shadow: 0 0 0 3px rgba(79,70,229,.09) !important;
+    }
+
+    label {
+      letter-spacing: .005em;
+    }
+
+    /* Modales */
+    #authModal, #createModal, #manageModal, #settingsModal, #advanceReportModal, #customConfirmModal {
+      background: rgba(15,23,42,.56) !important;
+      backdrop-filter: blur(7px) !important;
+      -webkit-backdrop-filter: blur(7px) !important;
+    }
+
+    #authModal > div,
+    #createModal > div,
+    #manageModal > div,
+    #settingsModal > div,
+    #advanceReportModal > div,
+    #customConfirmModal > div {
+      border: 1px solid rgba(226,232,240,.9) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 24px 70px rgba(15,23,42,.18) !important;
+    }
+
+    /* Ficha operativa */
+    #operativeView {
+      background:
+        radial-gradient(circle at 50% -15%, rgba(79,70,229,.055), transparent 26rem),
+        var(--sdo-bg) !important;
+    }
+
+    #operativeView .bg-white {
+      border-color: var(--sdo-line-soft) !important;
+      box-shadow: var(--sdo-shadow) !important;
+      border-radius: 15px !important;
+    }
+
+    /* Botones principales globales */
+    button.bg-blue-600,
+    button.bg-indigo-600 {
+      background: var(--sdo-accent) !important;
+      box-shadow: none !important;
+    }
+
+    button.bg-blue-600:hover,
+    button.bg-indigo-600:hover {
+      background: #4338ca !important;
+    }
+
+    button.bg-slate-800,
+    button.bg-slate-900 {
+      background: var(--sdo-navy) !important;
+    }
+
+    /* Scroll */
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cdd5df; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+
+    /* Microinteracciones discretas */
+    button, [onclick] {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    @media (max-width: 639px) {
+      body > header > div { min-height: 62px; }
+      body > main { padding-top: 14px !important; }
+      body > main > section:first-of-type { gap: 8px !important; }
+      body > main > section:first-of-type > div {
+        min-height: 86px;
+        padding: 13px !important;
+      }
+      body > main > section:first-of-type > div::after { left: 13px; }
+      body > main > section:first-of-type p[id^="kpi"] { font-size: 24px !important; }
+      body > main > section:nth-of-type(2) { padding: 9px !important; }
+      #ordersContainer > .grid > div { min-height: auto; padding: 15px !important; }
+      #ordersContainer h4 { font-size: 14px !important; }
+    }
+
+    @media (min-width: 1024px) {
+      #ordersContainer > .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        max-width: 790px;
+      }
+    }
+
   </style>
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col font-sans pb-12">
