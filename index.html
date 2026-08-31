@@ -31,9 +31,6 @@
       background: #cbd5e1;
       border-radius: 4px;
     }
-    .sla-progress-fill {
-      transition: width 0.3s ease;
-    }
     @keyframes slideUpFade {
       0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
@@ -50,10 +47,7 @@
       animation: pulse-ring 2s infinite;
     }
 
-    /* ==========================================================
-       SDO CLOUD — UI MINIMAL 2026
-       Capa exclusivamente visual. No modifica lógica ni eventos.
-       ========================================================== */
+    /* SDO CLOUD — UI MINIMAL 2026 */
     :root {
       --sdo-bg: #f5f7fb;
       --sdo-surface: #ffffff;
@@ -79,15 +73,12 @@
     html { background: var(--sdo-bg); }
 
     body {
-      background:
-        radial-gradient(circle at 85% -10%, rgba(79,70,229,.055), transparent 28rem),
-        var(--sdo-bg) !important;
+      background: radial-gradient(circle at 85% -10%, rgba(79,70,229,.055), transparent 28rem), var(--sdo-bg) !important;
       color: var(--sdo-ink) !important;
       font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
       letter-spacing: -0.005em;
     }
 
-    /* Header */
     body > header {
       background: rgba(15, 23, 42, .97) !important;
       border-bottom: 1px solid rgba(255,255,255,.08);
@@ -155,14 +146,12 @@
       transition: background .16s ease, color .16s ease;
     }
 
-    /* Main */
     body > main {
       max-width: 1180px !important;
       padding-top: 22px !important;
       padding-bottom: 40px !important;
     }
 
-    /* KPIs — compactos, con jerarquía y sin ruido */
     body > main > section:first-of-type {
       gap: 12px !important;
       margin-bottom: 14px !important;
@@ -217,7 +206,6 @@
       letter-spacing: -.035em;
     }
 
-    /* Barra de búsqueda y filtros */
     body > main > section:nth-of-type(2) {
       margin-bottom: 18px !important;
       padding: 10px !important;
@@ -286,14 +274,11 @@
       color: #334155 !important;
     }
 
-    /* Tarjetas OT */
-    #ordersContainer > .grid {
-      gap: 14px !important;
-    }
+    #ordersContainer > .grid { gap: 14px !important; }
 
     #ordersContainer > .grid > div {
       position: relative;
-      min-height: 218px;
+      min-height: 190px;
       padding: 17px !important;
       border: 1px solid var(--sdo-line-soft) !important;
       border-radius: var(--sdo-radius) !important;
@@ -316,27 +301,7 @@
       letter-spacing: -.015em;
     }
 
-    #ordersContainer .text-slate-500 {
-      color: #64748b !important;
-    }
-
-    #ordersContainer > .grid > div > div:first-child > div:nth-child(3) {
-      margin-top: 14px !important;
-      padding: 10px 11px !important;
-      border: 1px solid #edf1f5 !important;
-      border-radius: 10px !important;
-      background: #f8fafc !important;
-    }
-
-    #ordersContainer .h-1\.5 {
-      height: 5px !important;
-      background: #e8edf3 !important;
-    }
-
-    #ordersContainer .pt-2.border-t {
-      border-color: #edf1f5 !important;
-      padding-top: 11px !important;
-    }
+    #ordersContainer .text-slate-500 { color: #64748b !important; }
 
     #ordersContainer button {
       min-height: 36px;
@@ -351,28 +316,13 @@
       box-shadow: 0 4px 10px rgba(15,23,42,.08);
     }
 
-    #ordersContainer button.bg-slate-800:hover {
-      background: #1e293b !important;
-    }
+    #ordersContainer button.bg-slate-800:hover { background: #1e293b !important; }
 
-    #ordersContainer button.bg-blue-50 {
-      background: #f5f7ff !important;
-      border-color: #dfe4ff !important;
-      color: #4338ca !important;
-    }
+    #ordersContainer .bg-amber-100 { background: #fff7e8 !important; color: #a85b00 !important; border: 1px solid #ffe6b3 !important;}
+    #ordersContainer .bg-blue-100 { background: #eef5ff !important; color: #1d4ed8 !important; border: 1px solid #cce0ff !important;}
+    #ordersContainer .bg-indigo-100 { background: #f0efff !important; color: #4338ca !important; border: 1px solid #d9d6ff !important;}
+    #ordersContainer .bg-emerald-100 { background: #ebf8f2 !important; color: #047857 !important; border: 1px solid #b3e6cc !important;}
 
-    #ordersContainer button.bg-blue-50:hover {
-      background: #eef2ff !important;
-      border-color: #c7d2fe !important;
-    }
-
-    /* Badges de estado, más sobrios */
-    #ordersContainer .bg-amber-100 { background: #fff7e8 !important; color: #a85b00 !important; }
-    #ordersContainer .bg-blue-100 { background: #eef5ff !important; color: #1d4ed8 !important; }
-    #ordersContainer .bg-indigo-100 { background: #f0efff !important; color: #4338ca !important; }
-    #ordersContainer .bg-emerald-100 { background: #ebf8f2 !important; color: #047857 !important; }
-
-    /* Tabla */
     #ordersContainer > div.bg-white.rounded-xl {
       border: 1px solid var(--sdo-line-soft) !important;
       border-radius: var(--sdo-radius) !important;
@@ -402,11 +352,8 @@
       transition: background .14s ease;
     }
 
-    #ordersContainer table tbody tr:hover {
-      background: #fafbfe !important;
-    }
+    #ordersContainer table tbody tr:hover { background: #fafbfe !important; }
 
-    /* Formularios */
     input:not(#searchInput), textarea, select {
       border-color: #dfe5ed !important;
       background: #f8fafc !important;
@@ -421,34 +368,32 @@
       background: white !important;
       box-shadow: 0 0 0 3px rgba(79,70,229,.09) !important;
     }
-
-    label {
-      letter-spacing: .005em;
+    
+    /* Disabled inputs visually distinct for technicians */
+    input:disabled, textarea:disabled, select:disabled {
+      background-color: #f1f5f9 !important;
+      color: #475569 !important;
+      opacity: 1 !important;
+      cursor: not-allowed;
+      border-color: #e2e8f0 !important;
     }
 
-    /* Modales */
-    #authModal, #createModal, #manageModal, #settingsModal, #advanceReportModal, #customConfirmModal {
+    label { letter-spacing: .005em; }
+
+    #authModal, #createModal, #settingsModal, #advanceReportModal, #customConfirmModal {
       background: rgba(15,23,42,.56) !important;
       backdrop-filter: blur(7px) !important;
       -webkit-backdrop-filter: blur(7px) !important;
     }
 
-    #authModal > div,
-    #createModal > div,
-    #manageModal > div,
-    #settingsModal > div,
-    #advanceReportModal > div,
-    #customConfirmModal > div {
+    #authModal > div, #createModal > div, #settingsModal > div, #advanceReportModal > div, #customConfirmModal > div {
       border: 1px solid rgba(226,232,240,.9) !important;
       border-radius: 18px !important;
       box-shadow: 0 24px 70px rgba(15,23,42,.18) !important;
     }
 
-    /* Ficha operativa */
     #operativeView {
-      background:
-        radial-gradient(circle at 50% -15%, rgba(79,70,229,.055), transparent 26rem),
-        var(--sdo-bg) !important;
+      background: radial-gradient(circle at 50% -15%, rgba(79,70,229,.055), transparent 26rem), var(--sdo-bg) !important;
     }
 
     #operativeView .bg-white {
@@ -457,40 +402,24 @@
       border-radius: 15px !important;
     }
 
-    /* Botones principales globales */
-    button.bg-blue-600,
-    button.bg-indigo-600 {
+    button.bg-blue-600, button.bg-indigo-600 {
       background: var(--sdo-accent) !important;
       box-shadow: none !important;
     }
 
-    button.bg-blue-600:hover,
-    button.bg-indigo-600:hover {
-      background: #4338ca !important;
-    }
+    button.bg-blue-600:hover, button.bg-indigo-600:hover { background: #4338ca !important; }
+    button.bg-slate-800, button.bg-slate-900 { background: var(--sdo-navy) !important; }
 
-    button.bg-slate-800,
-    button.bg-slate-900 {
-      background: var(--sdo-navy) !important;
-    }
-
-    /* Scroll */
     .custom-scroll::-webkit-scrollbar-thumb { background: #cdd5df; }
     .custom-scroll::-webkit-scrollbar-track { background: transparent; }
 
-    /* Microinteracciones discretas */
-    button, [onclick] {
-      -webkit-tap-highlight-color: transparent;
-    }
+    button, [onclick] { -webkit-tap-highlight-color: transparent; }
 
     @media (max-width: 639px) {
       body > header > div { min-height: 62px; }
       body > main { padding-top: 14px !important; }
       body > main > section:first-of-type { gap: 8px !important; }
-      body > main > section:first-of-type > div {
-        min-height: 86px;
-        padding: 13px !important;
-      }
+      body > main > section:first-of-type > div { min-height: 86px; padding: 13px !important; }
       body > main > section:first-of-type > div::after { left: 13px; }
       body > main > section:first-of-type p[id^="kpi"] { font-size: 24px !important; }
       body > main > section:nth-of-type(2) { padding: 9px !important; }
@@ -610,27 +539,18 @@
       </div>
 
       <div class="flex items-center space-x-1.5 overflow-x-auto custom-scroll pb-1">
-        <button onclick="window.app.setFilterStatus('TODOS')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-white whitespace-nowrap" data-status="TODOS">
-          Todos
-        </button>
-        <button onclick="window.app.setFilterStatus('Pendiente')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Pendiente">
-          Pendientes
-        </button>
-        <button onclick="window.app.setFilterStatus('En Ejecución')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="En Ejecución">
-          En Ejecución
-        </button>
-        <button onclick="window.app.setFilterStatus('Solicitud Cierre')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Solicitud Cierre">
-          Solicitud Cierre
-        </button>
-        <button onclick="window.app.setFilterStatus('Terminada')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Terminada">
-          Terminadas
-        </button>
+        <button onclick="window.app.setFilterStatus('TODOS')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-white whitespace-nowrap" data-status="TODOS">Todos</button>
+        <button onclick="window.app.setFilterStatus('Pendiente')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Pendiente">Pendientes</button>
+        <button onclick="window.app.setFilterStatus('En Ejecución')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="En Ejecución">En Ejecución</button>
+        <button onclick="window.app.setFilterStatus('Solicitud Cierre')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Solicitud Cierre">Solicitud Cierre</button>
+        <button onclick="window.app.setFilterStatus('Terminada')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Terminada">Terminadas</button>
       </div>
     </section>
 
     <section id="ordersContainer"></section>
   </main>
 
+  <!-- Modal Auth -->
   <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-xs rounded-2xl p-5 shadow-2xl border border-slate-200 text-center relative">
       <button onclick="window.app.closeAuthModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700" aria-label="Cerrar">✕</button>
@@ -642,12 +562,8 @@
       <p class="text-xs text-slate-500 mb-4">Seleccione su rol e ingrese su PIN</p>
 
       <div class="grid grid-cols-2 gap-2 mb-4">
-        <button id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="py-2 text-xs font-bold rounded-lg border-2 border-blue-600 bg-blue-50 text-blue-700">
-          Supervisor
-        </button>
-        <button id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="py-2 text-xs font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600">
-          Técnico
-        </button>
+        <button id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="py-2 text-xs font-bold rounded-lg border-2 border-blue-600 bg-blue-50 text-blue-700">Supervisor</button>
+        <button id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="py-2 text-xs font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600">Técnico</button>
       </div>
 
       <div class="flex justify-center space-x-3 mb-4">
@@ -658,24 +574,25 @@
       </div>
 
       <div class="grid grid-cols-3 gap-2 max-w-[220px] mx-auto mb-3">
-        <button onclick="window.app.typePin(1)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">1</button>
-        <button onclick="window.app.typePin(2)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">2</button>
-        <button onclick="window.app.typePin(3)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">3</button>
-        <button onclick="window.app.typePin(4)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">4</button>
-        <button onclick="window.app.typePin(5)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">5</button>
-        <button onclick="window.app.typePin(6)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">6</button>
-        <button onclick="window.app.typePin(7)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">7</button>
-        <button onclick="window.app.typePin(8)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">8</button>
-        <button onclick="window.app.typePin(9)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">9</button>
-        <button onclick="window.app.clearPin()" class="h-12 text-xs font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">Borrar</button>
-        <button onclick="window.app.typePin(0)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">0</button>
-        <button onclick="window.app.deletePin()" class="h-12 text-base font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">⌫</button>
+        <button onpointerdown="window.app.typePin(1)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">1</button>
+        <button onpointerdown="window.app.typePin(2)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">2</button>
+        <button onpointerdown="window.app.typePin(3)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">3</button>
+        <button onpointerdown="window.app.typePin(4)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">4</button>
+        <button onpointerdown="window.app.typePin(5)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">5</button>
+        <button onpointerdown="window.app.typePin(6)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">6</button>
+        <button onpointerdown="window.app.typePin(7)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">7</button>
+        <button onpointerdown="window.app.typePin(8)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">8</button>
+        <button onpointerdown="window.app.typePin(9)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">9</button>
+        <button onpointerdown="window.app.clearPin()" class="h-12 text-xs font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">Borrar</button>
+        <button onpointerdown="window.app.typePin(0)" class="h-12 text-xl font-bold bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-xl border border-slate-200 text-slate-800">0</button>
+        <button onpointerdown="window.app.deletePin()" class="h-12 text-base font-bold bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-slate-600">⌫</button>
       </div>
 
       <div id="authErrorMsg" class="hidden text-xs text-rose-600 font-bold mt-2">PIN Incorrecto</div>
     </div>
   </div>
 
+  <!-- Modal Crear OT -->
   <div id="createModal" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white w-full max-w-lg rounded-2xl p-5 shadow-2xl border border-slate-200 max-h-[92vh] flex flex-col">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -709,7 +626,7 @@
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label for="newOtRecinto" class="block text-xs font-bold text-slate-600 mb-1">Recinto / Servicio</label>
-            <input type="text" id="newOtRecinto" required placeholder="Ej: Pabellón 3, UCI Camas" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+            <input type="text" id="newOtRecinto" required placeholder="Ej: Pabellón 3, UCI" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
           </div>
           <div>
             <label for="newOtTicket" class="block text-xs font-bold text-slate-600 mb-1">PMA</label>
@@ -746,226 +663,192 @@
     </div>
   </div>
 
-  <div id="manageModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white w-full max-w-xl rounded-2xl p-5 shadow-2xl border border-slate-200 max-h-[94vh] flex flex-col">
+  <!-- Ficha Operativa y Gestión Unificada -->
+  <div id="operativeView" class="hidden fixed inset-0 z-40 bg-slate-100 overflow-y-auto">
+    <div class="max-w-2xl mx-auto px-3 py-4 space-y-3 pb-20">
       
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-        <div>
-          <div class="flex items-center space-x-2">
-            <h3 id="manageModalFolio" class="text-base font-black text-slate-900">OT-000</h3>
-            <span id="manageModalStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">Pendiente</span>
-          </div>
-          <p id="manageModalSubtitle" class="text-xs text-slate-500">Edición completa y supervisión</p>
-        </div>
-        <button onclick="window.app.closeManageModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1" aria-label="Cerrar">✕</button>
+      <!-- Top Bar Ficha -->
+      <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+        <button type="button" onclick="window.app.closeOperativeView()" class="px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center space-x-1">
+          <span aria-hidden="true">←</span> <span>Volver</span>
+        </button>
+        <span id="opFolioBadge" class="text-sm font-black text-slate-900">OT-000</span>
+        <span id="opStatusBadge" class="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-100 text-slate-800">Pendiente</span>
       </div>
 
-      <div id="manageLockBanner" class="hidden mt-2 p-2 bg-rose-50 border border-rose-200 rounded-lg text-xs font-bold text-rose-700 flex items-center gap-2">
-        <span aria-hidden="true">🔒</span> OT en estado Terminal. Datos bloqueados para edición. Solo puede reabrirse o eliminarse.
+      <div id="opLockedBanner" class="hidden p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-bold text-rose-700 flex items-center gap-2">
+        <span aria-hidden="true">🔒</span> OT Terminada. Datos bloqueados. Solo admite eliminación por parte de supervisión.
       </div>
 
-      <div id="manageReviewSection" class="hidden mt-3 bg-indigo-50 border border-indigo-200 p-4 rounded-xl space-y-3">
+      <div id="opReviewBanner" class="hidden p-4 bg-indigo-50 border border-indigo-200 rounded-xl space-y-3">
         <h4 class="text-xs font-black text-indigo-900 uppercase">Validación de Jefatura</h4>
-        <p class="text-[11px] text-indigo-700">La cuadrilla ha solicitado el cierre. Ingrese instrucciones abajo si desea reabrirla, o autorice el cierre definitivo.</p>
+        <p class="text-[11px] text-indigo-700">La cuadrilla ha solicitado el cierre. Ingrese nuevas instrucciones en el formulario si desea reabrirla, o autorice el cierre definitivo.</p>
         <div class="flex gap-2 pt-1">
-          <button type="button" onclick="window.app.reopenOrder()" class="flex-1 py-2.5 bg-white border-2 border-rose-500 text-rose-600 hover:bg-rose-50 font-bold rounded-lg text-xs shadow-sm">
+          <button type="button" onclick="window.app.saveOrder(null, 'reopen')" class="flex-1 py-2.5 bg-white border-2 border-rose-500 text-rose-600 hover:bg-rose-50 font-bold rounded-lg text-xs shadow-sm">
             ❌ Reabrir OT
           </button>
-          <button type="button" onclick="window.app.authorizeClosure()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-lg text-xs shadow-sm">
+          <button type="button" onclick="window.app.saveOrder(null, 'authorize_close')" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-lg text-xs shadow-sm">
             ✅ Autorizar Cierre
           </button>
         </div>
       </div>
 
-      <form id="manageOtForm" onsubmit="window.app.handleSaveManagement(event)" class="space-y-3.5 pt-3 overflow-y-auto custom-scroll flex-1">
-        <input type="hidden" id="manageOtId">
-
-        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3">
-          <h4 class="text-xs font-bold text-amber-900 mb-2 uppercase flex items-center space-x-1">
-            <span aria-hidden="true">📢</span> <span>Historial de Consultas de Terreno</span>
-          </h4>
-          <div id="manageRequestsList" class="space-y-2 text-xs"></div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2 manage-editable-field">
-          <div>
-            <label for="manageOtEspecialidad" class="block text-xs font-bold text-slate-600 mb-1">Especialidad</label>
-            <select id="manageOtEspecialidad" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
-              <option value="Infraestructura">Infraestructura</option>
-              <option value="Climatización">Climatización</option>
-              <option value="Electricidad">Electricidad</option>
-              <option value="Equipos Industriales">Equipos Industriales</option>
-              <option value="Equipos Clinicos">Equipos Clínicos</option>
-            </select>
-          </div>
-          <div>
-            <label for="manageOtPrioridad" class="block text-xs font-bold text-slate-600 mb-1">Prioridad</label>
-            <select id="manageOtPrioridad" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
-              <option value="Urgente">🚨 Urgente</option>
-              <option value="Alta">🟠 Alta</option>
-              <option value="Media">🟡 Media</option>
-              <option value="Baja">🟢 Baja</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2 manage-editable-field">
-          <div>
-            <label for="manageOtRecinto" class="block text-xs font-bold text-slate-600 mb-1">Recinto</label>
-            <input type="text" id="manageOtRecinto" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
-          </div>
-          <div>
-            <label for="manageOtTicket" class="block text-xs font-bold text-slate-600 mb-1">PMA</label>
-            <input type="text" id="manageOtTicket" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2 manage-editable-field">
-          <div>
-            <label for="manageOtSolicitante" class="block text-xs font-bold text-slate-600 mb-1">Solicitante</label>
-            <input type="text" id="manageOtSolicitante" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
-          </div>
-          <div>
-            <label for="manageOtEncargado" class="block text-xs font-bold text-slate-600 mb-1">Técnico Asignado</label>
-            <select id="manageOtEncargado" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium dynamic-tech-select"></select>
-          </div>
-        </div>
-
-        <div class="manage-editable-field">
-          <label for="manageOtDescripcion" class="block text-xs font-bold text-slate-600 mb-1">Descripción de la Falla</label>
-          <textarea id="manageOtDescripcion" rows="2" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
-        </div>
+      <!-- Formulario Unificado -->
+      <form id="unifiedOrderForm" onsubmit="window.app.saveOrder(event, 'save')" class="space-y-3">
+        <input type="hidden" id="opOrderId">
         
-        <div class="manage-editable-field" id="manageInstContainer">
-          <label for="manageOtInstrucciones" class="block text-xs font-bold text-slate-600 mb-1">Instrucciones de Jefatura</label>
-          <textarea id="manageOtInstrucciones" rows="2" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
+        <!-- Bloque 1: Antecedentes Generales -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label for="opEspecialidad" class="block text-xs font-bold text-slate-600 mb-1">Especialidad</label>
+              <select id="opEspecialidad" class="op-editable-field w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+                <option value="Infraestructura">Infraestructura</option>
+                <option value="Climatización">Climatización</option>
+                <option value="Electricidad">Electricidad</option>
+                <option value="Equipos Industriales">Equipos Industriales</option>
+                <option value="Equipos Clinicos">Equipos Clínicos</option>
+              </select>
+            </div>
+            <div>
+              <label for="opPrioridad" class="block text-xs font-bold text-slate-600 mb-1">Prioridad</label>
+              <select id="opPrioridad" class="op-editable-field w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+                <option value="Urgente">🚨 Urgente</option>
+                <option value="Alta">🟠 Alta</option>
+                <option value="Media">🟡 Media</option>
+                <option value="Baja">🟢 Baja</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label for="opRecinto" class="block text-xs font-bold text-slate-600 mb-1">Recinto / Servicio</label>
+              <input type="text" id="opRecinto" required class="op-editable-field w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+            </div>
+            <div>
+              <label for="opTicket" class="block text-xs font-bold text-slate-600 mb-1">PMA recinto</label>
+              <input type="text" id="opTicket" class="op-editable-field w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label for="opSolicitante" class="block text-xs font-bold text-slate-600 mb-1">Solicitante</label>
+              <input type="text" id="opSolicitante" required class="op-editable-field w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+            </div>
+            <div>
+              <label for="opEncargado" class="block text-xs font-bold text-slate-600 mb-1">Técnico Asignado</label>
+              <select id="opEncargado" class="op-editable-field w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium dynamic-tech-select"></select>
+            </div>
+          </div>
+
+          <div>
+            <label for="opDescripcion" class="block text-xs font-bold text-slate-600 mb-1">Descripción de la Falla</label>
+            <textarea id="opDescripcion" required rows="2" class="op-editable-field w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
+          </div>
+
+          <div>
+            <label for="opInstrucciones" class="block text-xs font-bold text-slate-600 mb-1">Instrucciones de Jefatura</label>
+            <textarea id="opInstrucciones" rows="2" class="op-editable-field w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
+          </div>
+
+          <button id="opWhatsappBtn" type="button" class="w-full mt-2 py-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-bold rounded-lg shadow-sm flex items-center justify-center gap-2">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            Compartir por WhatsApp
+          </button>
         </div>
 
-        <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 space-y-2 manage-editable-field">
+        <!-- Bloque 2: Registro de Tiempos -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+          <h4 class="text-xs font-black text-slate-800 uppercase tracking-wide flex items-center space-x-1">
+            <span aria-hidden="true">⏱️</span> <span>Registro de Tiempos de Faena</span>
+          </h4>
+          
+          <div id="startWorkSection" class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-slate-700 block">Inicio de Faena:</span>
+              <span id="opStartTimeLabel" class="text-xs text-slate-500 font-medium">Sin iniciar</span>
+            </div>
+            <button id="startWorkBtn" type="button" onclick="window.app.startFaena()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-black rounded-lg shadow-sm">
+              ▶ Iniciar Ahora
+            </button>
+          </div>
+
+          <div id="endWorkSection" class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-slate-700 block">Término de Faena:</span>
+              <span id="opEndTimeLabel" class="text-xs text-slate-500 font-medium">En proceso</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloque 3: Historial de Consultas -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+          <h4 class="text-xs font-black text-slate-800 uppercase tracking-wide flex items-center justify-between">
+            <span>📢 Historial de Consultas</span>
+            <span class="text-[10px] text-slate-400 font-normal">No editable</span>
+          </h4>
+          
+          <div id="opConsultationHistory" class="space-y-2 text-xs"></div>
+
+          <!-- Emitir Consulta (Solo Técnicos) -->
+          <div id="opRequestForm" class="pt-2 border-t border-slate-100 space-y-2 hidden">
+            <label for="opNewRequestType" class="block text-xs font-bold text-slate-700">Emitir Consulta o Contingencia a Jefatura:</label>
+            <select id="opNewRequestType" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+              <option value="Bloqueo o Contingencia en Terreno">Bloqueo o Contingencia en Terreno</option>
+              <option value="Permisos / IAAS / Acceso Restringido">Permisos / IAAS / Acceso Restringido</option>
+              <option value="Asistencia Técnica Adicional">Asistencia Técnica Adicional</option>
+              <option value="Consulta Operativa a Supervisión">Consulta Operativa a Supervisión</option>
+            </select>
+            <label for="opNewRequestDetails" class="sr-only">Detalle de consulta</label>
+            <textarea id="opNewRequestDetails" rows="2" placeholder="Detalle del requerimiento..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
+            <button type="button" onclick="window.app.submitTechnicianRequest()" class="w-full py-2 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs font-black rounded-lg shadow-sm">
+              📤 Enviar Consulta
+            </button>
+          </div>
+        </div>
+
+        <!-- Bloque 4: Informe de Trabajo y Cierre / Acciones -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+          <h4 class="text-xs font-black text-slate-800 uppercase tracking-wide">Informe de Trabajo y Cierre</h4>
+          
           <div>
-            <label for="manageOtEstado" class="block text-xs font-bold text-slate-700 mb-1">Estado / Etapa de Validación</label>
-            <select id="manageOtEstado" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-blue-700">
+            <label for="opDiagnosticoSolucion" class="block text-xs font-bold text-slate-600 mb-1">Diagnóstico y Solución Aplicada</label>
+            <textarea id="opDiagnosticoSolucion" rows="3" placeholder="Detalle de trabajos ejecutados..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
+          </div>
+          
+          <div id="opEstadoContainer" class="hidden">
+            <label for="opEstado" class="block text-xs font-bold text-slate-700 mb-1">Estado / Etapa de Validación</label>
+            <select id="opEstado" class="op-editable-field w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-blue-700">
               <option value="Pendiente">Pendiente</option>
               <option value="En Ejecución">En Ejecución</option>
               <option value="Solicitud Cierre">Solicitud Cierre (En Revisión)</option>
               <option value="Terminada">Terminada (Cerrada)</option>
             </select>
           </div>
-        </div>
+          
+          <!-- Botones Técnico -->
+          <div id="techActionButtons" class="pt-2 flex flex-col sm:flex-row gap-2 hidden">
+            <button type="button" onclick="window.app.saveOrder(null, 'save')" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-black rounded-lg">
+              💾 Guardar Progreso
+            </button>
+            <button type="button" onclick="window.app.saveOrder(null, 'request_close')" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black rounded-lg shadow-md">
+              ⚡ Solicitar Cierre
+            </button>
+          </div>
 
-        <div class="pt-2 flex items-center justify-between">
-          <button type="button" onclick="window.app.deleteOrderFromModal()" class="px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-lg border border-rose-200" aria-label="Eliminar OT">
-            🗑️ Eliminar OT
-          </button>
-          <div class="flex space-x-2" id="manageSaveBtnContainer">
-            <button type="button" onclick="window.app.closeManageModal()" class="px-4 py-2 text-xs font-bold text-slate-600 bg-slate-100 rounded-lg">Cancelar</button>
-            <button type="submit" id="manageSaveBtn" class="px-5 py-2 text-xs font-black text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md">Guardar y Sincronizar</button>
+          <!-- Botones Supervisor -->
+          <div id="supActionButtons" class="pt-2 flex items-center justify-between hidden">
+            <button type="button" onclick="window.app.deleteOrderFromView()" class="px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-lg border border-rose-200" aria-label="Eliminar OT">
+              🗑️ Eliminar OT
+            </button>
+            <button type="submit" id="supSaveBtn" class="px-5 py-2 text-xs font-black text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md">
+              Guardar y Sincronizar
+            </button>
           </div>
         </div>
       </form>
-    </div>
-  </div>
-
-  <div id="operativeView" class="hidden fixed inset-0 z-40 bg-slate-100 overflow-y-auto">
-    <div class="max-w-2xl mx-auto px-3 py-4 space-y-3 pb-20">
-      
-      <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
-        <button onclick="window.app.closeOperativeView()" class="px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center space-x-1">
-          <span aria-hidden="true">←</span> <span>Volver</span>
-        </button>
-        <span id="opStatusBadge" class="text-xs font-bold px-2 py-1 rounded-md bg-amber-100 text-amber-800">En Ejecución</span>
-      </div>
-
-      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
-        <div class="flex justify-between items-start">
-          <div>
-            <h3 id="opFolioRecinto" class="text-base font-black text-slate-900">OT-000 • Recinto</h3>
-            <p id="opEspecialidadPrioridad" class="text-xs text-slate-500 font-semibold">Climatización • Alta</p>
-          </div>
-        </div>
-        <p id="opDescripcion" class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-100 leading-relaxed font-medium">Descripción...</p>
-        
-        <div id="opInstruccionesContainer" class="hidden bg-blue-50 border-l-4 border-blue-500 p-2 text-xs text-blue-900 mt-2">
-          <strong>Instrucciones:</strong> <span id="opInstruccionesText"></span>
-        </div>
-
-        <div class="text-[11px] text-slate-500 flex justify-between pt-1">
-          <span>Solicitante: <b id="opSolicitante" class="text-slate-800">-</b></span>
-          <span>PMA recinto: <b id="opTicket" class="text-slate-800">-</b></span>
-        </div>
-
-        <button id="opWhatsappBtn" class="w-full mt-2 py-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-bold rounded-lg shadow-sm flex items-center justify-center gap-2">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-          Compartir por WhatsApp
-        </button>
-      </div>
-
-      <div id="opLockedBanner" class="hidden p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-xs font-bold text-indigo-700 flex items-center gap-2">
-        <span aria-hidden="true">🔒</span> OT en validación o cerrada. Formularios y tiempos bloqueados.
-      </div>
-
-      <div id="opWorkControls" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
-        <h4 class="text-xs font-black text-slate-800 uppercase tracking-wide flex items-center space-x-1">
-          <span aria-hidden="true">⏱️</span> <span>Registro de Tiempos de Faena</span>
-        </h4>
-        
-        <div id="startWorkSection" class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
-          <div>
-            <span class="text-xs font-bold text-slate-700 block">Inicio de Faena:</span>
-            <span id="opStartTimeLabel" class="text-xs text-slate-500 font-medium">Sin iniciar</span>
-          </div>
-          <button id="startWorkBtn" onclick="window.app.startFaena()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-black rounded-lg shadow-sm">
-            ▶ Iniciar Ahora
-          </button>
-        </div>
-
-        <div id="endWorkSection" class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
-          <div>
-            <span class="text-xs font-bold text-slate-700 block">Término de Faena:</span>
-            <span id="opEndTimeLabel" class="text-xs text-slate-500 font-medium">En proceso</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
-        <h4 class="text-xs font-black text-slate-800 uppercase tracking-wide flex items-center justify-between">
-          <span>📢 Historial de Consultas</span>
-          <span class="text-[10px] text-slate-400 font-normal">No editable</span>
-        </h4>
-        <div id="opConsultationHistory" class="space-y-2 text-xs"></div>
-
-        <div id="opRequestForm" class="pt-2 border-t border-slate-100 space-y-2">
-          <label for="opNewRequestType" class="block text-xs font-bold text-slate-700">Emitir Consulta o Contingencia a Jefatura:</label>
-          <select id="opNewRequestType" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
-            <option value="Bloqueo o Contingencia en Terreno">Bloqueo o Contingencia en Terreno</option>
-            <option value="Permisos / IAAS / Acceso Restringido">Permisos / IAAS / Acceso Restringido</option>
-            <option value="Asistencia Técnica Adicional">Asistencia Técnica Adicional</option>
-            <option value="Consulta Operativa a Supervisión">Consulta Operativa a Supervisión</option>
-          </select>
-          <label for="opNewRequestDetails" class="sr-only">Detalle de consulta</label>
-          <textarea id="opNewRequestDetails" rows="2" placeholder="Detalle del requerimiento..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
-          <button onclick="window.app.submitTechnicianRequest()" class="w-full py-2 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs font-black rounded-lg shadow-sm">
-            📤 Enviar Consulta
-          </button>
-        </div>
-      </div>
-
-      <div id="opCloseForm" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
-        <h4 class="text-xs font-black text-slate-800 uppercase tracking-wide">Informe de Trabajo y Cierre</h4>
-        <div>
-          <label for="opDiagnosticoSolucion" class="block text-xs font-bold text-slate-600 mb-1">Diagnóstico y Solución Aplicada</label>
-          <textarea id="opDiagnosticoSolucion" rows="3" placeholder="Detalle de trabajos ejecutados..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"></textarea>
-        </div>
-        <div class="pt-3 flex flex-col sm:flex-row gap-2">
-          <button onclick="window.app.saveOperativeProgress(false)" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-black rounded-lg">
-            💾 Guardar Progreso
-          </button>
-          <button onclick="window.app.saveOperativeProgress(true)" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black rounded-lg shadow-md">
-            ⚡ Solicitar Cierre
-          </button>
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -1207,22 +1090,6 @@
                this.activeOperativeOt = payload.new.data;
                this.renderOperativeHistory(this.activeOperativeOt);
             }
-            const modalIdInput = document.getElementById('manageOtId');
-            if (modalIdInput && payload.new && modalIdInput.value === payload.new.id && !document.getElementById('manageModal').classList.contains('hidden')) {
-               const o = payload.new.data;
-               const reqList = document.getElementById('manageRequestsList');
-               if (o.solicitudes_terreno && o.solicitudes_terreno.length) {
-                 reqList.innerHTML = o.solicitudes_terreno.map((r, i) => `
-                   <div class="bg-white p-2 rounded border border-amber-200">
-                     <span class="font-bold text-amber-800 text-[10px] block mb-1">${escapeHtml(r.tipo)}</span>
-                     <p class="font-medium text-slate-800">"${escapeHtml(r.detalle)}"</p>
-                     ${r.respuesta ? `<div class="mt-1 pt-1 border-t text-blue-800 font-semibold text-[11px]">↳ "${escapeHtml(r.respuesta)}"</div>` : 
-                       ((o.estado === 'Solicitud Cierre' || o.estado === 'Terminada') ? `<div class="mt-1 text-slate-400 italic text-[10px]">No se puede responder en este estado</div>` :
-                       `<div class="mt-1 flex gap-1"><label for="respInput_${i}" class="sr-only">Respuesta</label><input type="text" id="respInput_${i}" placeholder="Responder..." class="flex-1 p-1 bg-slate-50 border rounded text-[11px]"><button type="button" onclick="window.app.answerRequest('${o.id}', ${i})" class="px-2 py-1 bg-blue-600 text-white rounded text-[10px] font-bold">Enviar</button></div>`)}
-                   </div>
-                 `).join('');
-               }
-            }
           })
           .on('postgres_changes', { event: '*', schema: 'public', table: 'system_settings' }, () => {
             this.fetchConfigFromSupabase();
@@ -1279,7 +1146,6 @@
           } catch(e) {}
         }
         this.updateUIWithConfig();
-        this.populateTechDropdowns();
 
         const storedOrders = localStorage.getItem('sdo_orders_cache');
         if (storedOrders) {
@@ -1427,7 +1293,6 @@
 
       renderDashboard() {
         document.getElementById('operativeView').classList.add('hidden');
-        document.getElementById('manageModal').classList.add('hidden');
         this.updateKpis();
         this.renderOrdersList();
       }
@@ -1466,11 +1331,7 @@
         if (elapsedDays >= 5) { colorClass = "bg-rose-500"; textClass = "text-rose-700"; }
         else if (elapsedDays >= 2) { colorClass = "bg-amber-500"; textClass = "text-amber-700"; }
         
-        return {
-          elapsedString: elapsedDays > 0 ? `${elapsedDays}d ${remHours}h corridas` : `${remHours}h corridas`,
-          colorClass,
-          textClass
-        };
+        return { elapsedString: elapsedDays > 0 ? `${elapsedDays}d ${remHours}h corridas` : `${remHours}h corridas`, colorClass, textClass };
       }
 
       updateTimeElapsedElements() { this.renderOrdersList(); }
@@ -1533,8 +1394,7 @@
               </div>
             </div>
             <div class="pt-2 border-t flex items-center justify-between gap-1.5">
-              <button onclick="window.app.openOperativeView('${o.id}')" class="flex-1 py-2 bg-slate-800 text-white text-xs font-bold rounded-lg">📋 Ficha</button>
-              ${this.currentRole === 'supervisor' ? `<button onclick="window.app.openManageModal('${o.id}')" class="flex-1 py-2 bg-blue-50 text-blue-700 text-xs font-bold rounded-lg border border-blue-200">⚙️ Gestionar</button>` : ''}
+              <button onclick="window.app.openOperativeView('${o.id}')" class="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg shadow-sm">📋 Abrir Ficha</button>
             </div>
           </div>`;
       }
@@ -1551,8 +1411,7 @@
             <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${bg}">${escapeHtml(o.estado)}</span></td>
             <td class="p-3"><div class="text-[11px] font-semibold ${timeInfo.textClass} mb-1">${timeInfo.elapsedString}</div><div class="w-24 bg-slate-200 h-1.5 rounded-full overflow-hidden"><div class="h-full ${timeInfo.colorClass}" style="width:100%"></div></div></td>
             <td class="p-3 text-right space-x-1 whitespace-nowrap">
-              <button onclick="window.app.openOperativeView('${o.id}')" class="px-2.5 py-1 bg-slate-800 text-white rounded text-xs font-bold">Ficha</button>
-              ${this.currentRole === 'supervisor' ? `<button onclick="window.app.openManageModal('${o.id}')" class="px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded text-xs font-bold">⚙️ Gestionar</button>` : ''}
+              <button onclick="window.app.openOperativeView('${o.id}')" class="px-4 py-1.5 bg-slate-800 text-white rounded-md text-xs font-bold shadow-sm">Abrir</button>
             </td>
           </tr>`;
       }
@@ -1601,64 +1460,113 @@
         this.renderOrdersList();
       }
 
-      openManageModal(id) {
-        if (this.currentRole !== 'supervisor') return;
+      // ================= UNIFIED OPERATIVE AND MANAGEMENT VIEW =================
+      openOperativeView(id) {
         const o = this.orders.find(item => item.id === id);
         if (!o) return;
 
+        this.activeOperativeOt = o;
+        const isSup = this.currentRole === 'supervisor';
+        const isClosed = o.estado === 'Terminada';
+        const isReview = o.estado === 'Solicitud Cierre';
+
+        // Clear unread badges based on role
         if (o.solicitudes_terreno) {
           let changed = false;
-          o.solicitudes_terreno.forEach(r => { if (r.visto_supervisor === false) { r.visto_supervisor = true; changed = true; } });
+          o.solicitudes_terreno.forEach(r => {
+            if (isSup && r.visto_supervisor === false) { r.visto_supervisor = true; changed = true; }
+            if (!isSup && r.respuesta && r.visto_tecnico === false) { r.visto_tecnico = true; changed = true; }
+          });
           if (changed) this.syncOrderToCloud(o);
         }
 
-        document.getElementById('manageOtId').value = o.id;
-        document.getElementById('manageModalFolio').textContent = o.folio;
-        document.getElementById('manageModalSubtitle').textContent = o.recinto;
-        document.getElementById('manageModalStatusBadge').textContent = o.estado;
+        // Header elements
+        document.getElementById('opFolioBadge').textContent = o.folio;
+        document.getElementById('opStatusBadge').textContent = o.estado;
 
-        const isReview = o.estado === 'Solicitud Cierre';
-        const isClosed = o.estado === 'Terminada';
-        const isLocked = isReview || isClosed;
-        
-        document.getElementById('manageLockBanner').classList.toggle('hidden', !isClosed);
-        document.getElementById('manageReviewSection').classList.toggle('hidden', !isReview);
-        document.getElementById('manageSaveBtnContainer').classList.toggle('hidden', isLocked);
-        
-        document.querySelectorAll('.manage-editable-field').forEach(el => {
-          const isInst = el.id === 'manageInstContainer';
-          const disable = isLocked && !(isReview && isInst);
-          el.style.opacity = disable ? '0.6' : '1';
-          el.querySelectorAll('input, select, textarea').forEach(input => input.disabled = disable);
+        // Banners
+        document.getElementById('opLockedBanner').classList.toggle('hidden', !isClosed);
+        document.getElementById('opReviewBanner').classList.toggle('hidden', !(isReview && isSup));
+
+        // Form Fields Population
+        document.getElementById('opOrderId').value = o.id;
+        document.getElementById('opEspecialidad').value = o.especialidad;
+        document.getElementById('opPrioridad').value = o.prioridad;
+        document.getElementById('opRecinto').value = o.recinto;
+        document.getElementById('opTicket').value = o.ticket || '';
+        document.getElementById('opSolicitante').value = o.solicitante;
+        document.getElementById('opEncargado').value = o.encargado || '';
+        document.getElementById('opDescripcion').value = o.descripcion;
+        document.getElementById('opInstrucciones').value = o.instrucciones || '';
+        document.getElementById('opEstado').value = o.estado;
+        document.getElementById('opDiagnosticoSolucion').value = o.diagnostico || '';
+
+        // Locking fields logic (Technicians see disabled forms; Sup sees enabled unless Closed)
+        const disableCoreFields = !isSup || isClosed;
+        document.querySelectorAll('.op-editable-field').forEach(el => {
+          el.disabled = disableCoreFields;
         });
 
-        document.getElementById('manageOtEspecialidad').value = o.especialidad;
-        document.getElementById('manageOtPrioridad').value = o.prioridad;
-        document.getElementById('manageOtRecinto').value = o.recinto;
-        document.getElementById('manageOtTicket').value = o.ticket || '';
-        document.getElementById('manageOtSolicitante').value = o.solicitante;
-        document.getElementById('manageOtEncargado').value = o.encargado || '';
-        document.getElementById('manageOtDescripcion').value = o.descripcion;
-        document.getElementById('manageOtInstrucciones').value = o.instrucciones || '';
-        document.getElementById('manageOtEstado').value = o.estado;
+        // Specific overrides
+        document.getElementById('opDiagnosticoSolucion').disabled = isClosed || (isReview && !isSup);
+        document.getElementById('opEstadoContainer').classList.toggle('hidden', !isSup);
 
-        const reqList = document.getElementById('manageRequestsList');
+        // Action Buttons Setup
+        document.getElementById('techActionButtons').classList.toggle('hidden', isSup || isClosed || isReview);
+        document.getElementById('supActionButtons').classList.toggle('hidden', !isSup);
+        document.getElementById('supSaveBtn').classList.toggle('hidden', isClosed); // Hide save if closed
+        document.getElementById('opRequestForm').classList.toggle('hidden', isSup || isClosed || isReview); // Tech query form
+
+        // Faena Times
+        const startBtn = document.getElementById('startWorkBtn');
+        const startLabel = document.getElementById('opStartTimeLabel');
+        if (o.faena_iniciada) {
+          startLabel.textContent = new Date(o.faena_iniciada).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+          startBtn.disabled = true;
+          startBtn.className = "px-4 py-2 bg-slate-200 text-slate-400 text-xs font-black rounded-lg cursor-not-allowed";
+          startBtn.textContent = "🔒 Faena Iniciada";
+        } else {
+          startLabel.textContent = "Sin iniciar";
+          startBtn.disabled = isClosed || isReview || isSup;
+          startBtn.className = `px-4 py-2 ${startBtn.disabled ? 'bg-slate-200 text-slate-400' : 'bg-emerald-600 hover:bg-emerald-700'} text-white text-xs font-black rounded-lg shadow-sm`;
+          startBtn.textContent = "▶ Iniciar Ahora";
+        }
+        document.getElementById('opEndTimeLabel').textContent = o.fechaTermino ? new Date(o.fechaTermino).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : "En proceso";
+
+        // Whatsapp Share Btn
+        document.getElementById('opWhatsappBtn').onclick = () => this.shareWhatsApp(o.id);
+
+        this.renderOperativeHistory(o);
+        document.getElementById('operativeView').classList.remove('hidden');
+      }
+
+      closeOperativeView() {
+        document.getElementById('operativeView').classList.add('hidden');
+        this.activeOperativeOt = null;
+      }
+
+      renderOperativeHistory(o) {
+        const hist = document.getElementById('opConsultationHistory');
+        const isSup = this.currentRole === 'supervisor';
+        const isClosed = o.estado === 'Terminada';
+
         if (o.solicitudes_terreno && o.solicitudes_terreno.length) {
-          reqList.innerHTML = o.solicitudes_terreno.map((r, i) => `
-            <div class="bg-white p-2 rounded border border-amber-200">
-              <span class="font-bold text-amber-800 text-[10px] block mb-1">${escapeHtml(r.tipo)}</span>
+          hist.innerHTML = o.solicitudes_terreno.map((r, i) => `
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+              <span class="font-bold text-slate-700 text-[10px] block mb-1">${escapeHtml(r.tipo)}</span>
               <p class="font-medium text-slate-800">"${escapeHtml(r.detalle)}"</p>
-              ${r.respuesta ? `<div class="mt-1 pt-1 border-t text-blue-800 font-semibold text-[11px]">↳ "${escapeHtml(r.respuesta)}"</div>` : 
-                (isClosed ? `<div class="mt-1 text-slate-400 italic text-[10px]">No se puede responder en este estado</div>` :
-                `<div class="mt-1 flex gap-1"><label for="respInput_${i}" class="sr-only">Respuesta</label><input type="text" id="respInput_${i}" placeholder="Responder..." class="flex-1 p-1 bg-slate-50 border rounded text-[11px]"><button type="button" onclick="window.app.answerRequest('${o.id}', ${i})" class="px-2 py-1 bg-blue-600 text-white rounded text-[10px] font-bold">Enviar</button></div>`)}
+              ${r.respuesta ? `<div class="mt-1.5 pt-1.5 border-t border-slate-200 text-blue-800 text-[11px]"><b>Respuesta Jefatura:</b> "${escapeHtml(r.respuesta)}"</div>` : 
+                (!isSup ? `<span class="text-[10px] text-amber-600 font-bold block mt-1">⏳ Pendiente de respuesta</span>` :
+                 (isClosed ? `<span class="text-[10px] text-slate-400 block mt-1">No se puede responder en estado cerrado.</span>` :
+                 `<div class="mt-2 flex gap-1"><label for="respInput_${i}" class="sr-only">Respuesta</label><input type="text" id="respInput_${i}" placeholder="Escribir respuesta..." class="flex-1 p-1 bg-white border border-slate-300 rounded text-[11px]"><button type="button" onclick="window.app.answerRequest('${o.id}', ${i})" class="px-2 py-1 bg-blue-600 text-white rounded text-[10px] font-bold">Enviar</button></div>`)
+                )
+              }
             </div>
           `).join('');
         } else {
-          reqList.innerHTML = `<p class="text-slate-400 italic">No hay consultas registradas.</p>`;
+          hist.innerHTML = `<p class="text-slate-400 italic">No hay consultas registradas.</p>`;
         }
-        document.getElementById('manageModal').classList.remove('hidden');
       }
-      closeManageModal() { document.getElementById('manageModal').classList.add('hidden'); }
 
       answerRequest(otId, reqIndex) {
         const input = document.getElementById(`respInput_${reqIndex}`);
@@ -1669,151 +1577,12 @@
           o.solicitudes_terreno[reqIndex].fecha_respuesta = new Date().toISOString();
           o.solicitudes_terreno[reqIndex].visto_tecnico = false;
           this.syncOrderToCloud(o);
-          this.openManageModal(otId);
+          this.openOperativeView(otId);
         }
-      }
-
-      handleSaveManagement(event) {
-        event.preventDefault();
-        const id = document.getElementById('manageOtId').value;
-        const o = this.orders.find(item => item.id === id);
-        if (!o || o.estado === 'Solicitud Cierre' || o.estado === 'Terminada') return;
-
-        o.especialidad = document.getElementById('manageOtEspecialidad').value;
-        o.prioridad = document.getElementById('manageOtPrioridad').value;
-        o.recinto = document.getElementById('manageOtRecinto').value.trim();
-        o.ticket = document.getElementById('manageOtTicket').value.trim();
-        o.solicitante = document.getElementById('manageOtSolicitante').value.trim();
-        o.encargado = document.getElementById('manageOtEncargado').value;
-        o.descripcion = document.getElementById('manageOtDescripcion').value.trim();
-        o.instrucciones = document.getElementById('manageOtInstrucciones').value.trim();
-        o.estado = document.getElementById('manageOtEstado').value;
-
-        this.syncOrderToCloud(o);
-        this.closeManageModal();
-        this.updateKpis();
-        this.renderOrdersList();
-      }
-
-      authorizeClosure() {
-        const id = document.getElementById('manageOtId').value;
-        const o = this.orders.find(item => item.id === id);
-        if (!o) return;
-        o.estado = 'Terminada';
-        if (!o.fechaTermino) o.fechaTermino = new Date().toISOString();
-        this.syncOrderToCloud(o);
-        this.closeManageModal();
-        this.updateKpis();
-        this.renderOrdersList();
-        this.showToast('OT Cerrada Definitivamente', '✅');
-      }
-
-      reopenOrder() {
-        const id = document.getElementById('manageOtId').value;
-        const o = this.orders.find(item => item.id === id);
-        if (!o) return;
-        const instructions = document.getElementById('manageOtInstrucciones').value.trim();
-        o.estado = 'En Ejecución';
-        o.fechaTermino = null;
-        o.instrucciones = instructions;
-        if (!o.solicitudes_terreno) o.solicitudes_terreno = [];
-        o.solicitudes_terreno.push({
-          tipo: 'Rechazo de Cierre',
-          detalle: 'Jefatura ha reabierto la OT.',
-          fecha: new Date().toISOString(),
-          respuesta: instructions || 'Revisar y continuar trabajos.',
-          fecha_respuesta: new Date().toISOString(),
-          visto_tecnico: false,
-          visto_supervisor: true
-        });
-        this.syncOrderToCloud(o);
-        this.closeManageModal();
-        this.updateKpis();
-        this.renderOrdersList();
-        this.showToast('OT Reabierta', '⚠️');
-      }
-
-      openOperativeView(id) {
-        const o = this.orders.find(item => item.id === id);
-        if (!o) return;
-
-        if (this.currentRole === 'tecnico' && o.solicitudes_terreno) {
-          let changed = false;
-          o.solicitudes_terreno.forEach(r => { if (r.respuesta && r.visto_tecnico === false) { r.visto_tecnico = true; changed = true; } });
-          if (changed) this.syncOrderToCloud(o);
-        }
-
-        this.activeOperativeOt = o;
-        const isLocked = o.estado === 'Solicitud Cierre' || o.estado === 'Terminada';
-
-        document.getElementById('opStatusBadge').textContent = o.estado;
-        document.getElementById('opFolioRecinto').textContent = `${o.folio} • ${o.recinto}`;
-        document.getElementById('opEspecialidadPrioridad').textContent = `${o.especialidad} • Prioridad ${o.prioridad}`;
-        document.getElementById('opDescripcion').textContent = o.descripcion;
-        document.getElementById('opSolicitante').textContent = o.solicitante;
-        document.getElementById('opTicket').textContent = o.ticket || 'N/A';
-        
-        if (o.instrucciones) {
-          document.getElementById('opInstruccionesContainer').classList.remove('hidden');
-          document.getElementById('opInstruccionesText').textContent = o.instrucciones;
-        } else {
-          document.getElementById('opInstruccionesContainer').classList.add('hidden');
-        }
-
-        document.getElementById('opWhatsappBtn').onclick = () => this.shareWhatsApp(o.id);
-        document.getElementById('opLockedBanner').classList.toggle('hidden', !isLocked);
-        
-        const startBtn = document.getElementById('startWorkBtn');
-        const startLabel = document.getElementById('opStartTimeLabel');
-        if (o.faena_iniciada) {
-          startLabel.textContent = new Date(o.faena_iniciada).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
-          startBtn.disabled = true;
-          startBtn.className = "px-4 py-2 bg-slate-200 text-slate-400 text-xs font-black rounded-lg cursor-not-allowed";
-          startBtn.textContent = "🔒 Faena Iniciada";
-        } else {
-          startLabel.textContent = "Sin iniciar";
-          startBtn.disabled = isLocked;
-          startBtn.className = `px-4 py-2 ${isLocked ? 'bg-slate-200 text-slate-400' : 'bg-emerald-600 hover:bg-emerald-700'} text-white text-xs font-black rounded-lg shadow-sm`;
-          startBtn.textContent = "▶ Iniciar";
-        }
-
-        document.getElementById('opEndTimeLabel').textContent = o.fechaTermino ? new Date(o.fechaTermino).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : "En proceso";
-        this.renderOperativeHistory(o);
-
-        document.getElementById('opRequestForm').style.display = (isLocked || this.currentRole === 'supervisor') ? 'none' : 'block';
-        document.getElementById('opCloseForm').style.display = (isLocked || this.currentRole === 'supervisor') ? 'none' : 'block';
-        document.getElementById('opDiagnosticoSolucion').value = o.diagnostico || '';
-
-        document.getElementById('operativeView').classList.remove('hidden');
-      }
-      closeOperativeView() { document.getElementById('operativeView').classList.add('hidden'); this.activeOperativeOt = null; }
-
-      renderOperativeHistory(o) {
-        const hist = document.getElementById('opConsultationHistory');
-        if (o.solicitudes_terreno && o.solicitudes_terreno.length) {
-          hist.innerHTML = o.solicitudes_terreno.map(r => `
-            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-              <span class="font-bold text-slate-700 text-[10px] block mb-1">${escapeHtml(r.tipo)}</span>
-              <p class="font-medium text-slate-800">"${escapeHtml(r.detalle)}"</p>
-              ${r.respuesta ? `<div class="mt-1.5 pt-1.5 border-t text-blue-800 text-[11px]"><b>Respuesta:</b> "${escapeHtml(r.respuesta)}"</div>` : `<span class="text-[10px] text-amber-600 font-bold block mt-1">⏳ Pendiente de respuesta</span>`}
-            </div>
-          `).join('');
-        } else {
-          hist.innerHTML = `<p class="text-slate-400 italic">No hay requerimientos emitidos.</p>`;
-        }
-      }
-
-      startFaena() {
-        if (!this.activeOperativeOt || this.activeOperativeOt.faena_iniciada || this.activeOperativeOt.estado === 'Solicitud Cierre' || this.activeOperativeOt.estado === 'Terminada') return;
-        this.activeOperativeOt.faena_iniciada = new Date().toISOString();
-        if (this.activeOperativeOt.estado === 'Pendiente') this.activeOperativeOt.estado = 'En Ejecución';
-        this.syncOrderToCloud(this.activeOperativeOt);
-        this.openOperativeView(this.activeOperativeOt.id);
-        this.updateKpis();
       }
 
       submitTechnicianRequest() {
-        if (!this.activeOperativeOt || this.activeOperativeOt.estado === 'Solicitud Cierre' || this.activeOperativeOt.estado === 'Terminada' || this.currentRole === 'supervisor') return;
+        if (!this.activeOperativeOt || this.activeOperativeOt.estado === 'Terminada' || this.currentRole === 'supervisor') return;
         const details = document.getElementById('opNewRequestDetails').value.trim();
         if (!details) return;
         
@@ -1832,22 +1601,108 @@
         this.renderOperativeHistory(this.activeOperativeOt);
       }
 
-      saveOperativeProgress(requestClose = false) {
-        if (!this.activeOperativeOt || this.activeOperativeOt.estado === 'Solicitud Cierre' || this.activeOperativeOt.estado === 'Terminada') return;
-        this.activeOperativeOt.diagnostico = document.getElementById('opDiagnosticoSolucion').value.trim();
+      startFaena() {
+        if (!this.activeOperativeOt || this.activeOperativeOt.faena_iniciada || this.currentRole === 'supervisor') return;
+        this.activeOperativeOt.faena_iniciada = new Date().toISOString();
+        if (this.activeOperativeOt.estado === 'Pendiente') this.activeOperativeOt.estado = 'En Ejecución';
+        this.syncOrderToCloud(this.activeOperativeOt);
+        this.openOperativeView(this.activeOperativeOt.id);
+        this.updateKpis();
+      }
 
-        if (requestClose) {
-          this.activeOperativeOt.estado = 'Solicitud Cierre';
-          if (!this.activeOperativeOt.fechaTermino) this.activeOperativeOt.fechaTermino = new Date().toISOString();
-          this.showToast('Cierre solicitado a Jefatura', '⚡');
-        } else {
-          this.showToast('Progreso guardado', '💾');
+      saveOrder(event, action) {
+        if (event) event.preventDefault();
+        const o = this.activeOperativeOt;
+        if (!o) return;
+
+        const isSup = this.currentRole === 'supervisor';
+
+        // Solo el supervisor puede actualizar los campos core si la OT no está cerrada
+        if (isSup && o.estado !== 'Terminada') {
+          o.especialidad = document.getElementById('opEspecialidad').value;
+          o.prioridad = document.getElementById('opPrioridad').value;
+          o.recinto = document.getElementById('opRecinto').value.trim();
+          o.ticket = document.getElementById('opTicket').value.trim();
+          o.solicitante = document.getElementById('opSolicitante').value.trim();
+          o.encargado = document.getElementById('opEncargado').value;
+          o.descripcion = document.getElementById('opDescripcion').value.trim();
+          o.instrucciones = document.getElementById('opInstrucciones').value.trim();
+          
+          if (action === 'save') {
+             o.estado = document.getElementById('opEstado').value;
+          }
         }
 
-        this.syncOrderToCloud(this.activeOperativeOt);
-        this.closeOperativeView();
+        // Diagnóstico actualizable por cualquiera siempre que no esté cerrado.
+        if (o.estado !== 'Terminada') {
+           o.diagnostico = document.getElementById('opDiagnosticoSolucion').value.trim();
+        }
+
+        // Lógica de acciones específicas
+        if (action === 'request_close') {
+          o.estado = 'Solicitud Cierre';
+          if (!o.fechaTermino) o.fechaTermino = new Date().toISOString();
+          this.showToast('Cierre solicitado a Jefatura', '⚡');
+          this.closeOperativeView();
+        } 
+        else if (action === 'authorize_close' && isSup) {
+          o.estado = 'Terminada';
+          if (!o.fechaTermino) o.fechaTermino = new Date().toISOString();
+          this.showToast('OT Cerrada Definitivamente', '✅');
+          this.closeOperativeView();
+        } 
+        else if (action === 'reopen' && isSup) {
+          o.estado = 'En Ejecución';
+          o.fechaTermino = null;
+          if (!o.solicitudes_terreno) o.solicitudes_terreno = [];
+          o.solicitudes_terreno.push({
+            tipo: 'Rechazo de Cierre',
+            detalle: 'Jefatura ha reabierto la OT para continuar trabajos.',
+            fecha: new Date().toISOString(),
+            respuesta: o.instrucciones || 'Revisar y continuar trabajos según lo acordado.',
+            fecha_respuesta: new Date().toISOString(),
+            visto_tecnico: false,
+            visto_supervisor: true
+          });
+          this.showToast('OT Reabierta y devuelta a terreno', '⚠️');
+          this.closeOperativeView();
+        }
+        else if (action === 'save') {
+           if (o.estado === 'Terminada' && !o.fechaTermino) o.fechaTermino = new Date().toISOString();
+           this.showToast('Datos guardados', '💾');
+           if (isSup) this.closeOperativeView();
+        }
+
+        this.syncOrderToCloud(o);
         this.updateKpis();
         this.renderOrdersList();
+      }
+
+      deleteOrderFromView() {
+        const id = this.activeOperativeOt.id;
+        this.customConfirm("Eliminar OT", "Esta acción es irreversible y borrará la orden de todos los dispositivos.", async () => {
+          if (this.supabase) {
+            try {
+              const { error } = await this.supabase.from('orders').delete().eq('id', id);
+              if (error) throw error;
+              this.orders = this.orders.filter(o => o.id !== id);
+              localStorage.setItem('sdo_orders_cache', JSON.stringify(this.orders));
+              this.closeOperativeView();
+              this.updateKpis();
+              this.renderOrdersList();
+              this.showToast('OT Eliminada permanentemente');
+            } catch(e) {
+              this.showToast('La nube bloqueó el borrado (Faltan permisos)', '⚠️');
+            }
+          } else {
+             this.orders = this.orders.filter(o => o.id !== id);
+             localStorage.setItem('sdo_orders_cache', JSON.stringify(this.orders));
+             this.closeOperativeView();
+             this.updateKpis();
+             this.renderOrdersList();
+             this.showToast('OT Eliminada localmente');
+          }
+        });
       }
 
       openSettingsModal() {
@@ -1998,7 +1853,7 @@
         doc.text(`Rango: ${document.getElementById('repDateFrom').value} al ${document.getElementById('repDateTo').value}`, 14, 22);
 
         doc.autoTable({
-          head: [["Folio", "Recinto", "Especialidad", "Estado", "Tiempo Transcurrido"]],
+          head: [["Folio", "Recinto", "Especialidad", "Estado", "Tiempo de Respuesta"]],
           body: this.reportFilteredList.map(o => [o.folio, o.recinto, o.especialidad, o.estado, this.calculateElapsedTime(o).elapsedString]),
           startY: 28,
           theme: 'grid',
@@ -2028,33 +1883,6 @@
         document.getElementById('customConfirmModal').classList.remove('hidden');
       }
       closeConfirmModal() { document.getElementById('customConfirmModal').classList.add('hidden'); }
-
-      async deleteOrderFromModal() {
-        const id = document.getElementById('manageOtId').value;
-        this.customConfirm("Eliminar OT", "Esta acción es irreversible y borrará la orden de todos los dispositivos.", async () => {
-          if (this.supabase) {
-            try {
-              const { error } = await this.supabase.from('orders').delete().eq('id', id);
-              if (error) throw error;
-              this.orders = this.orders.filter(o => o.id !== id);
-              localStorage.setItem('sdo_orders_cache', JSON.stringify(this.orders));
-              this.closeManageModal();
-              this.updateKpis();
-              this.renderOrdersList();
-              this.showToast('OT Eliminada permanentemente');
-            } catch(e) {
-              this.showToast('La nube bloqueó el borrado (Faltan permisos)', '⚠️');
-            }
-          } else {
-             this.orders = this.orders.filter(o => o.id !== id);
-             localStorage.setItem('sdo_orders_cache', JSON.stringify(this.orders));
-             this.closeManageModal();
-             this.updateKpis();
-             this.renderOrdersList();
-             this.showToast('OT Eliminada localmente');
-          }
-        });
-      }
     }
 
     window.addEventListener('DOMContentLoaded', () => { window.app = new HospitalApp(); });
