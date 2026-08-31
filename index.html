@@ -504,15 +504,12 @@
         max-width: 790px;
       }
     }
-
   </style>
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col font-sans pb-12">
 
-  <!-- Notificaciones Toast -->
   <div id="toastContainer" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- Header -->
   <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-md">
     <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="window.app.renderDashboard()">
@@ -560,10 +557,8 @@
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="max-w-7xl w-full mx-auto px-3 sm:px-4 py-4 flex-1">
     
-    <!-- KPIs -->
     <section class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">
       <div onclick="window.app.setFilterStatus('Pendiente')" class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm cursor-pointer active:scale-95 transition">
         <div class="flex items-center justify-between">
@@ -595,7 +590,6 @@
       </div>
     </section>
 
-    <!-- Filters -->
     <section class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm mb-4 space-y-2.5">
       <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center justify-between">
         <div class="relative flex-1">
@@ -616,19 +610,27 @@
       </div>
 
       <div class="flex items-center space-x-1.5 overflow-x-auto custom-scroll pb-1">
-        <button onclick="window.app.setFilterStatus('TODOS')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-white whitespace-nowrap" data-status="TODOS">Todos</button>
-        <button onclick="window.app.setFilterStatus('Pendiente')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Pendiente">Pendientes</button>
-        <button onclick="window.app.setFilterStatus('En Ejecución')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="En Ejecución">En Ejecución</button>
-        <button onclick="window.app.setFilterStatus('Solicitud Cierre')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Solicitud Cierre">Solicitud Cierre</button>
-        <button onclick="window.app.setFilterStatus('Terminada')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Terminada">Terminadas</button>
+        <button onclick="window.app.setFilterStatus('TODOS')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-white whitespace-nowrap" data-status="TODOS">
+          Todos
+        </button>
+        <button onclick="window.app.setFilterStatus('Pendiente')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Pendiente">
+          Pendientes
+        </button>
+        <button onclick="window.app.setFilterStatus('En Ejecución')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="En Ejecución">
+          En Ejecución
+        </button>
+        <button onclick="window.app.setFilterStatus('Solicitud Cierre')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Solicitud Cierre">
+          Solicitud Cierre
+        </button>
+        <button onclick="window.app.setFilterStatus('Terminada')" class="status-filter-btn px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-status="Terminada">
+          Terminadas
+        </button>
       </div>
     </section>
 
-    <!-- Orders Container -->
     <section id="ordersContainer"></section>
   </main>
 
-  <!-- Modal Auth -->
   <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-xs rounded-2xl p-5 shadow-2xl border border-slate-200 text-center relative">
       <button onclick="window.app.closeAuthModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700" aria-label="Cerrar">✕</button>
@@ -640,8 +642,12 @@
       <p class="text-xs text-slate-500 mb-4">Seleccione su rol e ingrese su PIN</p>
 
       <div class="grid grid-cols-2 gap-2 mb-4">
-        <button id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="py-2 text-xs font-bold rounded-lg border-2 border-blue-600 bg-blue-50 text-blue-700">Supervisor</button>
-        <button id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="py-2 text-xs font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600">Técnico</button>
+        <button id="roleBtnSupervisor" onclick="window.app.selectAuthRole('supervisor')" class="py-2 text-xs font-bold rounded-lg border-2 border-blue-600 bg-blue-50 text-blue-700">
+          Supervisor
+        </button>
+        <button id="roleBtnTecnico" onclick="window.app.selectAuthRole('tecnico')" class="py-2 text-xs font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600">
+          Técnico
+        </button>
       </div>
 
       <div class="flex justify-center space-x-3 mb-4">
@@ -670,7 +676,6 @@
     </div>
   </div>
 
-  <!-- Modal Crear OT -->
   <div id="createModal" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white w-full max-w-lg rounded-2xl p-5 shadow-2xl border border-slate-200 max-h-[92vh] flex flex-col">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -691,12 +696,12 @@
             </select>
           </div>
           <div>
-            <label for="newOtPrioridad" class="block text-xs font-bold text-slate-600 mb-1">Prioridad (SLA)</label>
+            <label for="newOtPrioridad" class="block text-xs font-bold text-slate-600 mb-1">Prioridad</label>
             <select id="newOtPrioridad" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
-              <option value="Urgente">🚨 Urgente (2h)</option>
-              <option value="Alta" selected>🟠 Alta (6h)</option>
-              <option value="Media">🟡 Media (24h)</option>
-              <option value="Baja">🟢 Baja (72h)</option>
+              <option value="Urgente">🚨 Urgente</option>
+              <option value="Alta" selected>🟠 Alta</option>
+              <option value="Media">🟡 Media</option>
+              <option value="Baja">🟢 Baja</option>
             </select>
           </div>
         </div>
@@ -741,7 +746,6 @@
     </div>
   </div>
 
-  <!-- Modal Gestionar OT -->
   <div id="manageModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white w-full max-w-xl rounded-2xl p-5 shadow-2xl border border-slate-200 max-h-[94vh] flex flex-col">
       
@@ -757,7 +761,7 @@
       </div>
 
       <div id="manageLockBanner" class="hidden mt-2 p-2 bg-rose-50 border border-rose-200 rounded-lg text-xs font-bold text-rose-700 flex items-center gap-2">
-        <span aria-hidden="true">🔒</span> OT en estado Terminal. Datos bloqueados. Solo puede eliminarse.
+        <span aria-hidden="true">🔒</span> OT en estado Terminal. Datos bloqueados para edición. Solo puede reabrirse o eliminarse.
       </div>
 
       <div id="manageReviewSection" class="hidden mt-3 bg-indigo-50 border border-indigo-200 p-4 rounded-xl space-y-3">
@@ -795,12 +799,12 @@
             </select>
           </div>
           <div>
-            <label for="manageOtPrioridad" class="block text-xs font-bold text-slate-600 mb-1">Prioridad (SLA)</label>
+            <label for="manageOtPrioridad" class="block text-xs font-bold text-slate-600 mb-1">Prioridad</label>
             <select id="manageOtPrioridad" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
-              <option value="Urgente">🚨 Urgente (2h)</option>
-              <option value="Alta">🟠 Alta (6h)</option>
-              <option value="Media">🟡 Media (24h)</option>
-              <option value="Baja">🟢 Baja (72h)</option>
+              <option value="Urgente">🚨 Urgente</option>
+              <option value="Alta">🟠 Alta</option>
+              <option value="Media">🟡 Media</option>
+              <option value="Baja">🟢 Baja</option>
             </select>
           </div>
         </div>
@@ -862,7 +866,6 @@
     </div>
   </div>
 
-  <!-- Ficha Operativa -->
   <div id="operativeView" class="hidden fixed inset-0 z-40 bg-slate-100 overflow-y-auto">
     <div class="max-w-2xl mx-auto px-3 py-4 space-y-3 pb-20">
       
@@ -879,7 +882,6 @@
             <h3 id="opFolioRecinto" class="text-base font-black text-slate-900">OT-000 • Recinto</h3>
             <p id="opEspecialidadPrioridad" class="text-xs text-slate-500 font-semibold">Climatización • Alta</p>
           </div>
-          <span id="opSlaBadge" class="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded">SLA: 6h</span>
         </div>
         <p id="opDescripcion" class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-100 leading-relaxed font-medium">Descripción...</p>
         
@@ -967,7 +969,6 @@
     </div>
   </div>
 
-  <!-- Modal Configuración -->
   <div id="settingsModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl border border-slate-200 max-h-[92vh] flex flex-col">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -1038,14 +1039,13 @@
     </div>
   </div>
 
-  <!-- Modal Reporte -->
   <div id="advanceReportModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white w-full max-w-2xl rounded-2xl p-5 shadow-2xl border border-slate-200 max-h-[94vh] flex flex-col text-xs">
       
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
         <div>
           <h3 class="text-base font-black text-slate-900">📈 Reporte Ejecutivo de Avance</h3>
-          <p class="text-slate-500">Métricas y cumplimiento entre fechas</p>
+          <p class="text-slate-500">Métricas y tiempos de atención</p>
         </div>
         <button onclick="window.app.closeAdvanceReportModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1" aria-label="Cerrar">✕</button>
       </div>
@@ -1067,14 +1067,10 @@
         </button>
 
         <div id="reportStatsContainer" class="hidden space-y-3">
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid grid-cols-2 gap-2">
             <div class="bg-blue-50 border border-blue-200 p-2.5 rounded-xl text-center">
               <span class="block text-[10px] uppercase font-bold text-blue-800">Total OTs</span>
               <span id="statTotalOts" class="text-xl font-black text-blue-900">0</span>
-            </div>
-            <div class="bg-emerald-50 border border-emerald-200 p-2.5 rounded-xl text-center">
-              <span class="block text-[10px] uppercase font-bold text-emerald-800">Cumplimiento SLA</span>
-              <span id="statSlaCompliance" class="text-xl font-black text-emerald-900">0%</span>
             </div>
             <div class="bg-indigo-50 border border-indigo-200 p-2.5 rounded-xl text-center">
               <span class="block text-[10px] uppercase font-bold text-indigo-800">Promedio Atención</span>
@@ -1104,13 +1100,12 @@
     </div>
   </div>
 
-  <!-- Modal Custom Confirm -->
   <div id="customConfirmModal" class="hidden fixed inset-0 z-[100] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl p-5 max-w-sm w-full text-center shadow-2xl">
       <h3 id="confirmModalTitle" class="text-lg font-black text-slate-900 mb-2"></h3>
       <p id="confirmModalText" class="text-sm text-slate-600 mb-5"></p>
       <div class="flex gap-2">
-        <button onclick="window.app.closeConfirmModal()" class="flex-1 py-2 bg-slate-100 text-slate-700 font-bold rounded-lg">Cancelar</button>
+        <button onclick="window.app.closeConfirmModal(false)" class="flex-1 py-2 bg-slate-100 text-slate-700 font-bold rounded-lg">Cancelar</button>
         <button id="confirmModalBtnYes" class="flex-1 py-2 bg-rose-600 text-white font-bold rounded-lg shadow-sm">Confirmar</button>
       </div>
     </div>
@@ -1122,8 +1117,7 @@
       supabaseAnonKey: "sb_publishable__rmY-7gpN8Ijh7Bn5e9HtA_Bu6Z4Yqy",
       defaultHospital: "SDO Hospital Regional",
       defaultPrefix: "OT-INFRA",
-      defaultPins: { supervisor: "1234", tecnico: "5678" },
-      slaHours: { Urgente: 2, Alta: 6, Media: 24, Baja: 72 }
+      defaultPins: { supervisor: "1234", tecnico: "5678" }
     };
 
     function escapeHtml(unsafe) {
@@ -1209,7 +1203,6 @@
             this.updateKpis();
             this.renderOrdersList();
             
-            // Si la ficha o el modal están abiertos de la misma OT, actualiza solo el historial sin borrar los campos
             if (this.activeOperativeOt && payload.new && payload.new.id === this.activeOperativeOt.id) {
                this.activeOperativeOt = payload.new.data;
                this.renderOperativeHistory(this.activeOperativeOt);
@@ -1286,6 +1279,7 @@
           } catch(e) {}
         }
         this.updateUIWithConfig();
+        this.populateTechDropdowns();
 
         const storedOrders = localStorage.getItem('sdo_orders_cache');
         if (storedOrders) {
@@ -1460,23 +1454,25 @@
         this.renderOrdersList();
       }
 
-      calculateSlaInfo(order) {
+      calculateElapsedTime(order) {
         const created = new Date(order.fechaCreacion || Date.now());
-        const maxHours = SGM_CONFIG.slaHours[order.prioridad] || 24;
-        const maxMs = maxHours * 3600000;
         const endRef = order.fechaTermino ? new Date(order.fechaTermino) : new Date();
         const elapsedMs = Math.max(0, endRef - created);
         const elapsedHours = elapsedMs / 3600000;
         const elapsedDays = Math.floor(elapsedHours / 24);
         const remHours = Math.floor(elapsedHours % 24);
 
-        const percent = Math.min(100, Math.round((elapsedMs / maxMs) * 100));
-        let colorClass = "bg-emerald-500", textClass = "text-emerald-700";
-        if (percent > 90) { colorClass = "bg-rose-500"; textClass = "text-rose-700"; }
-        else if (percent > 65) { colorClass = "bg-amber-500"; textClass = "text-amber-700"; }
+        let colorClass = "bg-blue-500", textClass = "text-blue-700";
+        if (elapsedDays >= 5) { colorClass = "bg-rose-500"; textClass = "text-rose-700"; }
+        else if (elapsedDays >= 2) { colorClass = "bg-amber-500"; textClass = "text-amber-700"; }
         
-        return { elapsedString: elapsedDays > 0 ? `${elapsedDays}d ${remHours}h` : `${remHours}h`, percent, colorClass, textClass };
+        return {
+          elapsedString: elapsedDays > 0 ? `${elapsedDays}d ${remHours}h corridas` : `${remHours}h corridas`,
+          colorClass,
+          textClass
+        };
       }
+
       updateTimeElapsedElements() { this.renderOrdersList(); }
 
       updateKpis() {
@@ -1513,12 +1509,12 @@
         if (this.viewMode === 'cards') {
           container.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">${filtered.map(o => this.renderOrderCard(o)).join('')}</div>`;
         } else {
-          container.innerHTML = `<div class="bg-white rounded-xl border overflow-hidden"><div class="overflow-x-auto custom-scroll"><table class="w-full text-left text-xs"><thead class="bg-slate-50 text-slate-700 font-bold border-b"><tr><th class="p-3">Folio</th><th class="p-3">Recinto / PMA</th><th class="p-3">Especialidad</th><th class="p-3">Estado</th><th class="p-3">SLA</th><th class="p-3 text-right">Acciones</th></tr></thead><tbody class="divide-y divide-slate-100">${filtered.map(o => this.renderOrderRow(o)).join('')}</tbody></table></div></div>`;
+          container.innerHTML = `<div class="bg-white rounded-xl border overflow-hidden"><div class="overflow-x-auto custom-scroll"><table class="w-full text-left text-xs"><thead class="bg-slate-50 text-slate-700 font-bold border-b"><tr><th class="p-3">Folio</th><th class="p-3">Recinto / PMA</th><th class="p-3">Especialidad</th><th class="p-3">Estado</th><th class="p-3">Tiempo (Días)</th><th class="p-3 text-right">Acciones</th></tr></thead><tbody class="divide-y divide-slate-100">${filtered.map(o => this.renderOrderRow(o)).join('')}</tbody></table></div></div>`;
         }
       }
 
       renderOrderCard(o) {
-        const sla = this.calculateSlaInfo(o);
+        const timeInfo = this.calculateElapsedTime(o);
         const bg = o.estado === 'Terminada' ? 'bg-emerald-100 text-emerald-800' : (o.estado === 'Solicitud Cierre' ? 'bg-indigo-100 text-indigo-800' : (o.estado === 'En Ejecución' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'));
         const unreadBadge = this.hasUnreadMessages(o) ? `<span class="bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-2 badge-pulse">🔔 NUEVO</span>` : '';
         
@@ -1532,8 +1528,8 @@
               <h4 class="font-bold text-sm truncate">${escapeHtml(o.recinto)}</h4>
               <p class="text-[11px] text-slate-500 font-medium">PMA: ${escapeHtml(o.ticket)} • ${escapeHtml(o.especialidad)}</p>
               <div class="mt-2 bg-slate-50 p-2 rounded-lg border">
-                <div class="flex justify-between text-[11px] font-semibold mb-1"><span>SLA</span><span class="${sla.textClass}">${sla.elapsedString} (${sla.percent}%)</span></div>
-                <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden"><div class="h-full ${sla.colorClass}" style="width:${sla.percent}%"></div></div>
+                <div class="flex justify-between text-[11px] font-semibold mb-1"><span>Tiempo Transcurrido</span><span class="${timeInfo.textClass}">${timeInfo.elapsedString}</span></div>
+                <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden"><div class="h-full ${timeInfo.colorClass}" style="width:100%"></div></div>
               </div>
             </div>
             <div class="pt-2 border-t flex items-center justify-between gap-1.5">
@@ -1544,7 +1540,7 @@
       }
 
       renderOrderRow(o) {
-        const sla = this.calculateSlaInfo(o);
+        const timeInfo = this.calculateElapsedTime(o);
         const bg = o.estado === 'Terminada' ? 'bg-emerald-100 text-emerald-800' : (o.estado === 'Solicitud Cierre' ? 'bg-indigo-100 text-indigo-800' : (o.estado === 'En Ejecución' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'));
         const unreadBadge = this.hasUnreadMessages(o) ? `<span class="bg-rose-500 text-white text-[9px] px-1 rounded-full ml-1 badge-pulse" title="Mensaje Nuevo">🔔</span>` : '';
         return `
@@ -1553,7 +1549,7 @@
             <td class="p-3"><span class="font-bold block">${escapeHtml(o.recinto)}</span><span class="text-[10px] text-slate-400">PMA: ${escapeHtml(o.ticket)}</span></td>
             <td class="p-3 font-medium">${escapeHtml(o.especialidad)}</td>
             <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${bg}">${escapeHtml(o.estado)}</span></td>
-            <td class="p-3"><div class="text-[11px] font-semibold ${sla.textClass} mb-1">${sla.elapsedString} (${sla.percent}%)</div><div class="w-24 bg-slate-200 h-1.5 rounded-full overflow-hidden"><div class="h-full ${sla.colorClass}" style="width:${sla.percent}%"></div></div></td>
+            <td class="p-3"><div class="text-[11px] font-semibold ${timeInfo.textClass} mb-1">${timeInfo.elapsedString}</div><div class="w-24 bg-slate-200 h-1.5 rounded-full overflow-hidden"><div class="h-full ${timeInfo.colorClass}" style="width:100%"></div></div></td>
             <td class="p-3 text-right space-x-1 whitespace-nowrap">
               <button onclick="window.app.openOperativeView('${o.id}')" class="px-2.5 py-1 bg-slate-800 text-white rounded text-xs font-bold">Ficha</button>
               ${this.currentRole === 'supervisor' ? `<button onclick="window.app.openManageModal('${o.id}')" class="px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded text-xs font-bold">⚙️ Gestionar</button>` : ''}
@@ -1753,7 +1749,6 @@
         document.getElementById('opStatusBadge').textContent = o.estado;
         document.getElementById('opFolioRecinto').textContent = `${o.folio} • ${o.recinto}`;
         document.getElementById('opEspecialidadPrioridad').textContent = `${o.especialidad} • Prioridad ${o.prioridad}`;
-        document.getElementById('opSlaBadge').textContent = `SLA: ${SGM_CONFIG.slaHours[o.prioridad] || 24}h`;
         document.getElementById('opDescripcion').textContent = o.descripcion;
         document.getElementById('opSolicitante').textContent = o.solicitante;
         document.getElementById('opTicket').textContent = o.ticket || 'N/A';
@@ -1974,22 +1969,19 @@
         });
 
         const total = this.reportFilteredList.length;
-        let comp = 0, totalHrs = 0;
+        let totalHrs = 0;
 
         this.reportFilteredList.forEach(o => {
-          const sla = this.calculateSlaInfo(o);
-          if (sla.percent <= 100) comp++;
           const end = o.fechaTermino ? new Date(o.fechaTermino) : new Date();
           totalHrs += Math.max(0, (end - new Date(o.fechaCreacion)) / 3600000);
         });
 
         document.getElementById('statTotalOts').textContent = total;
-        document.getElementById('statSlaCompliance').textContent = total > 0 ? `${Math.round((comp / total) * 100)}%` : '100%';
         document.getElementById('statAvgTime').textContent = total > 0 ? `${(totalHrs / total).toFixed(1)}h` : '0h';
 
         document.getElementById('reportTableBody').innerHTML = this.reportFilteredList.map(o => {
-          const sla = this.calculateSlaInfo(o);
-          return `<tr><td class="p-2 font-bold">${escapeHtml(o.folio)}</td><td class="p-2">${escapeHtml(o.recinto)}</td><td class="p-2">${escapeHtml(o.estado)}</td><td class="p-2 text-right font-semibold ${sla.textClass}">${sla.elapsedString}</td></tr>`;
+          const timeInfo = this.calculateElapsedTime(o);
+          return `<tr><td class="p-2 font-bold">${escapeHtml(o.folio)}</td><td class="p-2">${escapeHtml(o.recinto)}</td><td class="p-2">${escapeHtml(o.estado)}</td><td class="p-2 text-right font-semibold ${timeInfo.textClass}">${timeInfo.elapsedString}</td></tr>`;
         }).join('');
 
         document.getElementById('reportStatsContainer').classList.remove('hidden');
@@ -2006,8 +1998,8 @@
         doc.text(`Rango: ${document.getElementById('repDateFrom').value} al ${document.getElementById('repDateTo').value}`, 14, 22);
 
         doc.autoTable({
-          head: [["Folio", "Recinto", "Especialidad", "Estado", "SLA Cumplido"]],
-          body: this.reportFilteredList.map(o => [o.folio, o.recinto, o.especialidad, o.estado, this.calculateSlaInfo(o).percent <= 100 ? 'SÍ' : 'NO']),
+          head: [["Folio", "Recinto", "Especialidad", "Estado", "Tiempo Transcurrido"]],
+          body: this.reportFilteredList.map(o => [o.folio, o.recinto, o.especialidad, o.estado, this.calculateElapsedTime(o).elapsedString]),
           startY: 28,
           theme: 'grid',
           styles: { fontSize: 8 }
