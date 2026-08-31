@@ -633,7 +633,11 @@
             <!-- Estado y Tiempos consolidado -->
             <div class="pt-4 border-t border-slate-100 mt-4">
               <h4 class="text-xs font-bold text-slate-800 mb-3 uppercase tracking-wide">Estado y Tiempos</h4>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                 <div class="uov-editable" id="uovFechaInicioContainer">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Fecha de Inicio</label>
+                    <input type="datetime-local" id="uovFechaInicio" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium">
+                 </div>
                  <div class="uov-editable" id="uovEstadoContainer">
                     <label class="block text-xs font-bold text-slate-600 mb-1">Estado Administrativo</label>
                     <select id="uovEstado" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800">
@@ -658,7 +662,7 @@
           <!-- Sec 3: Consultas -->
           <section id="sec-consults" class="uov-section-card space-y-4">
             <h3 class="text-sm font-bold text-slate-800 flex items-center justify-between border-b border-slate-100 pb-2 mb-4">
-              <span class="flex items-center gap-2"><span aria-hidden="true">💬</span> Historial de Consultas</span>
+              <span class="flex items-center gap-2"><span aria-hidden="true">💬</span> Historial de Actividad</span>
             </h3>
             
             <div id="uovConsultationHistory" class="space-y-3 text-sm"></div>
@@ -1318,6 +1322,25 @@
       }
       closeCreateModal() { document.getElementById('createModal').classList.add('hidden'); }
 
+      formatDateLocal(iso) {
+          if (!iso) return '';
+          const d = new Date(iso);
+          return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      }
+
+      logActivity(order, detail, type = 'Sistema') {
+          if (!order.solicitudes_terreno) order.solicitudes_terreno = [];
+          order.solicitudes_terreno.push({
+              tipo: type,
+              detalle: detail,
+              fecha: new Date().toISOString(),
+              respuesta: null,
+              visto_supervisor: true,
+              visto_tecnico: false,
+              isSystem: true
+          });
+      }
+
       handleCreateOT(event) {
         event.preventDefault();
         const year = new Date().getFullYear();
@@ -1401,6 +1424,7 @@
         document.getElementById('uovEncargado').value = o.encargado || '';
         document.getElementById('uovDescripcion').value = o.descripcion;
         document.getElementById('uovInstrucciones').value = o.instrucciones || '';
+        document.getElementById('uovFechaInicio').value = this.formatDateLocal(o.fechaCreacion);
         
         // Disable fields for Sec 1 depending on role & lock status
         const disableSec1 = !isSupervisor || isClosed || isReview;
@@ -1475,18 +1499,28 @@
         const isClosed = o.estado === 'Terminada';
 
         if (o.solicitudes_terreno && o.solicitudes_terreno.length) {
-          hist.innerHTML = o.solicitudes_terreno.map((r, i) => `
-            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-              <span class="font-bold text-slate-700 text-[10px] block mb-1">${escapeHtml(r.tipo)}</span>
-              <p class="font-medium text-slate-800">"${escapeHtml(r.detalle)}"</p>
-              ${r.respuesta ? `<div class="mt-2 pt-2 border-t text-blue-800 text-[11px]"><b>Respuesta:</b> "${escapeHtml(r.respuesta)}"</div>` : 
-                (isSupervisor && !isClosed ? 
-                  `<div class="mt-2 flex gap-2"><label for="respInput_${i}" class="sr-only">Respuesta</label><input type="text" id="respInput_${i}" placeholder="Responder..." class="flex-1 p-1.5 bg-white border border-slate-300 rounded text-xs"><button type="button" onclick="window.app.answerRequest('${o.id}', ${i})" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold transition-transform active:scale-95">Enviar</button></div>` 
-                : `<span class="text-[10px] text-amber-600 font-bold block mt-1">⏳ Pendiente de respuesta</span>`)}
-            </div>
-          `).join('');
+          hist.innerHTML = o.solicitudes_terreno.map((r, i) => {
+            if (r.tipo === 'Sistema' || r.isSystem) {
+                const f = new Date(r.fecha).toLocaleString([], {dateStyle:'short', timeStyle:'short'});
+                return `<div class="bg-slate-100 p-2 rounded-lg border border-slate-200 flex justify-between items-center text-slate-500">
+                           <span class="text-[11px] font-bold">⚙️ ${escapeHtml(r.detalle)}</span>
+                           <span class="text-[9px]">${f}</span>
+                        </div>`;
+            } else {
+                return `
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <span class="font-bold text-slate-700 text-[10px] block mb-1">${escapeHtml(r.tipo)}</span>
+                  <p class="font-medium text-slate-800">"${escapeHtml(r.detalle)}"</p>
+                  ${r.respuesta ? `<div class="mt-2 pt-2 border-t text-blue-800 text-[11px]"><b>Respuesta:</b> "${escapeHtml(r.respuesta)}"</div>` : 
+                    (isSupervisor && !isClosed ? 
+                      `<div class="mt-2 flex gap-2"><label for="respInput_${i}" class="sr-only">Respuesta</label><input type="text" id="respInput_${i}" placeholder="Responder..." class="flex-1 p-1.5 bg-white border border-slate-300 rounded text-xs"><button type="button" onclick="window.app.answerRequest('${o.id}', ${i})" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold transition-transform active:scale-95">Enviar</button></div>` 
+                    : `<span class="text-[10px] text-amber-600 font-bold block mt-1">⏳ Pendiente de respuesta</span>`)}
+                </div>
+              `;
+            }
+          }).join('');
         } else {
-          hist.innerHTML = `<p class="text-slate-400 italic">No hay requerimientos emitidos.</p>`;
+          hist.innerHTML = `<p class="text-slate-400 italic">No hay registros de actividad.</p>`;
         }
       }
 
@@ -1540,10 +1574,20 @@
                 o.encargado = document.getElementById('uovEncargado').value;
                 o.descripcion = document.getElementById('uovDescripcion').value.trim();
                 o.instrucciones = document.getElementById('uovInstrucciones').value.trim();
+                
+                const newDate = document.getElementById('uovFechaInicio').value;
+                if (newDate) {
+                    const newIso = new Date(newDate).toISOString();
+                    if (o.fechaCreacion !== newIso) {
+                        this.logActivity(o, `Fecha de inicio modificada a: ${new Date(newDate).toLocaleString()}`);
+                        o.fechaCreacion = newIso;
+                    }
+                }
             }
             
             const newState = document.getElementById('uovEstado').value;
             if (o.estado !== newState) {
+                this.logActivity(o, `Estado actualizado a: ${newState}`);
                 o.fechaUltimoEstado = new Date().toISOString();
                 if (newState === 'Terminada' && !o.fechaTermino) o.fechaTermino = new Date().toISOString();
                 if (newState !== 'Terminada' && newState !== 'Solicitud Cierre') o.fechaTermino = null; 
@@ -1564,11 +1608,13 @@
               o.estado = 'Solicitud Cierre';
               o.fechaUltimoEstado = new Date().toISOString();
               if (!o.fechaTermino) o.fechaTermino = new Date().toISOString();
+              this.logActivity(o, 'El técnico solicitó el cierre de la OT');
               this.showToast('Cierre solicitado a Jefatura', '⚡');
             } else {
               if (o.estado === 'Pendiente') {
                   o.estado = 'En Ejecución';
                   o.fechaUltimoEstado = new Date().toISOString();
+                  this.logActivity(o, 'El técnico inició la ejecución (Pendiente -> En Ejecución)');
               }
               this.showToast('Progreso guardado', '💾');
             }
@@ -1586,6 +1632,7 @@
         o.estado = 'Terminada';
         o.fechaUltimoEstado = new Date().toISOString();
         if (!o.fechaTermino) o.fechaTermino = new Date().toISOString();
+        this.logActivity(o, 'Jefatura autorizó el cierre definitivo de la OT');
         this.syncOrderToCloud(o);
         this.closeOperativeView();
         this.updateKpis();
@@ -1611,6 +1658,7 @@
           visto_tecnico: false,
           visto_supervisor: true
         });
+        this.logActivity(o, 'Jefatura rechazó el cierre y reabrió la OT');
         this.syncOrderToCloud(o);
         this.closeOperativeView();
         this.updateKpis();
