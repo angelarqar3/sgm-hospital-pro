@@ -1267,7 +1267,7 @@
         if (this.viewMode === 'cards') {
           container.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">${filtered.map(o => this.renderOrderCard(o)).join('')}</div>`;
         } else {
-          container.innerHTML = `<div class="bg-white rounded-xl border overflow-hidden"><div class="overflow-x-auto custom-scroll"><table class="w-full text-left text-xs"><thead class="bg-slate-50 text-slate-700 font-bold border-b"><tr><th class="p-3">Folio</th><th class="p-3">Recinto / PMA</th><th class="p-3">Especialidad</th><th class="p-3">Estado</th><th class="p-3">Tiempo Corrido</th><th class="p-3 text-right">Acciones</th></tr></thead><tbody class="divide-y divide-slate-100">${filtered.map(o => this.renderOrderRow(o)).join('')}</tbody></table></div></div>`;
+          container.innerHTML = `<div class="bg-white rounded-xl border overflow-hidden"><div class="overflow-x-auto custom-scroll"><table class="w-full text-left text-xs"><thead class="bg-slate-50 text-slate-700 font-bold border-b"><tr><th class="p-3">Folio</th><th class="p-3">Recinto / PMA</th><th class="p-3">Prioridad / Descripción</th><th class="p-3">Estado</th><th class="p-3">Tiempo Corrido</th><th class="p-3 text-right">Acciones</th></tr></thead><tbody class="divide-y divide-slate-100">${filtered.map(o => this.renderOrderRow(o)).join('')}</tbody></table></div></div>`;
         }
       }
 
@@ -1276,6 +1276,7 @@
         const bg = o.estado === 'Terminada' ? 'bg-emerald-100 text-emerald-800' : (o.estado === 'Solicitud Cierre' ? 'bg-indigo-100 text-indigo-800' : (o.estado === 'En Ejecución' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'));
         const unreadBadge = this.hasUnreadMessages(o) ? `<span class="bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-2 badge-pulse">🔔 NUEVO</span>` : '';
         const btnText = (this.currentRole === 'supervisor' && o.estado !== 'Terminada') ? '⚙️ Gestionar' : '📋 Ver Ficha';
+        const emojis = { Urgente: '🚨', Alta: '🟠', Media: '🟡', Baja: '🟢' };
         
         return `
           <div class="bg-white p-4 rounded-xl border shadow-sm flex flex-col justify-between space-y-3 cursor-pointer hover:border-slate-300" onclick="window.app.openOperativeView('${o.id}')">
@@ -1285,13 +1286,18 @@
                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${bg}">${escapeHtml(o.estado)}</span>
               </div>
               <h4 class="font-bold text-sm truncate">${escapeHtml(o.recinto)}</h4>
-              <p class="text-[11px] text-slate-500 font-medium">PMA: ${escapeHtml(o.ticket)} • ${escapeHtml(o.especialidad)}</p>
-              <div class="mt-2 text-[11px] font-semibold text-slate-600 bg-slate-50 p-2 rounded-lg border">
-                 ⏳ Transcurrido: <span class="${timeInfo.textClass}">${timeInfo.elapsedString}</span>
+              <p class="text-[11px] text-slate-500 font-medium truncate mb-1">PMA: ${escapeHtml(o.ticket)} • Prioridad: ${emojis[o.prioridad]||''} ${escapeHtml(o.prioridad)}</p>
+              <p class="text-[11px] text-slate-600 leading-tight line-clamp-2">${escapeHtml(o.descripcion)}</p>
+              <div class="mt-2 bg-slate-50 p-2 rounded-lg border">
+                <div class="flex justify-between text-[11px] font-semibold mb-1"><span>Tiempo transcurrido</span><span class="${timeInfo.textClass}">${timeInfo.elapsedString}</span></div>
+                <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden"><div class="h-full ${timeInfo.colorClass}" style="width:${timeInfo.percent}%"></div></div>
               </div>
             </div>
             <div class="pt-2 border-t flex items-center justify-between gap-1.5">
               <button class="flex-1 py-2 bg-slate-800 text-white text-xs font-bold rounded-lg pointer-events-none">${btnText}</button>
+              <button type="button" onclick="event.stopPropagation(); window.app.shareWhatsApp('${o.id}')" class="px-3 py-2 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-lg transition-transform active:scale-95 shadow-sm" title="Compartir por WhatsApp">
+                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+              </button>
             </div>
           </div>`;
       }
@@ -1301,16 +1307,25 @@
         const bg = o.estado === 'Terminada' ? 'bg-emerald-100 text-emerald-800' : (o.estado === 'Solicitud Cierre' ? 'bg-indigo-100 text-indigo-800' : (o.estado === 'En Ejecución' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'));
         const unreadBadge = this.hasUnreadMessages(o) ? `<span class="bg-rose-500 text-white text-[9px] px-1 rounded-full ml-1 badge-pulse" title="Mensaje Nuevo">🔔</span>` : '';
         const btnText = (this.currentRole === 'supervisor' && o.estado !== 'Terminada') ? '⚙️ Gestionar' : 'Ficha';
+        const emojis = { Urgente: '🚨', Alta: '🟠', Media: '🟡', Baja: '🟢' };
         
         return `
           <tr class="hover:bg-slate-50 cursor-pointer" onclick="window.app.openOperativeView('${o.id}')">
             <td class="p-3 font-bold">${escapeHtml(o.folio)} ${unreadBadge}</td>
             <td class="p-3"><span class="font-bold block">${escapeHtml(o.recinto)}</span><span class="text-[10px] text-slate-400">PMA: ${escapeHtml(o.ticket)}</span></td>
-            <td class="p-3 font-medium">${escapeHtml(o.especialidad)}</td>
+            <td class="p-3">
+               <div class="mb-0.5"><span class="text-[10px] font-bold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">${emojis[o.prioridad]||''} ${escapeHtml(o.prioridad)}</span></div>
+               <div class="text-[11px] text-slate-600 truncate max-w-[150px] sm:max-w-[200px] lg:max-w-[280px]" title="${escapeHtml(o.descripcion)}">${escapeHtml(o.descripcion)}</div>
+            </td>
             <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${bg}">${escapeHtml(o.estado)}</span></td>
-            <td class="p-3"><span class="text-[11px] font-semibold ${timeInfo.textClass}">${timeInfo.elapsedString}</span></td>
-            <td class="p-3 text-right space-x-1 whitespace-nowrap">
-              <button class="px-2.5 py-1 bg-slate-800 text-white rounded text-xs font-bold pointer-events-none">${btnText}</button>
+            <td class="p-3"><div class="text-[11px] font-semibold ${timeInfo.textClass} mb-1">${timeInfo.elapsedString}</div><div class="w-24 bg-slate-200 h-1.5 rounded-full overflow-hidden"><div class="h-full ${timeInfo.colorClass}" style="width:${timeInfo.percent}%"></div></div></td>
+            <td class="p-3 text-right whitespace-nowrap">
+              <div class="flex items-center justify-end space-x-1.5">
+                  <button type="button" onclick="event.stopPropagation(); window.app.shareWhatsApp('${o.id}')" class="px-2 py-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded text-xs font-bold transition-transform active:scale-95" title="Compartir">
+                     <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                  </button>
+                  <button class="px-2.5 py-1.5 bg-slate-800 text-white rounded text-xs font-bold pointer-events-none">${btnText}</button>
+              </div>
             </td>
           </tr>`;
       }
