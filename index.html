@@ -786,6 +786,14 @@
           <ul id="settingsTechList" class="mt-2 space-y-1 max-h-24 overflow-y-auto custom-scroll"></ul>
         </div>
 
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1">
+          <span class="block font-bold text-emerald-900">Respaldo y Base de Datos</span>
+          <p class="text-[10px] text-emerald-700 mb-2">Descarga el registro histórico completo de todas las OTs en formato compatible con Microsoft Excel.</p>
+          <button type="button" onclick="window.app.exportToExcel()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition-transform text-white rounded-lg font-bold flex justify-center items-center gap-2 shadow-sm">
+            <span aria-hidden="true">📊</span> Descargar BD Completa (Excel / CSV)
+          </button>
+        </div>
+
         <div class="pt-2 flex items-center justify-between">
           <button type="button" onclick="window.app.hardResetDatabase()" class="px-3 py-2 text-rose-600 bg-rose-50 border border-rose-200 hover:bg-rose-100 font-bold rounded-lg" title="Borrar todas las OTs">⚠️ Borrar Todo</button>
           <div class="flex space-x-2">
@@ -1885,6 +1893,63 @@
           styles: { fontSize: 8 }
         });
         doc.save(`Avance_${Date.now()}.pdf`);
+      }
+
+      exportToExcel() {
+        if (!this.orders || this.orders.length === 0) {
+          this.showToast('No hay órdenes para exportar', '⚠️');
+          return;
+        }
+
+        // 1. Definir las cabeceras de la tabla
+        const headers = [
+          'Folio', 'Recinto', 'PMA', 'Especialidad', 'Prioridad', 'Solicitante', 
+          'Técnico Asignado', 'Estado', 'Fecha Creación', 'Fecha Término', 
+          'Descripción del Trabajo', 'Instrucciones Jefatura', 'Diagnóstico y Solución'
+        ];
+
+        // Función para limpiar texto y que Excel no se rompa con comas, puntos y comas o saltos de línea
+        const escapeCSV = (str) => {
+          if (str === null || str === undefined) return '""';
+          const stringified = String(str);
+          // Reemplaza comillas dobles por doble comilla y envuelve en comillas
+          return `"${stringified.replace(/"/g, '""')}"`;
+        };
+
+        // 2. Extraer los datos de cada OT mapeados a las cabeceras
+        const rows = this.orders.map(o => {
+          return [
+            o.folio,
+            o.recinto,
+            o.ticket || 'N/A',
+            o.especialidad,
+            o.prioridad,
+            o.solicitante,
+            o.encargado || 'No asignado',
+            o.estado,
+            o.fechaCreacion ? new Date(o.fechaCreacion).toLocaleString() : '',
+            o.fechaTermino ? new Date(o.fechaTermino).toLocaleString() : '',
+            o.descripcion,
+            o.instrucciones,
+            o.diagnostico
+          ].map(escapeCSV).join(';'); // Usamos punto y coma (;) para compatibilidad nativa de Excel en español
+        });
+
+        // 3. Unir todo en formato CSV
+        const csvContent = headers.map(escapeCSV).join(';') + '\n' + rows.join('\n');
+
+        // 4. Crear el archivo Blob agregando BOM (\uFEFF) para que Excel reconozca tildes y eñes (UTF-8)
+        const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        
+        link.setAttribute('href', url);
+        link.setAttribute('download', `SDO_BaseDatos_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.showToast('Base de datos descargada', '📊');
       }
 
       shareWhatsApp(id) {
